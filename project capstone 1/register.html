@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация | CyberShield Academy 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #0a0a14;
+            --secondary-dark: #121225;
+            --accent-neon: #39FF14;
+            --accent-cyan: #00F0FF;
+            --accent-purple: #9D4EDD;
+            --accent-orange: #FFA500;
+            --accent-red: #FF6B6B;
+            --accent-pink: #FF4D9E;
+            --accent-yellow: #FFD700;
+            --accent-green: #00FF7F;
+            --text-light: #F8F9FA;
+            --text-gray: #CCCCCC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(to bottom, rgba(9, 2, 26, 0.9), rgba(9, 2, 26, 0.95)),
+                url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%2300f0ff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        /* Animated scan lines */
+        .scan-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 240, 255, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: -1;
+            animation: scan 10s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* Header */
+        header {
+            padding: 2rem;
+            border-bottom: 3px solid var(--accent-neon);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+            background: rgba(10, 10, 20, 0.95);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            image-rendering: pixelated;
+        }
+
+        .logo-inner {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-neon), var(--accent-cyan));
+            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 2px 2px 0px var(--accent-purple);
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-neon), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Обновленные стили для ссылок-кнопок */
+        .nav-btn {
+            background: transparent;
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 0.8rem 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-btn:hover::after {
+            left: 100%;
+        }
+
+        .login-btn {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            color: white;
+        }
+
+        .login-btn:hover {
+            background: rgba(157, 78, 221, 0.8);
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        .nav-btn.active {
+            background: var(--accent-neon);
+            border-color: var(--accent-neon);
+            color: var(--primary-dark);
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+        }
+
+        /* Main Content */
+        main {
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Registration Hero */
+        .registration-hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .registration-hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--accent-neon), var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+            animation: textGlow 3s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 20px rgba(57, 255, 20, 0.3); }
+            100% { text-shadow: 0 0 30px rgba(57, 255, 20, 0.6), 0 0 40px rgba(0, 240, 255, 0.4); }
+        }
+
+        .registration-hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: var(--text-gray);
+        }
+
+        /* Registration Container */
+        .registration-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 900px) {
+            .registration-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+        }
+
+        /* Registration Form */
+        .registration-form {
+            background: rgba(18, 18, 37, 0.9);
+            border: 3px solid var(--accent-cyan);
+            padding: 3rem;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--accent-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(0, 240, 255, 0.3);
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--accent-red);
+            transition: all 0.3s ease;
+        }
+
+        .strength-bar.medium {
+            background: var(--accent-yellow);
+        }
+
+        .strength-bar.strong {
+            background: var(--accent-green);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .terms-link {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        .terms-link:hover {
+            text-decoration: underline;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+            border: none;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(157, 78, 221, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover::after {
+            left: 100%;
+        }
+
+        /* Registration Benefits */
+        .registration-benefits {
+            padding: 2rem;
+        }
+
+        .benefits-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--accent-neon);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .benefits-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(0, 240, 255, 0.05);
+            border-left: 4px solid var(--accent-cyan);
+            transition: all 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            background: rgba(0, 240, 255, 0.1);
+            transform: translateX(10px);
+        }
+
+        .benefit-icon {
+            font-size: 1.5rem;
+            color: var(--accent-cyan);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .benefit-text h4 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-light);
+            margin-bottom: 0.3rem;
+        }
+
+        .benefit-text p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Security Meter */
+        .security-meter {
+            background: rgba(18, 18, 37, 0.9);
+            border: 2px solid var(--accent-green);
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .meter-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-green);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .meter-bar {
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--accent-green);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .meter-fill {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, var(--accent-red), var(--accent-yellow), var(--accent-green));
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: fillMeter 2s ease-in-out forwards;
+        }
+
+        @keyframes fillMeter {
+            to { transform: scaleX(1); }
+        }
+
+        .meter-text {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(57, 255, 20, 0.2);
+            margin-top: 4rem;
+        }
+
+        .footer-text {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-year {
+            color: var(--accent-neon);
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            .logo-container {
+                justify-content: center;
+            }
+            nav {
+                justify-content: center;
+            }
+            .registration-hero h1 {
+                font-size: 2.5rem;
+            }
+            .registration-form {
+                padding: 2rem;
+            }
+        }
+
+        /* Terminal animation */
+        .terminal-animation {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--accent-cyan);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal-text {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent-neon);
+            line-height: 1.6;
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background-color: var(--accent-neon);
+            animation: blink 1s infinite;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Error Message */
+        .error-message {
+            color: var(--accent-red);
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        /* Success Message */
+        .success-message {
+            color: var(--accent-green);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated scan lines -->
+    <div class="scan-lines"></div>
+    
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo">
+                <div class="logo-inner">C</div>
+            </div>
+            <div class="logo-text">CYBERSHIELD ACADEMY</div>
+        </div>
+        <nav>
+            <a href="index.html" class="nav-btn">Главная</a>
+            <a href="modules.html" class="nav-btn">Модули</a>
+            <a href="labs.html" class="nav-btn">Лаборатории</a>
+            <a href="community.html" class="nav-btn">Сообщество</a>
+            <a href="register.html" class="nav-btn active login-btn">Регистрация</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Registration Hero -->
+        <section class="registration-hero">
+            <h1>СТАНЬ ЗАЩИТНИКОМ СЕТИ</h1>
+            <p>Присоединяйся к элите кибербезопасности. Начни свой путь к профессионализму сегодня.</p>
+        </section>
+
+        <!-- Terminal Animation -->
+        <div class="terminal-animation">
+            <div class="terminal-text">
+                > СИСТЕМА РЕГИСТРАЦИИ ЗАПУЩЕНА<br>
+                > ПОДКЛЮЧЕНИЕ К БАЗЕ ДАННЫХ... УСПЕШНО<br>
+                > ОЖИДАНИЕ ВВОДА ДАННЫХ ПОЛЬЗОВАТЕЛЯ<br>
+                > ГОТОВНОСТЬ: 100%<span class="terminal-cursor"></span>
+            </div>
+        </div>
+
+        <!-- Registration Container -->
+        <div class="registration-container">
+            <!-- Registration Form -->
+            <div class="registration-form">
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label for="username">ИМЯ ПОЛЬЗОВАТЕЛЯ</label>
+                        <input type="text" id="username" class="form-input" placeholder="Введите имя пользователя" required>
+                        <div class="error-message" id="usernameError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">ЭЛЕКТРОННАЯ ПОЧТА</label>
+                        <input type="email" id="email" class="form-input" placeholder="yourname@example.com" required>
+                        <div class="error-message" id="emailError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">ПАРОЛЬ</label>
+                        <input type="password" id="password" class="form-input" placeholder="Минимум 8 символов" required>
+                        <div class="password-strength">
+                            <div class="strength-bar" id="strengthBar"></div>
+                        </div>
+                        <div class="error-message" id="passwordError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">ПОДТВЕРЖДЕНИЕ ПАРОЛЯ</label>
+                        <input type="password" id="confirmPassword" class="form-input" placeholder="Повторите пароль" required>
+                        <div class="error-message" id="confirmPasswordError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="terms" required>
+                            <label for="terms">
+                                Я принимаю <a href="#" class="terms-link">Условия использования</a> и 
+                                <a href="#" class="terms-link">Политику конфиденциальности</a>
+                            </label>
+                        </div>
+                        <div class="error-message" id="termsError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="newsletter" checked>
+                            <label for="newsletter">
+                                Получать уведомления о новых курсах и обновлениях
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        СОЗДАТЬ АККАУНТ
+                    </button>
+
+                    <div class="success-message" id="successMessage">
+                        Регистрация успешна! Перенаправление на главную страницу...
+                    </div>
+                </form>
+            </div>
+
+            <!-- Registration Benefits -->
+            <div class="registration-benefits">
+                <h2 class="benefits-title">ПРЕИМУЩЕСТВА АКАДЕМИИ</h2>
+                
+                <ul class="benefits-list">
+                    <li class="benefit-item">
+                        <div class="benefit-icon">⚡</div>
+                        <div class="benefit-text">
+                            <h4>Практические лаборатории</h4>
+                            <p>Реальные сценарии атак и защиты в безопасной среде</p>
+                        </div>
+                    </li>
+                    
+                    <li class="benefit-item">
+                        <div class="benefit-icon">🎓</div>
+                        <div class="benefit-text">
+                            <h4>Сертификация</h4>
+                            <p>Официальные сертификаты по завершении каждого модуля</p>
+                        </div>
+                    </li>
+                    
+                    <li class="benefit-item">
+                        <div class="benefit-icon">👥</div>
+                        <div class="benefit-text">
+                            <h4>Сообщество экспертов</h4>
+                            <p>Общение с профессионалами кибербезопасности</p>
+                        </div>
+                    </li>
+                    
+                    <li class="benefit-item">
+                        <div class="benefit-icon">🛡️</div>
+                        <div class="benefit-text">
+                            <h4>Карьерный рост</h4>
+                            <p>Подготовка к востребованным позициям в ИБ</p>
+                        </div>
+                    </li>
+                    
+                    <li class="benefit-item">
+                        <div class="benefit-icon">📈</div>
+                        <div class="benefit-text">
+                            <h4>Обновляемый контент</h4>
+                            <p>Актуальные материалы по новым угрозам и технологиям</p>
+                        </div>
+                    </li>
+                    
+                    <li class="benefit-item">
+                        <div class="benefit-icon">🏆</div>
+                        <div class="benefit-text">
+                            <h4>Соревнования CTF</h4>
+                            <p>Регулярные турниры для оттачивания навыков</p>
+                        </div>
+                    </li>
+                </ul>
+
+                <!-- Security Meter -->
+                <div class="security-meter">
+                    <h3 class="meter-title">УРОВЕНЬ ЗАЩИЩЕННОСТИ</h3>
+                    <div class="meter-bar">
+                        <div class="meter-fill"></div>
+                    </div>
+                    <p class="meter-text">
+                        Все данные защищены сквозным шифрованием AES-256. 
+                        Мы никогда не передаем вашу информацию третьим лицам.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">© <span class="current-year">2025</span> CyberShield Academy. Все права защищены.</p>
+        <p class="footer-text">Образовательная платформа нового поколения</p>
+    </footer>
+
+    <script>
+        // Обновляем год в футере
+        document.querySelector('.current-year').textContent = new Date().getFullYear();
+        
+        // Элементы формы
+        const form = document.getElementById('registrationForm');
+        const usernameInput = document.getElementById('username');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const termsInput = document.getElementById('terms');
+        const strengthBar = document.getElementById('strengthBar');
+        
+        // Проверка имени пользователя
+        usernameInput.addEventListener('input', function() {
+            const username = this.value;
+            const errorElement = document.getElementById('usernameError');
+            
+            if (username.length < 3) {
+                showError(errorElement, 'Имя пользователя должно содержать минимум 3 символа');
+                this.style.borderColor = 'var(--accent-red)';
+            } else if (username.length > 20) {
+                showError(errorElement, 'Имя пользователя не должно превышать 20 символов');
+                this.style.borderColor = 'var(--accent-red)';
+            } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                showError(errorElement, 'Допустимы только буквы, цифры и нижнее подчеркивание');
+                this.style.borderColor = 'var(--accent-red)';
+            } else {
+                hideError(errorElement);
+                this.style.borderColor = 'var(--accent-cyan)';
+            }
+        });
+        
+        // Проверка email
+        emailInput.addEventListener('input', function() {
+            const email = this.value;
+            const errorElement = document.getElementById('emailError');
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!emailPattern.test(email)) {
+                showError(errorElement, 'Введите корректный email адрес');
+                this.style.borderColor = 'var(--accent-red)';
+            } else {
+                hideError(errorElement);
+                this.style.borderColor = 'var(--accent-cyan)';
+            }
+        });
+        
+        // Проверка пароля
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            const errorElement = document.getElementById('passwordError');
+            
+            // Проверка сложности пароля
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            // Обновление индикатора сложности
+            strengthBar.style.width = (strength * 25) + '%';
+            strengthBar.className = 'strength-bar';
+            
+            if (strength === 0) {
+                strengthBar.style.backgroundColor = 'var(--accent-red)';
+            } else if (strength <= 2) {
+                strengthBar.classList.add('medium');
+                showError(errorElement, 'Слабый пароль. Добавьте заглавные буквы, цифры и символы');
+                this.style.borderColor = 'var(--accent-red)';
+            } else if (strength === 3) {
+                strengthBar.classList.add('strong');
+                hideError(errorElement);
+                this.style.borderColor = 'var(--accent-yellow)';
+            } else {
+                strengthBar.classList.add('strong');
+                hideError(errorElement);
+                this.style.borderColor = 'var(--accent-green)';
+            }
+            
+            // Проверка минимальной длины
+            if (password.length < 8) {
+                showError(errorElement, 'Пароль должен содержать минимум 8 символов');
+                this.style.borderColor = 'var(--accent-red)';
+                strengthBar.style.width = '0%';
+            }
+            
+            // Проверка подтверждения пароля
+            if (confirmPasswordInput.value && password !== confirmPasswordInput.value) {
+                const confirmError = document.getElementById('confirmPasswordError');
+                showError(confirmError, 'Пароли не совпадают');
+                confirmPasswordInput.style.borderColor = 'var(--accent-red)';
+            }
+        });
+        
+        // Проверка подтверждения пароля
+        confirmPasswordInput.addEventListener('input', function() {
+            const password = passwordInput.value;
+            const confirmPassword = this.value;
+            const errorElement = document.getElementById('confirmPasswordError');
+            
+            if (password !== confirmPassword) {
+                showError(errorElement, 'Пароли не совпадают');
+                this.style.borderColor = 'var(--accent-red)';
+            } else {
+                hideError(errorElement);
+                this.style.borderColor = 'var(--accent-cyan)';
+            }
+        });
+        
+        // Проверка условий использования
+        termsInput.addEventListener('change', function() {
+            const errorElement = document.getElementById('termsError');
+            if (!this.checked) {
+                showError(errorElement, 'Необходимо принять условия использования');
+            } else {
+                hideError(errorElement);
+            }
+        });
+        
+        // Обработка отправки формы
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Проверяем все поля
+            const username = usernameInput.value;
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            
+            let isValid = true;
+            
+            // Проверка имени пользователя
+            if (username.length < 3 || username.length > 20 || !/^[a-zA-Z0-9_]+$/.test(username)) {
+                isValid = false;
+                usernameInput.style.borderColor = 'var(--accent-red)';
+            }
+            
+            // Проверка email
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                isValid = false;
+                emailInput.style.borderColor = 'var(--accent-red)';
+            }
+            
+            // Проверка пароля
+            if (password.length < 8) {
+                isValid = false;
+                passwordInput.style.borderColor = 'var(--accent-red)';
+            }
+            
+            // Проверка подтверждения пароля
+            if (password !== confirmPassword) {
+                isValid = false;
+                confirmPasswordInput.style.borderColor = 'var(--accent-red)';
+            }
+            
+            // Проверка условий
+            if (!termsInput.checked) {
+                isValid = false;
+                const errorElement = document.getElementById('termsError');
+                showError(errorElement, 'Необходимо принять условия использования');
+            }
+            
+            if (isValid) {
+                // Симуляция успешной регистрации
+                const submitBtn = form.querySelector('.submit-btn');
+                const successMessage = document.getElementById('successMessage');
+                
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> РЕГИСТРАЦИЯ...';
+                
+                // Анимация успеха
+                setTimeout(() => {
+                    submitBtn.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    
+                    // Обновляем терминал
+                    const terminal = document.querySelector('.terminal-animation .terminal-text');
+                    terminal.innerHTML = `
+                        > РЕГИСТРАЦИЯ УСПЕШНА<br>
+                        > СОЗДАНИЕ АККАУНТА: ${username.toUpperCase()}<br>
+                        > ШИФРОВАНИЕ ДАННЫХ... ВЫПОЛНЕНО<br>
+                        > ДОБРО ПОЖАЛОВАТЬ В АКАДЕМИЮ<span class="terminal-cursor"></span>
+                    `;
+                    
+                    // Перенаправление через 3 секунды
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+                    
+                }, 2000);
+            } else {
+                // Воспроизводим звук ошибки
+                playErrorSound();
+            }
+        });
+        
+        // Вспомогательные функции
+        function showError(element, message) {
+            element.textContent = message;
+            element.style.display = 'block';
+        }
+        
+        function hideError(element) {
+            element.textContent = '';
+            element.style.display = 'none';
+        }
+        
+        function playErrorSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.1);
+                
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.2);
+            } catch (e) {
+                console.log("AudioContext не поддерживается");
+            }
+        }
+        
+        // Анимация появления элементов
+        const formElements = document.querySelectorAll('.form-group, .benefit-item');
+        formElements.forEach((element, index) => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                element.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    </script>
+</body>
+</html>

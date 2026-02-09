@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лаборатории | CyberShield Academy 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #0a0a14;
+            --secondary-dark: #121225;
+            --accent-neon: #39FF14;
+            --accent-cyan: #00F0FF;
+            --accent-purple: #9D4EDD;
+            --accent-orange: #FFA500;
+            --accent-red: #FF6B6B;
+            --accent-pink: #FF4D9E;
+            --accent-yellow: #FFD700;
+            --accent-green: #00FF7F;
+            --text-light: #F8F9FA;
+            --text-gray: #CCCCCC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(to bottom, rgba(9, 2, 26, 0.9), rgba(9, 2, 26, 0.95)),
+                url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%2300f0ff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        /* Animated scan lines */
+        .scan-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 240, 255, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: -1;
+            animation: scan 10s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* Header */
+        header {
+            padding: 2rem;
+            border-bottom: 3px solid var(--accent-neon);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+            background: rgba(10, 10, 20, 0.95);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            image-rendering: pixelated;
+        }
+
+        .logo-inner {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-neon), var(--accent-cyan));
+            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 2px 2px 0px var(--accent-purple);
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-neon), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Обновленные стили для ссылок-кнопок */
+        .nav-btn {
+            background: transparent;
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 0.8rem 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-btn:hover::after {
+            left: 100%;
+        }
+
+        .login-btn {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            color: white;
+        }
+
+        .login-btn:hover {
+            background: rgba(157, 78, 221, 0.8);
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        .nav-btn.active {
+            background: var(--accent-neon);
+            border-color: var(--accent-neon);
+            color: var(--primary-dark);
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+        }
+
+        /* Main Content */
+        main {
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Labs Hero */
+        .labs-hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .labs-hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--accent-neon), var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+            animation: textGlow 3s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 20px rgba(57, 255, 20, 0.3); }
+            100% { text-shadow: 0 0 30px rgba(57, 255, 20, 0.6), 0 0 40px rgba(0, 240, 255, 0.4); }
+        }
+
+        .labs-hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: var(--text-gray);
+        }
+
+        /* Lab Selector */
+        .lab-selector {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .lab-tab {
+            background: rgba(18, 18, 37, 0.8);
+            border: 2px solid var(--accent-cyan);
+            color: var(--text-light);
+            padding: 1rem 2rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lab-tab:hover {
+            background: rgba(0, 240, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .lab-tab.active {
+            background: var(--accent-cyan);
+            color: var(--primary-dark);
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+        }
+
+        /* Lab Container */
+        .lab-container {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lab-container.active {
+            display: block;
+        }
+
+        /* Lab Header */
+        .lab-header {
+            background: rgba(18, 18, 37, 0.9);
+            border: 3px solid var(--accent-cyan);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .lab-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .lab-difficulty {
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .difficulty-easy {
+            background: var(--accent-green);
+            color: var(--primary-dark);
+        }
+
+        .difficulty-medium {
+            background: var(--accent-yellow);
+            color: var(--primary-dark);
+        }
+
+        .difficulty-hard {
+            background: var(--accent-red);
+            color: var(--primary-dark);
+        }
+
+        .lab-description {
+            color: var(--text-gray);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .lab-stats {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--accent-neon);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+        }
+
+        /* Lab Content */
+        .lab-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 1024px) {
+            .lab-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Task Area */
+        .task-area {
+            background: rgba(18, 18, 37, 0.9);
+            border: 2px solid var(--accent-cyan);
+            padding: 2rem;
+        }
+
+        .task-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--accent-neon);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+        }
+
+        .task-objective {
+            background: rgba(0, 240, 255, 0.05);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--accent-cyan);
+        }
+
+        .task-objective h4 {
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Interactive Terminal */
+        .interactive-terminal {
+            background: #000;
+            border: 2px solid var(--accent-neon);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            height: 300px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .terminal-header {
+            color: var(--accent-neon);
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terminal-content {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .terminal-input {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .terminal-prompt {
+            color: var(--accent-neon);
+            margin-right: 0.5rem;
+        }
+
+        .terminal-field {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        /* Hacking Game */
+        .hacking-game {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--accent-purple);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .game-cell {
+            aspect-ratio: 1;
+            background: rgba(157, 78, 221, 0.2);
+            border: 1px solid var(--accent-purple);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .game-cell:hover {
+            background: rgba(157, 78, 221, 0.4);
+            transform: scale(1.05);
+        }
+
+        .game-cell.found {
+            background: var(--accent-green);
+            color: var(--primary-dark);
+        }
+
+        .game-cell.incorrect {
+            background: var(--accent-red);
+            color: var(--primary-dark);
+        }
+
+        /* Code Editor */
+        .code-editor {
+            background: #1e1e1e;
+            border: 2px solid var(--accent-orange);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .editor-header {
+            background: #2d2d2d;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .editor-title {
+            color: var(--accent-orange);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .editor-content {
+            padding: 1rem;
+        }
+
+        .code-line {
+            color: #d4d4d4;
+            font-family: 'Consolas', monospace;
+            margin-bottom: 0.3rem;
+            white-space: pre;
+        }
+
+        .code-comment {
+            color: #6a9955;
+        }
+
+        .code-keyword {
+            color: #569cd6;
+        }
+
+        .code-string {
+            color: #ce9178;
+        }
+
+        .code-function {
+            color: #dcdcaa;
+        }
+
+        /* Sidebar */
+        .lab-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Tools Panel */
+        .tools-panel {
+            background: rgba(18, 18, 37, 0.9);
+            border: 2px solid var(--accent-purple);
+            padding: 1.5rem;
+        }
+
+        .tools-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-purple);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .tool-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(157, 78, 221, 0.1);
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tool-item:hover {
+            background: rgba(157, 78, 221, 0.2);
+            transform: translateX(5px);
+        }
+
+        .tool-icon {
+            font-size: 1.5rem;
+            color: var(--accent-purple);
+        }
+
+        /* Progress Panel */
+        .progress-panel {
+            background: rgba(18, 18, 37, 0.9);
+            border: 2px solid var(--accent-green);
+            padding: 1.5rem;
+        }
+
+        .progress-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-green);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: rgba(0, 255, 127, 0.1);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-green);
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        /* Hint System */
+        .hint-system {
+            background: rgba(18, 18, 37, 0.9);
+            border: 2px solid var(--accent-yellow);
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .hint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .hint-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-yellow);
+            font-size: 1.2rem;
+        }
+
+        .hint-button {
+            background: var(--accent-yellow);
+            color: var(--primary-dark);
+            border: none;
+            padding: 0.5rem 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hint-button:hover {
+            background: #ffed4a;
+            transform: translateY(-2px);
+        }
+
+        .hint-content {
+            color: var(--text-gray);
+            line-height: 1.6;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .hint-content.active {
+            max-height: 200px;
+        }
+
+        /* Submit Area */
+        .submit-area {
+            background: rgba(18, 18, 37, 0.9);
+            border: 2px solid var(--accent-neon);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .submit-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-neon);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .flag-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--accent-neon);
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .flag-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, var(--accent-neon), var(--accent-green));
+            border: none;
+            color: var(--primary-dark);
+            padding: 1rem 3rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(57, 255, 20, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(57, 255, 20, 0.2);
+            margin-top: 4rem;
+        }
+
+        .footer-text {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-year {
+            color: var(--accent-neon);
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            .logo-container {
+                justify-content: center;
+            }
+            nav {
+                justify-content: center;
+            }
+            .labs-hero h1 {
+                font-size: 2.5rem;
+            }
+            .lab-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+            .lab-tab {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        /* Animations */
+        @keyframes successGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(57, 255, 20, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(57, 255, 20, 0.7); }
+        }
+
+        @keyframes errorShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Achievement Popup */
+        .achievement-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+            padding: 3rem;
+            border: 3px solid var(--accent-neon);
+            z-index: 1000;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .achievement-popup.active {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .achievement-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .achievement-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated scan lines -->
+    <div class="scan-lines"></div>
+    
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo">
+                <div class="logo-inner">C</div>
+            </div>
+            <div class="logo-text">CYBERSHIELD ACADEMY</div>
+        </div>
+        <nav>
+            <a href="index.html" class="nav-btn">Главная</a>
+            <a href="modules.html" class="nav-btn">Модули</a>
+            <a href="labs.html" class="nav-btn active">Лаборатории</a>
+            <a href="community.html" class="nav-btn">Сообщество</a>
+            <a href="register.html" class="nav-btn login-btn">Регистрация</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Labs Hero -->
+        <section class="labs-hero">
+            <h1>ВИРТУАЛЬНЫЕ ЛАБОРАТОРИИ</h1>
+            <p>Практические задания для отработки навыков кибербезопасности. От теории к практике в безопасной среде.</p>
+        </section>
+
+        <!-- Lab Selector -->
+        <div class="lab-selector">
+            <button class="lab-tab active" data-lab="1">Лаборатория 1: Анализ трафика</button>
+            <button class="lab-tab" data-lab="2">Лаборатория 2: Взлом шифрования</button>
+            <button class="lab-tab" data-lab="3">Лаборатория 3: XSS Атаки</button>
+            <button class="lab-tab" data-lab="4">Лаборатория 4: SQL Инъекции</button>
+        </div>
+
+        <!-- Lab 1: Traffic Analysis -->
+        <div class="lab-container active" id="lab-1">
+            <div class="lab-header">
+                <div class="lab-title">
+                    <span>Анализ сетевого трафика</span>
+                    <span class="lab-difficulty difficulty-easy">ЛЕГКО</span>
+                </div>
+                <p class="lab-description">
+                    В этой лаборатории вы будете анализировать сетевой трафик для обнаружения подозрительной активности.
+                    Используйте предоставленные инструменты для расшифровки пакетов и нахождения скрытых флагов.
+                </p>
+                <div class="lab-stats">
+                    <div class="stat">
+                        <span class="stat-value">85%</span>
+                        <span class="stat-label">Завершение</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">45 мин</span>
+                        <span class="stat-label">Среднее время</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">1,250</span>
+                        <span class="stat-label">Решили</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lab-content">
+                <div class="task-area">
+                    <h3 class="task-title">Задание: Обнаружение скрытого сообщения</h3>
+                    
+                    <div class="task-objective">
+                        <h4>Цель задания:</h4>
+                        <p>Проанализируйте предоставленный сетевой трафик и найдите скрытое сообщение, отправленное через DNS туннелирование.</p>
+                    </div>
+
+                    <!-- Interactive Terminal -->
+                    <div class="interactive-terminal">
+                        <div class="terminal-header">
+                            <span>Терминал анализа трафика</span>
+                            <span style="color: var(--accent-green);">ONLINE</span>
+                        </div>
+                        <div class="terminal-content" id="terminal-output">
+                            > ДОБРО ПОЖАЛОВАТЬ В АНАЛИЗАТОР ТРАФИКА<br>
+                            > ЗАГРУЗКА PCAP ФАЙЛА... УСПЕШНО<br>
+                            > АНАЛИЗИРУЮТСЯ 1247 ПАКЕТОВ<br>
+                            > ОБНАРУЖЕНЫ ПОДОЗРИТЕЛЬНЫЕ DNS ЗАПРОСЫ<br>
+                            ><br>
+                            > ПРИМЕР ДАННЫХ:<br>
+                            > Time: 14:23:11 | Source: 192.168.1.100 | Protocol: DNS<br>
+                            > Query: 4d795f7365637265745f666c6167.subdomain.example.com<br>
+                            ><br>
+                            > ДЕКОДИРУЙТЕ HEX СТРОКУ В КОНЦЕ ДОМЕННОГО ИМЕНИ<br>
+                            > ФОРМАТ ФЛАГА: CSA{текст_здесь}<br>
+                        </div>
+                        <div class="terminal-input">
+                            <span class="terminal-prompt">> decode_hex</span>
+                            <input type="text" class="terminal-field" id="hex-input" placeholder="Введите hex строку">
+                        </div>
+                    </div>
+
+                    <div class="hacking-game">
+                        <h4 style="color: var(--accent-purple); margin-bottom: 1rem;">Найдите скрытые пакеты</h4>
+                        <p>Нажмите на пакеты с аномальной длиной для их анализа</p>
+                        <div class="game-grid" id="packet-grid">
+                            <!-- Packet cells will be generated by JS -->
+                        </div>
+                        <p id="game-result" style="margin-top: 1rem;"></p>
+                    </div>
+
+                    <!-- Code Editor -->
+                    <div class="code-editor">
+                        <div class="editor-header">
+                            <span class="editor-title">decode_script.py</span>
+                            <button id="run-script" style="background: var(--accent-orange); color: black; border: none; padding: 0.5rem 1rem; font-family: 'Share Tech Mono'; cursor: pointer;">Запуск</button>
+                        </div>
+                        <div class="editor-content">
+                            <div class="code-line"><span class="code-comment"># Функция для декодирования hex строки</span></div>
+                            <div class="code-line"><span class="code-keyword">def</span> <span class="code-function">decode_hex</span>(hex_string):</div>
+                            <div class="code-line">    <span class="code-keyword">try</span>:</div>
+                            <div class="code-line">        <span class="code-keyword">return</span> <span class="code-function">bytes</span>.fromhex(hex_string).decode(<span class="code-string">'utf-8'</span>)</div>
+                            <div class="code-line">    <span class="code-keyword">except</span>:</div>
+                            <div class="code-line">        <span class="code-keyword">return</span> <span class="code-string">"Ошибка декодирования"</span></div>
+                            <div class="code-line"><span class="code-comment"># Пример hex строки из DNS запроса</span></div>
+                            <div class="code-line">example_hex = <span class="code-string" id="code-example">"4d795f7365637265745f666c6167"</span></div>
+                            <div class="code-line">result = decode_hex(<span class="code-string">"<span id="code-input">ВВЕДИТЕ HEX</span>"</span>)</div>
+                            <div class="code-line">print(<span class="code-string">"Результат:"</span>, result)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lab-sidebar">
+                    <div class="tools-panel">
+                        <h4 class="tools-title">ИНСТРУМЕНТЫ</h4>
+                        <div class="tool-item" data-tool="wireshark">
+                            <span class="tool-icon">📡</span>
+                            <span>Wireshark</span>
+                        </div>
+                        <div class="tool-item" data-tool="tcpdump">
+                            <span class="tool-icon">📊</span>
+                            <span>TCPDump</span>
+                        </div>
+                        <div class="tool-item" data-tool="hex">
+                            <span class="tool-icon">🔢</span>
+                            <span>Hex декодер</span>
+                        </div>
+                        <div class="tool-item" data-tool="base64">
+                            <span class="tool-icon">📄</span>
+                            <span>Base64 декодер</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-panel">
+                        <h4 class="progress-title">ПРОГРЕСС</h4>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="lab-progress" style="width: 85%;"></div>
+                        </div>
+                        <p style="color: var(--text-gray); font-size: 0.9rem;">
+                            Шаги выполнения:
+                        </p>
+                        <ul style="color: var(--text-gray); font-size: 0.9rem; padding-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>✓ Анализ пакетов</li>
+                            <li>✓ Выявление аномалий</li>
+                            <li>✓ Декодирование данных</li>
+                            <li>□ Поиск флага</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hint-system">
+                <div class="hint-header">
+                    <h4 class="hint-title">ПОДСКАЗКИ</h4>
+                    <button class="hint-button" id="show-hint">Показать подсказку</button>
+                </div>
+                <div class="hint-content" id="hint-content">
+                    <p>Hex строка "4d795f7365637265745f666c6167" соответствует ASCII символам. Используйте Python функцию bytes.fromhex() для декодирования.</p>
+                    <p style="margin-top: 0.5rem;">Флаг имеет формат: CSA{decoded_text}</p>
+                </div>
+            </div>
+
+            <div class="submit-area">
+                <h3 class="submit-title">ОТПРАВИТЬ ФЛАГ</h3>
+                <input type="text" class="flag-input" id="flag-input-1" placeholder="Введите флаг в формате CSA{...}">
+                <button class="submit-button" onclick="submitFlag(1)">ПРОВЕРИТЬ</button>
+                <p id="result-1" style="margin-top: 1rem;"></p>
+            </div>
+        </div>
+
+        <!-- Lab 2: Encryption Cracking -->
+        <div class="lab-container" id="lab-2">
+            <div class="lab-header">
+                <div class="lab-title">
+                    <span>Взлом шифрования</span>
+                    <span class="lab-difficulty difficulty-medium">СРЕДНЕ</span>
+                </div>
+                <p class="lab-description">
+                    Взломайте слабые шифры для получения доступа к зашифрованным данным. 
+                    Используйте методы brute-force и частотный анализ.
+                </p>
+                <div class="lab-stats">
+                    <div class="stat">
+                        <span class="stat-value">60%</span>
+                        <span class="stat-label">Завершение</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">75 мин</span>
+                        <span class="stat-label">Среднее время</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">890</span>
+                        <span class="stat-label">Решили</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lab-content">
+                <div class="task-area">
+                    <h3 class="task-title">Задание: Взлом шифра Цезаря</h3>
+                    
+                    <div class="task-objective">
+                        <h4>Цель задания:</h4>
+                        <p>Зашифрованное сообщение: "XJHWJY RJXXFLJ". Найдите правильный сдвиг и расшифруйте текст.</p>
+                    </div>
+
+                    <!-- Caesar Cipher Game -->
+                    <div class="hacking-game" style="border-color: var(--accent-orange);">
+                        <h4 style="color: var(--accent-orange); margin-bottom: 1rem;">Шифр Цезаря - Интерактивный взлом</h4>
+                        
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                            <span>Зашифрованный текст:</span>
+                            <code style="background: rgba(255, 165, 0, 0.2); padding: 0.5rem 1rem; border: 1px solid var(--accent-orange);">XJHWJY RJXXFLJ</code>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                            <span>Сдвиг:</span>
+                            <input type="range" min="1" max="25" value="5" id="shift-slider" style="flex: 1;">
+                            <span id="shift-value" style="color: var(--accent-orange); font-weight: bold; min-width: 30px;">5</span>
+                        </div>
+
+                        <div style="background: rgba(0,0,0,0.5); padding: 1rem; margin-bottom: 1.5rem;">
+                            <p style="margin-bottom: 0.5rem;">Результат расшифровки:</p>
+                            <code id="decrypted-text" style="font-size: 1.2rem; color: var(--accent-green);">SECRET MESSAGE</code>
+                        </div>
+
+                        <button id="brute-force" style="background: var(--accent-orange); color: black; border: none; padding: 0.8rem 1.5rem; font-family: 'Share Tech Mono'; cursor: pointer; margin-bottom: 1rem;">
+                            Запустить Brute-Force
+                        </button>
+
+                        <div id="brute-results" style="text-align: left; max-height: 200px; overflow-y: auto;"></div>
+                    </div>
+
+                    <!-- Frequency Analysis -->
+                    <div class="interactive-terminal" style="border-color: var(--accent-orange); margin-top: 1.5rem;">
+                        <div class="terminal-header">
+                            <span>Частотный анализатор</span>
+                            <span style="color: var(--accent-orange);">ANALYZING</span>
+                        </div>
+                        <div class="terminal-content" id="frequency-output">
+                            > АНАЛИЗ ЧАСТОТЫ БУКВ В ТЕКСТЕ:<br>
+                            > Текст: "XJHWJY RJXXFLJ"<br>
+                            ><br>
+                            > Частоты:<br>
+                            > J: 4 раза (33.3%)<br>
+                            > X: 3 раза (25.0%)<br>
+                            > H, W, Y, R, F, L: по 1 разу (8.3%)<br>
+                            ><br>
+                            > В АНГЛИЙСКОМ ЯЗЫКЕ:<br>
+                            > E: 12.7% | T: 9.1% | A: 8.2%<br>
+                            ><br>
+                            > РЕКОМЕНДАЦИЯ: Сравните частоты<br>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lab-sidebar">
+                    <div class="tools-panel" style="border-color: var(--accent-orange);">
+                        <h4 class="tools-title" style="color: var(--accent-orange);">ИНСТРУМЕНТЫ</h4>
+                        <div class="tool-item" data-tool="caesar">
+                            <span class="tool-icon" style="color: var(--accent-orange);">🔠</span>
+                            <span>Шифр Цезаря</span>
+                        </div>
+                        <div class="tool-item" data-tool="freq">
+                            <span class="tool-icon" style="color: var(--accent-orange);">📈</span>
+                            <span>Анализатор частот</span>
+                        </div>
+                        <div class="tool-item" data-tool="vigenere">
+                            <span class="tool-icon" style="color: var(--accent-orange);">🔣</span>
+                            <span>Шифр Виженера</span>
+                        </div>
+                        <div class="tool-item" data-tool="rot">
+                            <span class="tool-icon" style="color: var(--accent-orange);">🔄</span>
+                            <span>ROT13/47</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-panel" style="border-color: var(--accent-orange);">
+                        <h4 class="progress-title" style="color: var(--accent-orange);">ПРОГРЕСС</h4>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%; background: var(--accent-orange);"></div>
+                        </div>
+                        <p style="color: var(--text-gray); font-size: 0.9rem;">
+                            Шаги выполнения:
+                        </p>
+                        <ul style="color: var(--text-gray); font-size: 0.9rem; padding-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>✓ Анализ шифра</li>
+                            <li>✓ Частотный анализ</li>
+                            <li>□ Подбор сдвига</li>
+                            <li>□ Расшифровка</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="submit-area" style="border-color: var(--accent-orange);">
+                <h3 class="submit-title" style="color: var(--accent-orange);">ОТПРАВИТЬ ФЛАГ</h3>
+                <input type="text" class="flag-input" id="flag-input-2" placeholder="Введите расшифрованный текст">
+                <button class="submit-button" onclick="submitFlag(2)" style="background: linear-gradient(135deg, var(--accent-orange), var(--accent-yellow));">ПРОВЕРИТЬ</button>
+                <p id="result-2" style="margin-top: 1rem;"></p>
+            </div>
+        </div>
+
+        <!-- More labs would follow similar structure... -->
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">© <span class="current-year">2025</span> CyberShield Academy. Все права защищены.</p>
+        <p class="footer-text">Образовательная платформа нового поколения</p>
+    </footer>
+
+    <!-- Achievement Popup -->
+    <div class="achievement-popup" id="achievement-popup">
+        <div class="achievement-icon">🏆</div>
+        <h3 class="achievement-title">ЛАБОРАТОРИЯ ВЫПОЛНЕНА!</h3>
+        <p>Отличная работа! Вы успешно завершили лабораторию.</p>
+        <p style="margin-top: 1rem;">Получено +100 опыта</p>
+        <button onclick="closeAchievement()" style="background: var(--primary-dark); color: white; border: 2px solid var(--accent-neon); padding: 0.8rem 2rem; font-family: 'Share Tech Mono'; cursor: pointer; margin-top: 1.5rem;">ПРОДОЛЖИТЬ</button>
+    </div>
+
+    <script>
+        // Обновляем год в футере
+        document.querySelector('.current-year').textContent = new Date().getFullYear();
+        
+        // Lab Switching
+        const labTabs = document.querySelectorAll('.lab-tab');
+        const labContainers = document.querySelectorAll('.lab-container');
+        
+        labTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and containers
+                labTabs.forEach(t => t.classList.remove('active'));
+                labContainers.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Show corresponding lab
+                const labId = tab.getAttribute('data-lab');
+                document.getElementById(`lab-${labId}`).classList.add('active');
+            });
+        });
+        
+        // Lab 1: Packet Analysis Game
+        function initPacketGame() {
+            const grid = document.getElementById('packet-grid');
+            grid.innerHTML = '';
+            
+            // Create 25 packet cells
+            const hiddenPackets = [3, 8, 12, 17, 23]; // Hidden packets indices
+            const flags = [
+                'DNS запрос с подозрительным доменом',
+                'Аномально большой ICMP пакет',
+                'Шифрованный трафик на нестандартном порту',
+                'Скрытые данные в TCP флагах',
+                'Флаг найден! Hex: 4d795f7365637265745f666c6167'
+            ];
+            
+            for (let i = 0; i < 25; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'game-cell';
+                cell.textContent = '📦';
+                
+                if (hiddenPackets.includes(i)) {
+                    cell.dataset.hidden = 'true';
+                    cell.dataset.flag = flags[hiddenPackets.indexOf(i)];
+                }
+                
+                cell.addEventListener('click', () => {
+                    if (cell.dataset.hidden === 'true') {
+                        cell.classList.add('found');
+                        cell.innerHTML = '🔍<br><small style="font-size: 0.6rem;">' + cell.dataset.flag + '</small>';
+                        
+                        if (cell.dataset.flag.includes('Флаг найден')) {
+                            document.getElementById('hex-input').value = '4d795f7365637265745f666c6167';
+                            document.getElementById('code-input').textContent = '4d795f7365637265745f666c6167';
+                            showNotification('Найден hex для декодирования!', 'success');
+                        }
+                    } else {
+                        cell.classList.add('incorrect');
+                        cell.textContent = '💥';
+                        setTimeout(() => {
+                            cell.classList.remove('incorrect');
+                            cell.textContent = '📦';
+                        }, 1000);
+                    }
+                });
+                
+                grid.appendChild(cell);
+            }
+        }
+        
+        // Lab 1: Hex Decoding
+        const hexInput = document.getElementById('hex-input');
+        const codeExample = document.getElementById('code-example');
+        
+        hexInput.addEventListener('input', function() {
+            const hex = this.value.trim();
+            if (hex.length > 0) {
+                document.getElementById('code-input').textContent = hex;
+                
+                // Try to decode
+                try {
+                    if (/^[0-9A-Fa-f]+$/.test(hex)) {
+                        const decoded = hexToString(hex);
+                        showNotification(`Декодировано: ${decoded}`, 'info');
+                    }
+                } catch (e) {
+                    // Invalid hex
+                }
+            }
+        });
+        
+        function hexToString(hex) {
+            let str = '';
+            for (let i = 0; i < hex.length; i += 2) {
+                str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+            }
+            return str;
+        }
+        
+        // Lab 1: Run Script Button
+        document.getElementById('run-script').addEventListener('click', function() {
+            const hex = document.getElementById('code-input').textContent;
+            if (hex === 'ВВЕДИТЕ HEX') {
+                showNotification('Введите hex строку сначала', 'error');
+                return;
+            }
+            
+            try {
+                const decoded = hexToString(hex);
+                const terminal = document.getElementById('terminal-output');
+                terminal.innerHTML += `\n> decode_hex("${hex}") = "${decoded}"`;
+                terminal.scrollTop = terminal.scrollHeight;
+                
+                if (decoded === 'My_secret_flag') {
+                    showNotification('Правильно! Теперь отправьте флаг CSA{My_secret_flag}', 'success');
+                }
+            } catch (e) {
+                showNotification('Ошибка декодирования', 'error');
+            }
+        });
+        
+        // Lab 2: Caesar Cipher
+        const shiftSlider = document.getElementById('shift-slider');
+        const shiftValue = document.getElementById('shift-value');
+        const decryptedText = document.getElementById('decrypted-text');
+        
+        const encryptedText = 'XJHWJY RJXXFLJ';
+        
+        shiftSlider.addEventListener('input', function() {
+            const shift = parseInt(this.value);
+            shiftValue.textContent = shift;
+            
+            // Decrypt with Caesar cipher
+            let decrypted = '';
+            for (let i = 0; i < encryptedText.length; i++) {
+                const char = encryptedText[i];
+                if (char === ' ') {
+                    decrypted += ' ';
+                } else {
+                    const code = char.charCodeAt(0);
+                    let decryptedCode = code - shift;
+                    
+                    // Handle wrap-around
+                    if (decryptedCode < 65) {
+                        decryptedCode += 26;
+                    }
+                    
+                    decrypted += String.fromCharCode(decryptedCode);
+                }
+            }
+            
+            decryptedText.textContent = decrypted;
+        });
+        
+        // Lab 2: Brute Force
+        document.getElementById('brute-force').addEventListener('click', function() {
+            const resultsDiv = document.getElementById('brute-results');
+            resultsDiv.innerHTML = '<h4>Результаты brute-force:</h4>';
+            
+            for (let shift = 1; shift <= 25; shift++) {
+                let decrypted = '';
+                for (let i = 0; i < encryptedText.length; i++) {
+                    const char = encryptedText[i];
+                    if (char === ' ') {
+                        decrypted += ' ';
+                    } else {
+                        let code = char.charCodeAt(0) - shift;
+                        if (code < 65) code += 26;
+                        decrypted += String.fromCharCode(code);
+                    }
+                }
+                
+                const result = document.createElement('div');
+                result.style.padding = '0.5rem';
+                result.style.borderBottom = '1px solid rgba(255,165,0,0.2)';
+                result.innerHTML = `Сдвиг ${shift}: <code>${decrypted}</code>`;
+                
+                if (decrypted === 'SECRET MESSAGE') {
+                    result.style.background = 'rgba(0,255,127,0.1)';
+                    result.style.borderLeft = '3px solid var(--accent-green)';
+                }
+                
+                resultsDiv.appendChild(result);
+            }
+        });
+        
+        // Hint System
+        document.getElementById('show-hint').addEventListener('click', function() {
+            const hintContent = document.getElementById('hint-content');
+            hintContent.classList.toggle('active');
+            this.textContent = hintContent.classList.contains('active') ? 'Скрыть подсказку' : 'Показать подсказку';
+        });
+        
+        // Tool Click Handlers
+        document.querySelectorAll('.tool-item').forEach(tool => {
+            tool.addEventListener('click', function() {
+                const toolName = this.querySelector('span:last-child').textContent;
+                showNotification(`Активирован инструмент: ${toolName}`, 'info');
+            });
+        });
+        
+        // Flag Submission
+        function submitFlag(labNumber) {
+            const input = document.getElementById(`flag-input-${labNumber}`);
+            const result = document.getElementById(`result-${labNumber}`);
+            const flag = input.value.trim();
+            
+            // Lab-specific flag checks
+            const correctFlags = {
+                1: 'CSA{My_secret_flag}',
+                2: 'SECRET MESSAGE'
+            };
+            
+            if (flag === correctFlags[labNumber]) {
+                result.innerHTML = '<span style="color: var(--accent-green);">✅ Правильно! Флаг принят.</span>';
+                input.style.borderColor = 'var(--accent-green)';
+                input.style.boxShadow = '0 0 15px rgba(0,255,127,0.5)';
+                
+                // Update progress
+                const progressFill = document.querySelector(`#lab-${labNumber} .progress-fill`);
+                progressFill.style.width = '100%';
+                
+                // Show achievement
+                setTimeout(() => {
+                    showAchievement();
+                }, 1000);
+                
+            } else {
+                result.innerHTML = '<span style="color: var(--accent-red);">❌ Неверный флаг. Попробуйте снова.</span>';
+                input.style.borderColor = 'var(--accent-red)';
+                input.style.animation = 'errorShake 0.5s';
+                setTimeout(() => {
+                    input.style.animation = '';
+                }, 500);
+            }
+        }
+        
+        // Achievement Popup
+        function showAchievement() {
+            document.getElementById('achievement-popup').classList.add('active');
+        }
+        
+        function closeAchievement() {
+            document.getElementById('achievement-popup').classList.remove('active');
+        }
+        
+        // Notification System
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.padding = '1rem 1.5rem';
+            notification.style.background = type === 'error' ? 'var(--accent-red)' : 
+                                          type === 'success' ? 'var(--accent-green)' : 
+                                          type === 'info' ? 'var(--accent-cyan)' : 'var(--accent-purple)';
+            notification.style.color = 'var(--primary-dark)';
+            notification.style.fontFamily = "'Share Tech Mono', monospace";
+            notification.style.zIndex = '1000';
+            notification.style.borderRadius = '4px';
+            notification.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+            notification.style.transform = 'translateX(150%)';
+            notification.style.transition = 'transform 0.3s ease';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 10);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(150%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Initialize games on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initPacketGame();
+            
+            // Set initial Caesar cipher state
+            shiftSlider.dispatchEvent(new Event('input'));
+            
+            // Add sound effects
+            const clickSound = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEAQB8AAEAfAAABAAgAZGF0YQ');
+            
+            // Add click sound to buttons
+            document.querySelectorAll('button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    try {
+                        clickSound.currentTime = 0;
+                        clickSound.play();
+                    } catch (e) {
+                        // Sound not supported
+                    }
+                });
+            });
+        });
+        
+        // Terminal auto-scroll
+        const terminals = document.querySelectorAll('.interactive-terminal');
+        terminals.forEach(terminal => {
+            terminal.scrollTop = terminal.scrollHeight;
+        });
+    </script>
+</body>
+</html>

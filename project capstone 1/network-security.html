@@ -1,0 +1,1987 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Модуль 2: Сетевая безопасность | CyberShield Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #0a0a14;
+            --secondary-dark: #121225;
+            --accent-neon: #39FF14;
+            --accent-cyan: #00F0FF;
+            --accent-purple: #9D4EDD;
+            --accent-orange: #FFA500;
+            --accent-red: #FF6B6B;
+            --accent-pink: #FF4D9E;
+            --accent-yellow: #FFD700;
+            --accent-green: #00FF7F;
+            --text-light: #F8F9FA;
+            --text-gray: #CCCCCC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(to bottom, rgba(9, 2, 26, 0.9), rgba(9, 2, 26, 0.95)),
+                url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%2300f0ff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        /* Animated scan lines */
+        .scan-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 240, 255, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: -1;
+            animation: scan 10s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* Header */
+        header {
+            padding: 2rem;
+            border-bottom: 3px solid var(--accent-purple);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 0 20px rgba(157, 78, 221, 0.2);
+            background: rgba(10, 10, 20, 0.95);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+
+        .logo-inner {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-neon), var(--accent-cyan));
+            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 2px 2px 0px var(--accent-purple);
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-neon), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 0.8rem 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-btn:hover::after {
+            left: 100%;
+        }
+
+        .login-btn {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            color: white;
+        }
+
+        .login-btn:hover {
+            background: rgba(157, 78, 221, 0.8);
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        .nav-btn.active {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            color: var(--text-light);
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        /* Main Content */
+        main {
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Module Header */
+        .module-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            position: relative;
+            background: rgba(18, 18, 37, 0.5);
+            border: 2px solid var(--accent-purple);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(157, 78, 221, 0.3);
+        }
+
+        .module-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--accent-purple), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(157, 78, 221, 0.3);
+        }
+
+        .module-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Topics Navigation */
+        .topics-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0 3rem;
+        }
+
+        .topic-btn {
+            background: rgba(18, 18, 37, 0.8);
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 1rem 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .topic-btn:hover {
+            background: rgba(0, 240, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .topic-btn.active {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            color: white;
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        /* Content Sections */
+        .topic-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .topic-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Theory Sections */
+        .theory-section {
+            background: rgba(18, 18, 37, 0.7);
+            border: 1px solid var(--accent-purple);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theory-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            color: var(--accent-purple);
+        }
+
+        /* Real-world Examples */
+        .real-example {
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.1), rgba(0, 240, 255, 0.1));
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .example-title {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .example-icon {
+            color: var(--accent-orange);
+        }
+
+        /* Info Boxes */
+        .info-box {
+            background: rgba(10, 10, 20, 0.8);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-left: 4px solid var(--accent-purple);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+        }
+
+        .info-box-title {
+            color: var(--accent-purple);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Historical Context */
+        .historical-box {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
+            border: 1px solid var(--accent-yellow);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .historical-title {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Analogy Sections */
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(0, 255, 127, 0.1), rgba(57, 255, 20, 0.1));
+            border: 1px solid var(--accent-green);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .analogy-title {
+            color: var(--accent-green);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Code Examples */
+        .code-block {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 5px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-title {
+            color: var(--accent-neon);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .highlight {
+            color: var(--accent-neon);
+            background: rgba(57, 255, 20, 0.1);
+            padding: 0 5px;
+        }
+
+        /* Practice Section */
+        .practice-section {
+            background: rgba(18, 18, 37, 0.9);
+            border: 2px solid var(--accent-green);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .practice-section .section-title {
+            color: var(--accent-green);
+        }
+
+        .practice-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            color: var(--accent-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+        }
+
+        .form-input {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--accent-cyan);
+            color: var(--text-light);
+            padding: 0.8rem 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-neon);
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+
+        .form-button {
+            background: linear-gradient(45deg, var(--accent-purple), var(--accent-cyan));
+            color: var(--primary-dark);
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(157, 78, 221, 0.5);
+        }
+
+        /* Visual Demo */
+        .visual-demo {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--accent-pink);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .demo-box {
+            background: rgba(18, 18, 37, 0.8);
+            border: 1px solid var(--accent-pink);
+            border-radius: 5px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .demo-icon {
+            font-size: 3rem;
+            color: var(--accent-pink);
+            margin-bottom: 1rem;
+        }
+
+        .demo-text {
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            word-break: break-all;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        /* Results Display */
+        .results-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--accent-neon);
+            border-radius: 5px;
+            display: none;
+        }
+
+        .result-step {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed rgba(57, 255, 20, 0.3);
+        }
+
+        .result-step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .step-title {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-content {
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            word-break: break-all;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        /* TEST SECTION */
+        .test-section {
+            background: rgba(18, 18, 37, 0.9);
+            border: 2px solid var(--accent-orange);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .test-section .section-title {
+            color: var(--accent-orange);
+        }
+
+        .question {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+        }
+
+        .question-text {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
+
+        .option:hover {
+            background: rgba(255, 165, 0, 0.1);
+        }
+
+        .option input {
+            accent-color: var(--accent-orange);
+        }
+
+        .option-label {
+            color: var(--text-gray);
+        }
+
+        .test-button {
+            background: linear-gradient(45deg, var(--accent-orange), var(--accent-yellow));
+            color: var(--primary-dark);
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
+
+        .test-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 165, 0, 0.5);
+        }
+
+        .test-results {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--accent-orange);
+            border-radius: 5px;
+            display: none;
+        }
+
+        .score {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        /* Navigation Buttons */
+        .module-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(157, 78, 221, 0.3);
+        }
+
+        .nav-button {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(157, 78, 221, 0.2);
+            border: 2px solid var(--accent-purple);
+            color: var(--accent-cyan);
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .nav-button:hover {
+            background: rgba(157, 78, 221, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(157, 78, 221, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(57, 255, 20, 0.2);
+            margin-top: 4rem;
+        }
+
+        .footer-text {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-year {
+            color: var(--accent-neon);
+            font-weight: bold;
+        }
+
+        /* Network Visualization */
+        .network-visualization {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--accent-purple);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            min-height: 300px;
+            overflow: hidden;
+        }
+
+        .network-canvas {
+            width: 100%;
+            height: 400px;
+            position: relative;
+        }
+
+        .network-node {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            z-index: 2;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 0 20px currentColor;
+        }
+
+        .network-node:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px currentColor;
+        }
+
+        .network-line {
+            position: absolute;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-purple), transparent);
+            transform-origin: 0 0;
+            z-index: 1;
+        }
+
+        /* Attack/Defense Boxes */
+        .attack-box {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 77, 77, 0.1));
+            border: 1px solid var(--accent-red);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .attack-title {
+            color: var(--accent-red);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .defense-box {
+            background: linear-gradient(135deg, rgba(0, 255, 127, 0.1), rgba(57, 255, 20, 0.1));
+            border: 1px solid var(--accent-green);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .defense-title {
+            color: var(--accent-green);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Protocol Visualization */
+        .protocol-demo {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--accent-green);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .protocol-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .protocol-step {
+            background: rgba(39, 174, 96, 0.1);
+            border: 1px solid var(--accent-green);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .protocol-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(39, 174, 96, 0.2);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-green);
+            color: white;
+            border-radius: 50%;
+            line-height: 40px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        /* Firewall Simulation */
+        .firewall-sim {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--accent-red);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .packet-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .packet {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-purple);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+            animation: packetMove 3s infinite;
+        }
+
+        @keyframes packetMove {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(calc(100vw - 400px)); }
+        }
+
+        .firewall {
+            width: 100px;
+            height: 200px;
+            background: linear-gradient(135deg, var(--accent-red), #ff8c8c);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            position: relative;
+            z-index: 3;
+            box-shadow: 0 0 30px rgba(235, 87, 87, 0.5);
+        }
+
+        /* Scanner Demo */
+        .scanner-demo {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--accent-orange);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .scan-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .scan-result {
+            background: rgba(242, 153, 74, 0.1);
+            border: 1px solid var(--accent-orange);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .port-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
+        .port-open {
+            background: rgba(39, 174, 96, 0.2);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+        }
+
+        .port-closed {
+            background: rgba(235, 87, 87, 0.2);
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            .logo-container {
+                justify-content: center;
+            }
+            nav {
+                justify-content: center;
+            }
+            .module-header h1 {
+                font-size: 2.2rem;
+            }
+            .topics-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            .topic-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            .module-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .nav-button {
+                justify-content: center;
+            }
+            .demo-container {
+                grid-template-columns: 1fr;
+            }
+            .protocol-steps {
+                grid-template-columns: 1fr;
+            }
+            .scan-results {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated scan lines -->
+    <div class="scan-lines"></div>
+    
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo">
+                <div class="logo-inner">C</div>
+            </div>
+            <div class="logo-text">CYBERSHIELD ACADEMY</div>
+        </div>
+        <nav>
+            <a href="index.html" class="nav-btn">Главная</a>
+            <a href="modules.html" class="nav-btn active">Модули</a>
+            <a href="labs.html" class="nav-btn">Лаборатории</a>
+            <a href="community.html" class="nav-btn">Сообщество</a>
+            <a href="register.html" class="nav-btn login-btn">Регистрация</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Module Header -->
+        <section class="module-header">
+            <h1>МОДУЛЬ 2: СЕТЕВАЯ БЕЗОПАСНОСТЬ</h1>
+            <p class="module-subtitle">Изучите фундаментальные принципы защиты сетей: от базовых протоколов до современных атак и методов защиты. Освойте навыки, необходимые для защиты корпоративных сетей.</p>
+        </section>
+
+        <!-- Topics Navigation -->
+        <div class="topics-nav">
+            <button class="topic-btn active" onclick="showTopic('protocols')">Сетевые протоколы</button>
+            <button class="topic-btn" onclick="showTopic('firewalls')">Файрволы</button>
+            <button class="topic-btn" onclick="showTopic('ids-ips')">IDS/IPS</button>
+            <button class="topic-btn" onclick="showTopic('vpn')">VPN</button>
+            <button class="topic-btn" onclick="showTopic('attacks')">Атаки и защита</button>
+        </div>
+
+        <!-- TOPIC 1: NETWORK PROTOCOLS -->
+        <section id="protocols" class="topic-section active">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-network-wired"></i> Сетевые протоколы и модель OSI</h2>
+                
+                <p><strong>Сетевые протоколы</strong> — это набор правил и соглашений, которые определяют, как данные передаются по сети. Представьте себе почтовую систему: протоколы определяют, как написать адрес, куда поставить марку, как отсортировать письма и как их доставить.</p>
+                
+                <div class="historical-box">
+                    <div class="historical-title"><i class="fas fa-history"></i> Исторический контекст</div>
+                    <p>Модель OSI (Open Systems Interconnection) была разработана в 1977 году Международной организацией по стандартизации (ISO). Она разделила процесс передачи данных на 7 уровней, чтобы разные производители могли создавать совместимое оборудование.</p>
+                </div>
+                
+                <div class="real-example">
+                    <div class="example-title"><i class="fas fa-shipping-fast example-icon"></i> Пример из реальной жизни</div>
+                    <p>Когда вы отправляете письмо по электронной почте, оно проходит через все 7 уровней модели OSI. От прикладного уровня (почтовый клиент) до физического уровня (электрические сигналы в проводах). Каждый уровень добавляет свою информацию к данным, как конверты разных размеров.</p>
+                </div>
+                
+                <div class="analogy-box">
+                    <div class="analogy-title"><i class="fas fa-lightbulb example-icon"></i> Простая аналогия</div>
+                    <p>Представьте отправку посылки другу в другой город:
+                    <br>1. Прикладной уровень - Вы пишете письмо
+                    <br>2. Представительский - Переводите на понятный язык
+                    <br>3. Сеансовый - Договариваетесь о времени доставки
+                    <br>4. Транспортный - Выбираете почтовую службу
+                    <br>5. Сетевой - Определяете маршрут через города
+                    <br>6. Канальный - Упаковываете в коробку с адресом
+                    <br>7. Физический - Грузите в почтовый фургон</p>
+                </div>
+                
+                <div class="protocol-demo">
+                    <h4>Модель OSI в действии:</h4>
+                    <div class="protocol-steps">
+                        <div class="protocol-step">
+                            <div class="step-number">7</div>
+                            <h4>Прикладной</h4>
+                            <p>HTTP, HTTPS, FTP</p>
+                            <p><small>Веб-браузеры, почта</small></p>
+                        </div>
+                        <div class="protocol-step">
+                            <div class="step-number">6</div>
+                            <h4>Представительский</h4>
+                            <p>SSL/TLS, JPEG</p>
+                            <p><small>Шифрование, сжатие</small></p>
+                        </div>
+                        <div class="protocol-step">
+                            <div class="step-number">5</div>
+                            <h4>Сеансовый</h4>
+                            <p>NetBIOS, SIP</p>
+                            <p><small>Управление сессиями</small></p>
+                        </div>
+                        <div class="protocol-step">
+                            <div class="step-number">4</div>
+                            <h4>Транспортный</h4>
+                            <p>TCP, UDP</p>
+                            <p><small>Надежная доставка</small></p>
+                        </div>
+                        <div class="protocol-step">
+                            <div class="step-number">3</div>
+                            <h4>Сетевой</h4>
+                            <p>IP, ICMP</p>
+                            <p><small>Маршрутизация</small></p>
+                        </div>
+                        <div class="protocol-step">
+                            <div class="step-number">2</div>
+                            <h4>Канальный</h4>
+                            <p>Ethernet, MAC</p>
+                            <p><small>LAN, коммутаторы</small></p>
+                        </div>
+                        <div class="protocol-step">
+                            <div class="step-number">1</div>
+                            <h4>Физический</h4>
+                            <p>Wi-Fi, кабели</p>
+                            <p><small>Сигналы, провода</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Network Visualization -->
+            <div class="network-visualization">
+                <h4>Интерактивная визуализация сети:</h4>
+                <p>Нажмите на узлы сети, чтобы увидеть подробную информацию:</p>
+                <div class="network-canvas" id="networkCanvas">
+                    <!-- Network nodes will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- PRACTICE: Packet Analysis -->
+            <div class="practice-section">
+                <h3 class="section-title"><i class="fas fa-search"></i> Практика: Анализ сетевого пакета</h3>
+                <p>Изучите структуру TCP/IP пакета и попробуйте определить его параметры:</p>
+                
+                <form class="practice-form">
+                    <div class="form-group">
+                        <label for="packetData" class="form-label">Исходные данные пакета (hex):</label>
+                        <textarea id="packetData" class="form-input" rows="4" placeholder="Введите hex-дамп пакета...">45000034a1234000800621c80a0a010ac0a80102c35001bb12345678abcd000050180fa0e3b50000</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="analysisType" class="form-label">Тип анализа:</label>
+                        <select id="analysisType" class="form-input">
+                            <option value="basic">Базовый анализ (IP заголовок)</option>
+                            <option value="tcp">TCP анализ</option>
+                            <option value="full">Полный анализ</option>
+                        </select>
+                    </div>
+                    
+                    <button type="button" onclick="analyzePacket()" class="form-button">
+                        <i class="fas fa-microscope"></i> Проанализировать пакет
+                    </button>
+                </form>
+                
+                <div id="packetResults" class="results-container">
+                    <div class="result-step">
+                        <div class="step-title">IP Заголовок:</div>
+                        <div class="step-content" id="ipHeader"></div>
+                    </div>
+                    <div class="result-step">
+                        <div class="step-title">TCP Заголовок:</div>
+                        <div class="step-content" id="tcpHeader"></div>
+                    </div>
+                    <div class="result-step">
+                        <div class="step-title">Полезная нагрузка:</div>
+                        <div class="step-content" id="payload"></div>
+                    </div>
+                    <div class="result-step">
+                        <div class="step-title">Безопасность:</div>
+                        <div class="step-content" id="securityInfo"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOPIC 2: FIREWALLS -->
+        <section id="firewalls" class="topic-section">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-shield-alt"></i> Файрволы и их типы</h2>
+                
+                <p><strong>Файрвол (брандмауэр)</strong> — это цифровой пограничник, который решает, какие данные могут пройти через сетевую границу, а какие должны быть остановлены. Как охрана на входе в здание проверяет пропуска, так и файрвол проверяет сетевые пакеты.</p>
+                
+                <div class="historical-box">
+                    <div class="historical-title"><i class="fas fa-history"></i> История файрволов</div>
+                    <p>Первые файрволы появились в конце 1980-х годов. Компания Digital Equipment Corporation разработала первый коммерческий файрвол в 1992 году. С тех пор они эволюционировали от простых пакетных фильтров до сложных систем глубокого анализа.</p>
+                </div>
+                
+                <div class="real-example">
+                    <div class="example-title"><i class="fas fa-building example-icon"></i> Пример из корпоративной сети</div>
+                    <p>В крупной компании файрволы устанавливаются на нескольких уровнях:
+                    <br>• <strong>Периметровый файрвол</strong> защищает вход в сеть из интернета
+                    <br>• <strong>Внутренние файрволы</strong> разделяют отделы (финансы, разработка)
+                    <br>• <strong>Хост-файрволы</strong> защищают каждый компьютер
+                    <br>Это создает многоуровневую защиту, как крепость со стенами, рвом и внутренними укреплениями.</p>
+                </div>
+                
+                <div class="analogy-box">
+                    <div class="analogy-title"><i class="fas fa-lightbulb example-icon"></i> Простая аналогия</div>
+                    <p>Файрвол - это как служба безопасности в аэропорту:
+                    <br>• Проверяет документы (IP-адреса)
+                    <br>• Смотрит багаж (содержимое пакетов)
+                    <br>• Следит за поведением (аномалии трафика)
+                    <br>• Имеет черные списки (блокированные адреса)
+                    <br>• Ведет логи (записи всех проверок)</p>
+                </div>
+            </div>
+
+            <!-- Firewall Simulation -->
+            <div class="firewall-sim">
+                <h4>Симулятор файрвола: Пропустить или заблокировать?</h4>
+                <p>Создайте правила и посмотрите, как файрвол фильтрует трафик:</p>
+                
+                <div class="practice-form">
+                    <div class="form-group">
+                        <label class="form-label">Правила файрвола:</label>
+                        <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" id="blockHttp" checked>
+                                <span>Блокировать HTTP (порт 80)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" id="allowHttps" checked>
+                                <span>Разрешить HTTPS (порт 443)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" id="blockFtp">
+                                <span>Блокировать FTP (порт 21)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" id="allowSsh" checked>
+                                <span>Разрешить SSH (порт 22)</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Симуляция трафика:</label>
+                        <button onclick="startFirewallSimulation()" class="form-button" style="justify-self: start; margin-top: 0.5rem;">
+                            <i class="fas fa-play"></i> Запустить симуляцию
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="packet-flow">
+                    <div class="packet" id="packet1">HTTP</div>
+                    <div class="firewall">ФАЙРВОЛ</div>
+                    <div class="packet" id="packet2">HTTPS</div>
+                </div>
+                
+                <div id="firewallResults" class="results-container">
+                    <div class="result-step">
+                        <div class="step-title">Лог файрвола:</div>
+                        <div class="step-content" id="firewallLog"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOPIC 3: IDS/IPS -->
+        <section id="ids-ips" class="topic-section">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-exclamation-triangle"></i> Системы обнаружения и предотвращения вторжений</h2>
+                
+                <p><strong>IDS (Intrusion Detection System)</strong> — это система видеонаблюдения для сети. Она наблюдает, анализирует и предупреждает о подозрительной активности, но не вмешивается.
+                <br><strong>IPS (Intrusion Prevention System)</strong> — это вооруженная охрана, которая не только обнаруживает угрозы, но и активно их блокирует.</p>
+                
+                <div class="info-box">
+                    <h4 class="info-box-title">Ключевые отличия IDS и IPS:</h4>
+                    <ul>
+                        <li><strong>IDS</strong> - Пассивное наблюдение, только обнаружение</li>
+                        <li><strong>IPS</strong> - Активная защита, обнаружение и блокировка</li>
+                        <li><strong>IDS</strong> - Работает в режиме "только чтение"</li>
+                        <li><strong>IPS</strong> - Может изменять трафик (блокировать)</li>
+                        <li><strong>IDS</strong> - Не влияет на производительность сети</li>
+                        <li><strong>IPS</strong> - Может замедлять сеть (проверка пакетов)</li>
+                    </ul>
+                </div>
+                
+                <div class="real-example">
+                    <div class="example-title"><i class="fas fa-video example-icon"></i> Пример из реальной жизни</div>
+                    <p>Представьте систему безопасности в банке:
+                    <br>• <strong>IDS</strong> - Камеры наблюдения, которые записывают подозрительную активность
+                    <br>• <strong>IPS</strong> - Охранники, которые не только видят нарушителя, но и задерживают его
+                    <br>IDS показывает записи, когда кто-то пытается открыть сейф. IPS автоматически блокирует дверь и вызывает полицию.</p>
+                </div>
+                
+                <div class="attack-box">
+                    <div class="attack-title"><i class="fas fa-bug"></i> Что обнаруживают IDS/IPS:</div>
+                    <ul>
+                        <li>Сканирование портов</li>
+                        <li>DDoS атаки</li>
+                        <li>Попытки SQL-инъекций</li>
+                        <li>Распространение вирусов</li>
+                        <li>Подозрительное поведение пользователей</li>
+                        <li>Аномалии в сетевом трафике</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- IDS/IPS Demo -->
+            <div class="scanner-demo">
+                <h4>Демонстрация работы IDS:</h4>
+                <p>Запустите сканирование сети и посмотрите, как IDS обнаруживает подозрительную активность:</p>
+                
+                <button onclick="runIDSScan()" class="form-button">
+                    <i class="fas fa-radar"></i> Запустить сканирование сети
+                </button>
+                
+                <div class="scan-results" id="scanResults">
+                    <!-- Results will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TOPIC 4: VPN -->
+        <section id="vpn" class="topic-section">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-user-shield"></i> VPN - Виртуальные частные сети</h2>
+                
+                <p><strong>VPN</strong> — это секретный туннель через интернет. Когда вы используете VPN, ваш трафик шифруется и проходит через защищенное соединение к удаленному серверу, прежде чем выйти в интернет.</p>
+                
+                <div class="historical-box">
+                    <div class="historical-title"><i class="fas fa-history"></i> История VPN</div>
+                    <p>Первые VPN технологии появились в 1996 году, когда Microsoft разработала PPTP (Point-to-Point Tunneling Protocol). В начале 2000-х годов IPSec стал промышленным стандартом для безопасных соединений между офисами компаний.</p>
+                </div>
+                
+                <div class="real-example">
+                    <div class="example-title"><i class="fas fa-plane example-icon"></i> Пример: Работа в кафе</div>
+                    <p>Вы подключаетесь к публичному Wi-Fi в кафе. Без VPN:
+                    <br>• Ваш пароль от почты может быть перехвачен
+                    <br>• Ваши сообщения читаются посторонними
+                    <br>• Ваши банковские данные под угрозой
+                    <br>С VPN:
+                    <br>• Весь трафик зашифрован
+                    <br>• Даже владелец Wi-Fi не видит ваши данные
+                    <br>• Вы как будто работаете из офиса своей компании</p>
+                </div>
+                
+                <div class="analogy-box">
+                    <div class="analogy-title"><i class="fas fa-lightbulb example-icon"></i> Простая аналогия</div>
+                    <p>VPN - это как секретный подземный туннель:
+                    <br>• Без VPN: Вы идете по улице (открытый интернет)
+                    <br>• С VPN: Вы идете по секретному туннелю (зашифрованное соединение)
+                    <br>• В туннеле вас не видно (шифрование)
+                    <br>• Выход из туннеля в другом месте (VPN сервер)
+                    <br>• Вы появляетесь там, где вас не ждут (маскировка местоположения)</p>
+                </div>
+            </div>
+
+            <!-- VPN Security Demo -->
+            <div class="practice-section">
+                <h3 class="section-title"><i class="fas fa-lock"></i> Демонстрация шифрования VPN</h3>
+                <p>Сравните, как выглядит ваш трафик с VPN и без него:</p>
+                
+                <form class="practice-form">
+                    <div class="form-group">
+                        <label for="vpnMessage" class="form-label">Сообщение для отправки:</label>
+                        <input type="text" id="vpnMessage" class="form-input" value="Мой секретный пароль: 123456">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Тип VPN:</label>
+                        <select id="vpnType" class="form-input">
+                            <option value="openvpn">OpenVPN (AES-256)</option>
+                            <option value="ikev2">IKEv2/IPsec</option>
+                            <option value="wireguard">WireGuard (современный)</option>
+                        </select>
+                    </div>
+                    
+                    <button onclick="demonstrateVPN()" class="form-button">
+                        <i class="fas fa-user-secret"></i> Отправить через VPN
+                    </button>
+                </form>
+                
+                <div id="vpnResults" class="results-container">
+                    <div class="result-step">
+                        <div class="step-title">Без VPN (открытый текст):</div>
+                        <div class="step-content" id="noVPN"></div>
+                    </div>
+                    <div class="result-step">
+                        <div class="step-title">С VPN (зашифровано):</div>
+                        <div class="step-content" id="withVPN"></div>
+                    </div>
+                    <div class="result-step">
+                        <div class="step-title">Что видит перехватчик:</div>
+                        <div class="step-content" id="interceptorView"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOPIC 5: ATTACKS AND DEFENSE -->
+        <section id="attacks" class="topic-section">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-skull-crossbones"></i> Распространенные атаки и методы защиты</h2>
+                
+                <p>Понимание атак — первый шаг к эффективной защите. Рассмотрим самые распространенные угрозы и способы противодействия им.</p>
+                
+                <div class="attack-box">
+                    <div class="attack-title"><i class="fas fa-bomb"></i> Атака: DDoS (Distributed Denial of Service)</div>
+                    <p><strong>Как работает:</strong> Тысячи компьютеров одновременно отправляют запросы к цели, перегружая её ресурсы.
+                    <br><strong>Пример:</strong> Как толпа людей, блокирующая вход в магазин, чтобы настоящие покупатели не могли зайти.</p>
+                    
+                    <div class="defense-box" style="margin-top: 1rem;">
+                        <div class="defense-title"><i class="fas fa-shield-virus"></i> Защита от DDoS:</div>
+                        <ul>
+                            <li><strong>CDN (Cloudflare, Akamai)</strong> - Распределяет трафик</li>
+                            <li><strong>Rate Limiting</strong> - Ограничивает запросы с одного IP</li>
+                            <li><strong>Гео-фильтрация</strong> - Блокирует трафик из подозрительных стран</li>
+                            <li><strong>Облачные WAF</strong> - Фильтрует вредоносный трафик</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="attack-box">
+                    <div class="attack-title"><i class="fas fa-user-ninja"></i> Атака: Man-in-the-Middle (MitM)</div>
+                    <p><strong>Как работает:</strong> Злоумышленник перехватывает связь между двумя сторонами и может читать, изменять или вставлять свои сообщения.
+                    <br><strong>Пример:</strong> Как почтальон, который вскрывает и читает ваши письма перед доставкой, а иногда даже изменяет содержимое.</p>
+                    
+                    <div class="defense-box" style="margin-top: 1rem;">
+                        <div class="defense-title"><i class="fas fa-user-lock"></i> Защита от MitM:</div>
+                        <ul>
+                            <li><strong>Всегда использовать HTTPS</strong> - SSL/TLS шифрование</li>
+                            <li><strong>VPN для публичных сетей</strong> - Шифрует весь трафик</li>
+                            <li><strong>DNSSEC</strong> - Защищает DNS от подмены</li>
+                            <li><strong>Сертификаты</strong> - Проверяйте SSL сертификаты сайтов</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="attack-box">
+                    <div class="attack-title"><i class="fas fa-ghost"></i> Атака: Port Scanning</div>
+                    <p><strong>Как работает:</strong> Автоматическое сканирование открытых портов на сервере для поиска уязвимостей.
+                    <br><strong>Пример:</strong> Как вор, который ходит вокруг дома и проверяет все окна и двери, чтобы найти незапертые.</p>
+                    
+                    <div class="defense-box" style="margin-top: 1rem;">
+                        <div class="defense-title"><i class="fas fa-door-closed"></i> Защита от сканирования:</div>
+                        <ul>
+                            <li><strong>Минимизация открытых портов</strong> - Закройте все неиспользуемые порты</li>
+                            <li><strong>Файрволы</strong> - Скрывают порты от внешнего мира</li>
+                            <li><strong>Регулярное сканирование</strong> - Проверяйте свою сеть сами</li>
+                            <li><strong>Системы обнаружения</strong> - IDS заметит сканирование</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attack Simulation -->
+            <div class="scanner-demo">
+                <h4>Симулятор атаки и защиты:</h4>
+                <p>Выберите тип атаки и посмотрите, как работают различные методы защиты:</p>
+                
+                <div class="practice-form">
+                    <div class="form-group">
+                        <label class="form-label">Тип атаки:</label>
+                        <select id="attackType" class="form-input">
+                            <option value="ddos">DDoS атака</option>
+                            <option value="portscan">Сканирование портов</option>
+                            <option value="mitm">Man-in-the-Middle</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Методы защиты:</label>
+                        <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" id="defenseFirewall" checked>
+                                <span>Файрвол</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" id="defenseIDS" checked>
+                                <span>IDS/IPS</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" id="defenseVPN">
+                                <span>VPN шифрование</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" id="defenseRateLimit" checked>
+                                <span>Rate Limiting</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button onclick="simulateAttack()" class="form-button">
+                        <i class="fas fa-skull-crossbones"></i> Запустить симуляцию атаки
+                    </button>
+                </div>
+                
+                <div id="attackResults" class="results-container">
+                    <div class="result-step">
+                        <div class="step-title">Ход атаки:</div>
+                        <div class="step-content" id="attackProgress"></div>
+                    </div>
+                    <div class="result-step">
+                        <div class="step-title">Действия защиты:</div>
+                        <div class="step-content" id="defenseActions"></div>
+                    </div>
+                    <div class="result-step">
+                        <div class="step-title">Результат:</div>
+                        <div class="step-content" id="attackResult"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINAL TEST -->
+        <section class="test-section">
+            <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Финальный тест по сетевой безопасности</h2>
+            <p>Проверьте свои знания по всем темам модуля:</p>
+            
+            <div class="question">
+                <div class="question-text">1. Какой уровень модели OSI отвечает за маршрутизацию пакетов между сетями?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="A">
+                        <span class="option-label">A) Транспортный уровень</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="B">
+                        <span class="option-label">B) Сетевой уровень</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="C">
+                        <span class="option-label">C) Канальный уровень</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">2. Какое основное отличие между IDS и IPS?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="A">
+                        <span class="option-label">A) IDS только обнаруживает угрозы, IPS также блокирует их</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="B">
+                        <span class="option-label">B) IPS дешевле в реализации</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="C">
+                        <span class="option-label">C) IDS работает быстрее чем IPS</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">3. Какой протокол НЕ следует использовать в публичных Wi-Fi сетях без VPN?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="A">
+                        <span class="option-label">A) HTTP</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="B">
+                        <span class="option-label">B) HTTPS</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="C">
+                        <span class="option-label">C) SSH</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">4. Какая техника НЕ эффективна против DDoS атак?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q4" value="A">
+                        <span class="option-label">A) Rate Limiting</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="B">
+                        <span class="option-label">B) Использование CDN</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="C">
+                        <span class="option-label">C) Увеличение мощности сервера</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">5. Какой тип VPN чаще всего используется для удаленного доступа сотрудников?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q5" value="A">
+                        <span class="option-label">A) Site-to-Site VPN</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="B">
+                        <span class="option-label">B) Remote Access VPN</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="C">
+                        <span class="option-label">C) MPLS VPN</span>
+                    </label>
+                </div>
+            </div>
+            
+            <button onclick="checkFinalTest()" class="test-button">
+                <i class="fas fa-check-double"></i> Проверить знания
+            </button>
+            
+            <div id="finalTestResults" class="test-results">
+                <div class="score">Результат: <span id="finalScore">0</span>/5</div>
+                <div id="testDetails"></div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="module-nav">
+            <a href="basics.html" class="nav-button">
+                <i class="fas fa-arrow-left"></i> Предыдущий модуль: Основы кибербезопасности
+            </a>
+            <a href="modules.html" class="nav-button">
+                <i class="fas fa-th"></i> Все модули
+            </a>
+            <a href="cryptography.html" class="nav-button">
+                Следующий модуль: Криптография <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">© <span class="current-year">2025</span> CyberShield Academy. Все права защищены.</p>
+        <p class="footer-text">Образовательная платформа нового поколения</p>
+    </footer>
+
+    <script>
+        // Initialize network visualization
+        function createNetworkVisualization() {
+            const canvas = document.getElementById('networkCanvas');
+            const nodes = [
+                { id: 'router', name: 'Маршрутизатор', type: 'router', x: 50, y: 50, color: '#9D4EDD' },
+                { id: 'switch', name: 'Коммутатор', type: 'switch', x: 50, y: 200, color: '#00F0FF' },
+                { id: 'firewall', name: 'Файрвол', type: 'firewall', x: 200, y: 125, color: '#FF6B6B' },
+                { id: 'server', name: 'Сервер', type: 'server', x: 350, y: 50, color: '#39FF14' },
+                { id: 'workstation', name: 'Рабочая станция', type: 'workstation', x: 350, y: 200, color: '#FFA500' },
+                { id: 'ids', name: 'IDS/IPS', type: 'ids', x: 200, y: 275, color: '#FFD700' }
+            ];
+            
+            // Create lines first (so they are behind nodes)
+            nodes.forEach((node1, i) => {
+                nodes.forEach((node2, j) => {
+                    if (i < j && Math.random() > 0.5) {
+                        const line = document.createElement('div');
+                        line.className = 'network-line';
+                        
+                        const dx = node2.x - node1.x;
+                        const dy = node2.y - node1.y;
+                        const length = Math.sqrt(dx * dx + dy * dy);
+                        const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                        
+                        line.style.width = `${length}%`;
+                        line.style.left = `${node1.x}%`;
+                        line.style.top = `${node1.y}%`;
+                        line.style.transform = `rotate(${angle}deg)`;
+                        line.style.opacity = 0.3 + Math.random() * 0.4;
+                        
+                        canvas.appendChild(line);
+                    }
+                });
+            });
+            
+            // Create nodes
+            nodes.forEach(node => {
+                const nodeEl = document.createElement('div');
+                nodeEl.className = 'network-node';
+                nodeEl.style.left = `${node.x}%`;
+                nodeEl.style.top = `${node.y}%`;
+                nodeEl.style.backgroundColor = node.color;
+                nodeEl.innerHTML = `<i class="fas fa-${getNodeIcon(node.type)}"></i>`;
+                nodeEl.title = node.name;
+                
+                nodeEl.onclick = () => showNodeInfo(node);
+                canvas.appendChild(nodeEl);
+            });
+        }
+        
+        function getNodeIcon(type) {
+            const icons = {
+                'router': 'route',
+                'switch': 'share-alt',
+                'firewall': 'shield-alt',
+                'server': 'server',
+                'workstation': 'desktop',
+                'ids': 'exclamation-triangle'
+            };
+            return icons[type] || 'circle';
+        }
+        
+        function showNodeInfo(node) {
+            const messages = {
+                'router': 'Маршрутизатор: Определяет путь для пакетов между сетями. Работает на сетевом уровне (3) модели OSI.',
+                'switch': 'Коммутатор: Соединяет устройства в локальной сети. Работает на канальном уровне (2) модели OSI.',
+                'firewall': 'Файрвол: Фильтрует сетевой трафик на основе правил безопасности.',
+                'server': 'Сервер: Предоставляет услуги другим компьютерам в сети.',
+                'workstation': 'Рабочая станция: Конечное устройство пользователя в сети.',
+                'ids': 'IDS/IPS: Обнаруживает и предотвращает сетевые атаки.'
+            };
+            
+            alert(`${node.name}\n\n${messages[node.type]}`);
+        }
+        
+        // Switch between topics
+        function showTopic(topicId) {
+            document.querySelectorAll('.topic-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.topic-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(topicId).classList.add('active');
+            document.querySelector(`button[onclick="showTopic('${topicId}')"]`).classList.add('active');
+        }
+        
+        // Packet analysis function
+        function analyzePacket() {
+            const packetData = document.getElementById('packetData').value;
+            const analysisType = document.getElementById('analysisType').value;
+            
+            // Mock analysis for demonstration
+            const results = document.getElementById('packetResults');
+            results.style.display = 'block';
+            
+            document.getElementById('ipHeader').innerHTML = `
+                <strong>Версия IP:</strong> 4 (IPv4)<br>
+                <strong>Длина заголовка:</strong> 20 байт<br>
+                <strong>Протокол:</strong> TCP (6)<br>
+                <strong>Источник:</strong> 10.10.1.10<br>
+                <strong>Назначение:</strong> 192.168.1.2<br>
+                <strong>TTL:</strong> 128<br>
+                <strong>Контрольная сумма:</strong> 0x21c8 (валидна)
+            `;
+            
+            document.getElementById('tcpHeader').innerHTML = `
+                <strong>Порт источника:</strong> 50001<br>
+                <strong>Порт назначения:</strong> 443 (HTTPS)<br>
+                <strong>Порядковый номер:</strong> 305419896<br>
+                <strong>Номер подтверждения:</strong> 2882400000<br>
+                <strong>Флаги:</strong> ACK, PSH<br>
+                <strong>Размер окна:</strong> 4000
+            `;
+            
+            document.getElementById('payload').innerHTML = `
+                <strong>Данные:</strong> 16 байт (зашифрованные)<br>
+                <strong>Hex:</strong> 50 18 0f a0 e3 b5 00 00<br>
+                <strong>Предполагаемый тип:</strong> Данные TLS/SSL
+            `;
+            
+            document.getElementById('securityInfo').innerHTML = `
+                <span style="color: var(--accent-green);">
+                    <i class="fas fa-check-circle"></i> Безопасное соединение
+                </span><br>
+                • Используется порт 443 (HTTPS)<br>
+                • Данные предположительно зашифрованы<br>
+                • Нет признаков фрагментации<br>
+                • TTL в норме
+            `;
+        }
+        
+        // Firewall simulation
+        function startFirewallSimulation() {
+            const log = [];
+            const blockedHttp = document.getElementById('blockHttp').checked;
+            const allowedHttps = document.getElementById('allowHttps').checked;
+            const blockedFtp = document.getElementById('blockFtp').checked;
+            const allowedSsh = document.getElementById('allowSsh').checked;
+            
+            // Simulate packets
+            const packets = [
+                { type: 'HTTP', port: 80, allowed: !blockedHttp },
+                { type: 'HTTPS', port: 443, allowed: allowedHttps },
+                { type: 'FTP', port: 21, allowed: !blockedFtp },
+                { type: 'SSH', port: 22, allowed: allowedSsh },
+                { type: 'DNS', port: 53, allowed: true },
+                { type: 'SMTP', port: 25, allowed: false }
+            ];
+            
+            packets.forEach(packet => {
+                const action = packet.allowed ? 'РАЗРЕШЕНО' : 'БЛОКИРОВАНО';
+                const color = packet.allowed ? 'var(--accent-green)' : 'var(--accent-red)';
+                log.push(`[${new Date().toLocaleTimeString()}] ${packet.type} (порт ${packet.port}): <span style="color: ${color}">${action}</span>`);
+            });
+            
+            const results = document.getElementById('firewallResults');
+            results.style.display = 'block';
+            document.getElementById('firewallLog').innerHTML = log.join('<br>');
+        }
+        
+        // IDS Scan simulation
+        function runIDSScan() {
+            const scanResults = document.getElementById('scanResults');
+            scanResults.innerHTML = '';
+            
+            const ports = [
+                { port: 22, service: 'SSH', status: 'open' },
+                { port: 80, service: 'HTTP', status: 'open' },
+                { port: 443, service: 'HTTPS', status: 'open' },
+                { port: 21, service: 'FTP', status: 'closed' },
+                { port: 3389, service: 'RDP', status: 'open', warning: true },
+                { port: 445, service: 'SMB', status: 'open', warning: true },
+                { port: 8080, service: 'HTTP-Proxy', status: 'open', warning: true }
+            ];
+            
+            ports.forEach(p => {
+                const result = document.createElement('div');
+                result.className = 'scan-result';
+                
+                let html = `<strong>Порт ${p.port}</strong><br>${p.service}<br>`;
+                html += `<span class="port-status ${p.status === 'open' ? 'port-open' : 'port-closed'}">${p.status === 'open' ? 'ОТКРЫТ' : 'ЗАКРЫТ'}</span>`;
+                
+                if (p.warning) {
+                    html += `<br><span style="color: var(--accent-orange); font-size: 0.9rem;"><i class="fas fa-exclamation-triangle"></i> Подозрительный порт</span>`;
+                }
+                
+                result.innerHTML = html;
+                scanResults.appendChild(result);
+            });
+            
+            // Add IDS alert
+            setTimeout(() => {
+                const alert = document.createElement('div');
+                alert.className = 'scan-result';
+                alert.style.gridColumn = '1 / -1';
+                alert.style.background = 'rgba(235, 87, 87, 0.2)';
+                alert.style.borderColor = 'var(--accent-red)';
+                alert.innerHTML = `
+                    <strong style="color: var(--accent-red);">
+                        <i class="fas fa-radar"></i> ОБНАРУЖЕНО СКАНИРОВАНИЕ ПОРТОВ
+                    </strong><br>
+                    IDS обнаружила сканирование портов с IP: 192.168.1.100<br>
+                    <small>Время: ${new Date().toLocaleTimeString()}</small>
+                `;
+                scanResults.appendChild(alert);
+            }, 1000);
+        }
+        
+        // VPN demonstration
+        function demonstrateVPN() {
+            const message = document.getElementById('vpnMessage').value;
+            const vpnType = document.getElementById('vpnType').value;
+            
+            const results = document.getElementById('vpnResults');
+            results.style.display = 'block';
+            
+            // Generate "encrypted" text
+            const encrypted = btoa(message).split('').reverse().join('');
+            
+            document.getElementById('noVPN').textContent = message;
+            document.getElementById('withVPN').textContent = `[${vpnType.toUpperCase()}-ENCRYPTED] ${encrypted}`;
+            document.getElementById('interceptorView').innerHTML = `
+                <span style="color: var(--accent-red);">
+                    <i class="fas fa-eye-slash"></i> Перехватчик видит только зашифрованные данные:
+                </span><br>
+                "${encrypted.substring(0, 50)}..."<br><br>
+                <span style="color: var(--accent-green);">
+                    <i class="fas fa-check-circle"></i> Содержание сообщения невозможно прочитать без ключа дешифрования
+                </span>
+            `;
+        }
+        
+        // Attack simulation
+        function simulateAttack() {
+            const attackType = document.getElementById('attackType').value;
+            const defenseFirewall = document.getElementById('defenseFirewall').checked;
+            const defenseIDS = document.getElementById('defenseIDS').checked;
+            const defenseVPN = document.getElementById('defenseVPN').checked;
+            const defenseRateLimit = document.getElementById('defenseRateLimit').checked;
+            
+            const results = document.getElementById('attackResults');
+            results.style.display = 'block';
+            
+            let attackProgress = '';
+            let defenseActions = '';
+            let attackResult = '';
+            
+            switch(attackType) {
+                case 'ddos':
+                    attackProgress = `
+                        1. Атакующий активирует ботнет из 10,000 устройств<br>
+                        2. Начата отправка запросов к целевому серверу<br>
+                        3. Скорость атаки: 50,000 запросов в секунду<br>
+                        4. Нагрузка на сервер: 95% CPU
+                    `;
+                    
+                    defenseActions = `
+                        ${defenseFirewall ? '• Файрвол фильтрует подозрительные IP<br>' : ''}
+                        ${defenseRateLimit ? '• Rate Limiting ограничивает 1,000 запросов/сек с одного IP<br>' : ''}
+                        ${defenseIDS ? '• IPS блокирует источники атаки<br>' : ''}
+                        • CDN поглощает часть трафика
+                    `;
+                    
+                    attackResult = defenseRateLimit && defenseIDS ? 
+                        '<span style="color: var(--accent-green);"><i class="fas fa-shield-alt"></i> АТАКА ОТБИТА! Система защиты справилась с DDoS атакой.</span>' :
+                        '<span style="color: var(--accent-red);"><i class="fas fa-server"></i> СЕРВЕР ПЕРЕГРУЖЕН! Необходимы дополнительные меры защиты.</span>';
+                    break;
+                    
+                case 'portscan':
+                    attackProgress = `
+                        1. Начато сканирование портов 1-1024<br>
+                        2. Обнаружены открытые порты: 22, 80, 443<br>
+                        3. Определены версии служб на портах<br>
+                        4. Поиск известных уязвимостей
+                    `;
+                    
+                    defenseActions = `
+                        ${defenseFirewall ? '• Файрвол скрывает порты<br>' : ''}
+                        ${defenseIDS ? '• IDS обнаружила сканирование и отправила алерт<br>' : ''}
+                        • Логирование всех подключений
+                    `;
+                    
+                    attackResult = defenseIDS ? 
+                        '<span style="color: var(--accent-green);"><i class="fas fa-bell"></i> СКАНИРОВАНИЕ ОБНАРУЖЕНО! Администратор получил уведомление.</span>' :
+                        '<span style="color: var(--accent-orange);"><i class="fas fa-exclamation-triangle"></i> СКАНИРОВАНИЕ ПРОШЛО НЕЗАМЕЧЕННЫМ! Злоумышленник получил информацию о системе.</span>';
+                    break;
+                    
+                case 'mitm':
+                    attackProgress = `
+                        1. Атакующий находится в той же сети Wi-Fi<br>
+                        2. ARP spoofing: подмена MAC адресов<br>
+                        3. Перехват трафика между жертвой и роутером<br>
+                        4. Анализ незашифрованных данных
+                    `;
+                    
+                    defenseActions = `
+                        ${defenseVPN ? '• VPN шифрует весь трафик<br>' : ''}
+                        • HTTPS везде (HSTS)<br>
+                        • Проверка сертификатов
+                    `;
+                    
+                    attackResult = defenseVPN ? 
+                        '<span style="color: var(--accent-green);"><i class="fas fa-user-secret"></i> ТРАФИК ЗАЩИЩЁН! Атакующий видит только зашифрованные данные.</span>' :
+                        '<span style="color: var(--accent-red);"><i class="fas fa-user-secret"></i> ТРАФИК ПЕРЕХВАЧЕН! Атакующий может читать незашифрованные данные.</span>';
+                    break;
+            }
+            
+            document.getElementById('attackProgress').innerHTML = attackProgress;
+            document.getElementById('defenseActions').innerHTML = defenseActions;
+            document.getElementById('attackResult').innerHTML = attackResult;
+        }
+        
+        // Final test checking
+        function checkFinalTest() {
+            const answers = {
+                'q1': 'B',
+                'q2': 'A',
+                'q3': 'A',
+                'q4': 'C',
+                'q5': 'B'
+            };
+            
+            let score = 0;
+            let details = '<div style="margin-top: 1rem;">';
+            
+            for (const question in answers) {
+                const selected = document.querySelector(`input[name="${question}"]:checked`);
+                const correctAnswer = answers[question];
+                
+                if (selected) {
+                    if (selected.value === correctAnswer) {
+                        score++;
+                        details += `<div style="color: var(--accent-green); margin: 0.5rem 0;">
+                            <i class="fas fa-check-circle"></i> Вопрос ${question[1]}: Правильно!
+                        </div>`;
+                    } else {
+                        let explanation = '';
+                        switch(question) {
+                            case 'q1': explanation = 'Сетевой уровень (3) отвечает за маршрутизацию'; break;
+                            case 'q2': explanation = 'IDS обнаруживает, IPS обнаруживает и блокирует'; break;
+                            case 'q3': explanation = 'HTTP передает данные открытым текстом'; break;
+                            case 'q4': explanation = 'Увеличение мощности не решает проблему DDoS'; break;
+                            case 'q5': explanation = 'Remote Access VPN предназначен для удаленных пользователей'; break;
+                        }
+                        
+                        details += `<div style="color: var(--accent-red); margin: 0.5rem 0;">
+                            <i class="fas fa-times-circle"></i> Вопрос ${question[1]}: Неправильно.<br>
+                            <span style="color: var(--text-gray); font-size: 0.9rem;">Правильный ответ: ${correctAnswer}. ${explanation}</span>
+                        </div>`;
+                    }
+                } else {
+                    details += `<div style="color: var(--accent-orange); margin: 0.5rem 0;">
+                        <i class="fas fa-question-circle"></i> Вопрос ${question[1]}: Не отвечен
+                    </div>`;
+                }
+            }
+            
+            details += '</div>';
+            
+            // Show results
+            const results = document.getElementById('finalTestResults');
+            results.style.display = 'block';
+            
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('testDetails').innerHTML = details;
+            
+            // Add rating
+            let rating = '';
+            if (score === 5) {
+                rating = '<div style="color: var(--accent-green); text-align: center; margin-top: 1rem;"><i class="fas fa-trophy"></i> Отличный результат! Вы отлично разбираетесь в сетевой безопасности!</div>';
+            } else if (score >= 3) {
+                rating = '<div style="color: var(--accent-yellow); text-align: center; margin-top: 1rem;"><i class="fas fa-star"></i> Хороший результат! Основные понятия усвоены.</div>';
+            } else {
+                rating = '<div style="color: var(--accent-orange); text-align: center; margin-top: 1rem;"><i class="fas fa-redo"></i> Рекомендуется повторить материал модуля.</div>';
+            }
+            
+            document.getElementById('testDetails').innerHTML += rating;
+            
+            // Add animation
+            results.style.animation = 'fadeIn 0.5s';
+        }
+        
+        // Initialize everything when page loads
+        window.onload = function() {
+            document.querySelector('.current-year').textContent = new Date().getFullYear();
+            createNetworkVisualization();
+            
+            // Initialize packet analysis with sample data
+            analyzePacket();
+        };
+    </script>
+</body>
+</html>

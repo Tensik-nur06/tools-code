@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игра: Киберменеджер | Основы кибербезопасности</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #0a0a14;
+            --secondary-dark: #121225;
+            --accent-neon: #39FF14;
+            --accent-cyan: #00F0FF;
+            --accent-purple: #9D4EDD;
+            --accent-orange: #FFA500;
+            --accent-red: #FF6B6B;
+            --accent-pink: #FF4D9E;
+            --accent-yellow: #FFD700;
+            --accent-green: #00FF7F;
+            --text-light: #F8F9FA;
+            --text-gray: #CCCCCC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(to bottom, rgba(9, 2, 26, 0.9), rgba(9, 2, 26, 0.95)),
+                url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%2300f0ff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        /* Animated scan lines */
+        .scan-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 240, 255, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: -1;
+            animation: scan 10s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* Header */
+        header {
+            padding: 1.5rem 2rem;
+            border-bottom: 3px solid var(--accent-neon);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+            background: rgba(10, 10, 20, 0.95);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            position: relative;
+            image-rendering: pixelated;
+        }
+
+        .logo-inner {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-neon), var(--accent-cyan));
+            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 2px 2px 0px var(--accent-purple);
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-neon), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+            letter-spacing: 1px;
+        }
+
+        /* Game Container */
+        .game-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            min-height: calc(100vh - 150px);
+        }
+
+        /* Game Stats */
+        .game-stats {
+            background: rgba(18, 18, 37, 0.8);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 10px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--accent-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--text-light);
+        }
+
+        .stat-bar {
+            height: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .stat-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        .budget .stat-fill { background: var(--accent-green); }
+        .security .stat-fill { background: var(--accent-neon); }
+        .reputation .stat-fill { background: var(--accent-yellow); }
+        .productivity .stat-fill { background: var(--accent-cyan); }
+
+        /* Game Content */
+        .game-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Game Header */
+        .game-header {
+            background: rgba(18, 18, 37, 0.8);
+            border: 2px solid var(--accent-neon);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .game-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--accent-neon), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .game-subtitle {
+            color: var(--text-gray);
+            font-size: 1rem;
+        }
+
+        /* Game Scenario */
+        .game-scenario {
+            background: rgba(18, 18, 37, 0.8);
+            border: 2px solid var(--accent-purple);
+            border-radius: 10px;
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .scenario-text {
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .scenario-text .highlight {
+            color: var(--accent-yellow);
+            font-weight: bold;
+        }
+
+        /* Decision Cards */
+        .decisions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .decision-card {
+            background: rgba(10, 10, 20, 0.9);
+            border: 2px solid var(--accent-orange);
+            border-radius: 8px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .decision-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 165, 0, 0.2);
+            border-color: var(--accent-yellow);
+        }
+
+        .decision-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-orange), var(--accent-yellow));
+        }
+
+        .decision-title {
+            color: var(--accent-orange);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .decision-description {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+        }
+
+        .decision-cost {
+            color: var(--accent-red);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .decision-impact {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .impact-tag {
+            background: rgba(57, 255, 20, 0.1);
+            color: var(--accent-neon);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(57, 255, 20, 0.3);
+        }
+
+        /* Game Log */
+        .game-log {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 5px;
+            padding: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+
+        .log-entry {
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed rgba(0, 240, 255, 0.1);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .log-time {
+            color: var(--accent-cyan);
+            font-family: 'Orbitron', sans-serif;
+            margin-right: 0.5rem;
+        }
+
+        .log-positive { color: var(--accent-green); }
+        .log-negative { color: var(--accent-red); }
+        .log-neutral { color: var(--text-gray); }
+        .log-warning { color: var(--accent-yellow); }
+
+        /* Events */
+        .event-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(10, 10, 20, 0.95);
+            border: 3px solid var(--accent-red);
+            border-radius: 10px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            z-index: 1000;
+            display: none;
+            animation: popupIn 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes popupIn {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        .event-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-icon {
+            font-size: 3rem;
+            color: var(--accent-red);
+            margin-bottom: 1rem;
+        }
+
+        .event-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--accent-red);
+            margin-bottom: 0.5rem;
+        }
+
+        .event-description {
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-consequences {
+            background: rgba(255, 107, 107, 0.1);
+            border-left: 4px solid var(--accent-red);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .event-consequences h4 {
+            color: var(--accent-red);
+            margin-bottom: 0.5rem;
+        }
+
+        .event-button {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(45deg, var(--accent-red), var(--accent-orange));
+            color: var(--primary-dark);
+            border: none;
+            border-radius: 5px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.3s;
+        }
+
+        .event-button:hover {
+            transform: translateY(-3px);
+        }
+
+        /* CIA Analysis Tool */
+        .analysis-tool {
+            background: rgba(18, 18, 37, 0.9);
+            border: 2px solid var(--accent-green);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .analysis-title {
+            color: var(--accent-green);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cia-analysis {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cia-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .cia-label {
+            color: var(--accent-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .cia-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .cia-confidentiality { color: var(--accent-purple); }
+        .cia-integrity { color: var(--accent-yellow); }
+        .cia-availability { color: var(--accent-green); }
+
+        .analysis-result {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 4px solid var(--accent-green);
+        }
+
+        /* Game Over */
+        .game-over {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(10, 10, 20, 0.95);
+            border: 3px solid var(--accent-yellow);
+            border-radius: 10px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            z-index: 1000;
+            display: none;
+            animation: popupIn 0.3s ease;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .game-over-icon {
+            font-size: 4rem;
+            color: var(--accent-yellow);
+            margin-bottom: 1rem;
+        }
+
+        .game-over-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--accent-yellow);
+            margin-bottom: 1rem;
+        }
+
+        .game-over-score {
+            font-size: 1.5rem;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .restart-button {
+            background: linear-gradient(45deg, var(--accent-yellow), var(--accent-orange));
+            color: var(--primary-dark);
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.3s;
+        }
+
+        .restart-button:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Tutorial */
+        .tutorial-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tutorial-box {
+            background: rgba(18, 18, 37, 0.95);
+            border: 3px solid var(--accent-cyan);
+            border-radius: 10px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .tutorial-title {
+            color: var(--accent-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .tutorial-step {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed rgba(0, 240, 255, 0.3);
+        }
+
+        .tutorial-step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .step-title {
+            color: var(--accent-neon);
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .step-content {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .tutorial-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .tutorial-button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.3s;
+        }
+
+        .tutorial-button.primary {
+            background: linear-gradient(45deg, var(--accent-cyan), var(--accent-neon));
+            color: var(--primary-dark);
+        }
+
+        .tutorial-button.secondary {
+            background: transparent;
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .tutorial-button:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .game-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .game-stats {
+                order: 2;
+            }
+            
+            .game-content {
+                order: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .logo-container {
+                justify-content: center;
+            }
+            
+            .decisions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cia-analysis {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated scan lines -->
+    <div class="scan-lines"></div>
+    
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo">
+                <div class="logo-inner">C</div>
+            </div>
+            <div class="logo-text">КИБЕРМЕНЕДЖЕР</div>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+            <button onclick="showTutorial()" class="nav-btn" style="background: transparent; border: 2px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.5rem 1rem; font-family: 'Share Tech Mono'; cursor: pointer; border-radius: 5px;">
+                <i class="fas fa-question-circle"></i> Обучение
+            </button>
+            <button onclick="restartGame()" class="nav-btn" style="background: var(--accent-orange); border: 2px solid var(--accent-orange); color: var(--primary-dark); padding: 0.5rem 1rem; font-family: 'Share Tech Mono'; font-weight: bold; cursor: pointer; border-radius: 5px;">
+                <i class="fas fa-redo"></i> Новая игра
+            </button>
+        </div>
+    </header>
+
+    <!-- Game Container -->
+    <div class="game-container">
+        <!-- Game Stats -->
+        <div class="game-stats">
+            <div class="stat-item budget">
+                <div class="stat-label">БЮДЖЕТ</div>
+                <div class="stat-value" id="budgetValue">₽ 1,000,000</div>
+                <div class="stat-bar">
+                    <div class="stat-fill" id="budgetBar" style="width: 100%"></div>
+                </div>
+            </div>
+            
+            <div class="stat-item security">
+                <div class="stat-label">БЕЗОПАСНОСТЬ</div>
+                <div class="stat-value" id="securityValue">50%</div>
+                <div class="stat-bar">
+                    <div class="stat-fill" id="securityBar" style="width: 50%"></div>
+                </div>
+            </div>
+            
+            <div class="stat-item reputation">
+                <div class="stat-label">РЕПУТАЦИЯ</div>
+                <div class="stat-value" id="reputationValue">100%</div>
+                <div class="stat-bar">
+                    <div class="stat-fill" id="reputationBar" style="width: 100%"></div>
+                </div>
+            </div>
+            
+            <div class="stat-item productivity">
+                <div class="stat-label">ПРОИЗВОДИТЕЛЬНОСТЬ</div>
+                <div class="stat-value" id="productivityValue">100%</div>
+                <div class="stat-bar">
+                    <div class="stat-fill" id="productivityBar" style="width: 100%"></div>
+                </div>
+            </div>
+            
+            <div class="stat-item">
+                <div class="stat-label">ТЕКУЩИЙ КВАРТАЛ</div>
+                <div class="stat-value" id="quarterValue">Q1</div>
+            </div>
+            
+            <div class="stat-item">
+                <div class="stat-label">ДОСТИЖЕНИЯ</div>
+                <div class="stat-value" id="achievementsValue">0/5</div>
+            </div>
+        </div>
+
+        <!-- Game Content -->
+        <div class="game-content">
+            <!-- Game Header -->
+            <div class="game-header">
+                <h1 class="game-title">СИМУЛЯТОР КИБЕРМЕНЕДЖЕРА</h1>
+                <p class="game-subtitle">Примените знания о триаде CIA, управлении рисками и защите в глубину на практике</p>
+            </div>
+
+            <!-- Game Scenario -->
+            <div class="game-scenario">
+                <div class="scenario-text">
+                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">ДОБРО ПОЖАЛОВАТЬ В TECHNO CORP!</h3>
+                    
+                    <p>Вы — новый <span class="highlight">руководитель отдела кибербезопасности</span> в растущей IT-компании с 150 сотрудниками. 
+                    Компания разрабатывает мобильное приложение для онлайн-банкинга и хранит чувствительные данные клиентов.</p>
+                    
+                    <p style="margin-top: 1rem;">Ваша задача: <span class="highlight">управлять бюджетом в ₽1,000,000</span> и принимать решения по кибербезопасности на каждый квартал. 
+                    Каждое решение влияет на безопасность, репутацию и производительность компании.</p>
+                    
+                    <p style="margin-top: 1rem; color: var(--accent-yellow);"><i class="fas fa-lightbulb"></i> Используйте знания из модуля: триада CIA, принцип наименьших привилегий, защита в глубину, управление рисками по NIST CSF.</p>
+                </div>
+
+                <!-- Current Quarter Decisions -->
+                <h3 style="color: var(--accent-orange); margin: 1.5rem 0 1rem; font-family: 'Orbitron';">РЕШЕНИЯ ДЛЯ КВАРТАЛА <span id="currentQuarter">1</span></h3>
+                <p style="color: var(--text-gray); margin-bottom: 1.5rem;">Выберите 2 решения для инвестирования (бюджет: <span id="availableBudget">₽1,000,000</span>)</p>
+
+                <div class="decisions-grid" id="decisionsContainer">
+                    <!-- Decisions will be generated here -->
+                </div>
+
+                <!-- CIA Analysis Tool -->
+                <div class="analysis-tool" id="analysisTool">
+                    <h3 class="analysis-title"><i class="fas fa-chart-line"></i> АНАЛИЗ ВЛИЯНИЯ НА ТРИАДУ CIA</h3>
+                    
+                    <div class="cia-analysis">
+                        <div class="cia-item">
+                            <div class="cia-label">Конфиденциальность</div>
+                            <div class="cia-value cia-confidentiality" id="ciaConfidentiality">0</div>
+                        </div>
+                        <div class="cia-item">
+                            <div class="cia-label">Целостность</div>
+                            <div class="cia-value cia-integrity" id="ciaIntegrity">0</div>
+                        </div>
+                        <div class="cia-item">
+                            <div class="cia-label">Доступность</div>
+                            <div class="cia-value cia-availability" id="ciaAvailability">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-result" id="analysisResult">
+                        <strong>Интерпретация:</strong> Ваши текущие решения пока не проанализированы. Выберите 2 решения и нажмите "Завершить квартал".
+                    </div>
+                </div>
+
+                <!-- Game Log -->
+                <div class="game-log" id="gameLog">
+                    <div class="log-entry">
+                        <span class="log-time">[Q1]</span>
+                        <span class="log-neutral">Добро пожаловать в Techno Corp! Ваш бюджет: ₽1,000,000</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button onclick="analyzeDecisions()" class="form-button" style="background: linear-gradient(45deg, var(--accent-purple), var(--accent-pink));">
+                        <i class="fas fa-search"></i> Анализировать решения
+                    </button>
+                    <button onclick="finishQuarter()" class="form-button" style="background: linear-gradient(45deg, var(--accent-green), var(--accent-neon));">
+                        <i class="fas fa-check-circle"></i> Завершить квартал
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Popup -->
+    <div class="event-popup" id="eventPopup">
+        <div class="event-header">
+            <div class="event-icon" id="eventIcon">⚠️</div>
+            <h2 class="event-title" id="eventTitle">КИБЕРИНЦИДЕНТ!</h2>
+        </div>
+        
+        <div class="event-description" id="eventDescription">
+            Произошла серьезная атака на инфраструктуру компании!
+        </div>
+        
+        <div class="event-consequences" id="eventConsequences">
+            <h4>ПОСЛЕДСТВИЯ:</h4>
+            <p>Безопасность: -20%</p>
+            <p>Репутация: -15%</p>
+            <p>Бюджет: -₽150,000</p>
+        </div>
+        
+        <button onclick="closeEvent()" class="event-button">
+            ПОНЯТНО
+        </button>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div class="game-over" id="gameOver">
+        <div class="game-over-icon">🎮</div>
+        <h2 class="game-over-title" id="gameOverTitle">ИГРА ЗАВЕРШЕНА</h2>
+        <div class="game-over-score" id="gameOverScore">Ваш итоговый счет: 0</div>
+        <p style="color: var(--text-gray); margin-bottom: 1.5rem;" id="gameOverMessage">
+            Компания успешно прошла 4 квартала под вашим руководством!
+        </p>
+        <button onclick="restartGame()" class="restart-button">
+            <i class="fas fa-redo"></i> НАЧАТЬ ЗАНОВО
+        </button>
+    </div>
+
+    <!-- Tutorial Overlay -->
+    <div class="tutorial-overlay" id="tutorialOverlay">
+        <div class="tutorial-box">
+            <h2 class="tutorial-title"><i class="fas fa-graduation-cap"></i> ОБУЧЕНИЕ ИГРЕ</h2>
+            
+            <div class="tutorial-step">
+                <h3 class="step-title"><i class="fas fa-bullseye"></i> ЦЕЛЬ ИГРЫ</h3>
+                <p class="step-content">Вы руководитель отдела кибербезопасности. Ваша задача — продержаться 4 квартала, принимая правильные решения в области кибербезопасности. Используйте знания из модуля "Основы кибербезопасности".</p>
+            </div>
+            
+            <div class="tutorial-step">
+                <h3 class="step-title"><i class="fas fa-chart-bar"></i> ПОКАЗАТЕЛИ</h3>
+                <p class="step-content">
+                    <strong>Бюджет:</strong> Деньги на меры безопасности<br>
+                    <strong>Безопасность:</strong> Защищенность компании от угроз<br>
+                    <strong>Репутация:</strong> Доверие клиентов и партнеров<br>
+                    <strong>Производительность:</strong> Эффективность работы сотрудников
+                </p>
+            </div>
+            
+            <div class="tutorial-step">
+                <h3 class="step-title"><i class="fas fa-chess-board"></i> МЕХАНИКА ИГРЫ</h3>
+                <p class="step-content">
+                    1. Каждый квартал выбирайте 2 решения для инвестирования<br>
+                    2. Каждое решение влияет на показатели по-разному<br>
+                    3. Используйте <strong>инструмент анализа CIA</strong> для оценки влияния на конфиденциальность, целостность и доступность<br>
+                    4. После каждого квартала может произойти случайное событие<br>
+                    5. Игра длится 4 квартала
+                </p>
+            </div>
+            
+            <div class="tutorial-step">
+                <h3 class="step-title"><i class="fas fa-shield-alt"></i> ПРИМЕНЕНИЕ ЗНАНИЙ</h3>
+                <p class="step-content">
+                    • <strong>Триада CIA:</strong> Балансируйте между конфиденциальностью, целостностью и доступностью<br>
+                    • <strong>Защита в глубину:</strong> Создавайте многоуровневую защиту<br>
+                    • <strong>Принцип наименьших привилегий:</strong> Ограничивайте доступ сотрудников<br>
+                    • <strong>Управление рисками:</strong> Инвестируйте в самые критичные области
+                </p>
+            </div>
+            
+            <div class="tutorial-buttons">
+                <button onclick="startGame()" class="tutorial-button primary">
+                    <i class="fas fa-play"></i> НАЧАТЬ ИГРУ
+                </button>
+                <button onclick="hideTutorial()" class="tutorial-button secondary">
+                    ПРОПУСТИТЬ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            budget: 1000000,
+            security: 50,
+            reputation: 100,
+            productivity: 100,
+            quarter: 1,
+            selectedDecisions: [],
+            achievements: 0,
+            totalScore: 0,
+            gameActive: true
+        };
+
+        // Available decisions for each quarter
+        const decisions = [
+            // Quarter 1 - Basic Security
+            {
+                id: 1,
+                title: "Внедрение многофакторной аутентификации",
+                description: "Требовать MFA для всех сотрудников при доступе к корпоративным системам",
+                cost: 150000,
+                impacts: {
+                    security: 15,
+                    reputation: 5,
+                    productivity: -5,
+                    cia: { confidentiality: 20, integrity: 10, availability: 0 }
+                },
+                tags: ["PoLP", "Аутентификация"]
+            },
+            {
+                id: 2,
+                title: "Шифрование рабочих ноутбуков",
+                description: "Полное шифрование дисков на всех корпоративных устройствах",
+                cost: 200000,
+                impacts: {
+                    security: 20,
+                    reputation: 8,
+                    productivity: -3,
+                    cia: { confidentiality: 25, integrity: 5, availability: -5 }
+                },
+                tags: ["Шифрование", "Конфиденциальность"]
+            },
+            {
+                id: 3,
+                title: "Обучение сотрудников",
+                description: "Провести тренинг по кибербезопасности для всех сотрудников",
+                cost: 80000,
+                impacts: {
+                    security: 10,
+                    reputation: 10,
+                    productivity: 5,
+                    cia: { confidentiality: 15, integrity: 10, availability: 5 }
+                },
+                tags: ["Обучение", "Сознательность"]
+            },
+            {
+                id: 4,
+                title: "Обновление антивирусного ПО",
+                description: "Приобрести лицензии на современное антивирусное решение",
+                cost: 120000,
+                impacts: {
+                    security: 12,
+                    reputation: 3,
+                    productivity: 2,
+                    cia: { confidentiality: 10, integrity: 15, availability: 5 }
+                },
+                tags: ["Защита", "Вредоносное ПО"]
+            },
+            {
+                id: 5,
+                title: "Резервное копирование данных",
+                description: "Настроить автоматическое резервное копирование критичных данных",
+                cost: 100000,
+                impacts: {
+                    security: 8,
+                    reputation: 5,
+                    productivity: 0,
+                    cia: { confidentiality: 0, integrity: 20, availability: 15 }
+                },
+                tags: ["Backup", "Доступность"]
+            },
+            // Quarter 2 - Advanced Security
+            {
+                id: 6,
+                title: "Внедрение SIEM-системы",
+                description: "Система для централизованного сбора и анализа логов безопасности",
+                cost: 300000,
+                impacts: {
+                    security: 25,
+                    reputation: 10,
+                    productivity: -8,
+                    cia: { confidentiality: 15, integrity: 20, availability: 10 }
+                },
+                tags: ["Мониторинг", "NIST Detect"]
+            },
+            {
+                id: 7,
+                title: "Пентестинг инфраструктуры",
+                description: "Нанять этичных хакеров для тестирования защиты",
+                cost: 250000,
+                impacts: {
+                    security: 20,
+                    reputation: 12,
+                    productivity: -5,
+                    cia: { confidentiality: 10, integrity: 15, availability: 5 }
+                },
+                tags: ["Тестирование", "Оценка рисков"]
+            },
+            {
+                id: 8,
+                title: "Внедрение DLP-системы",
+                description: "Система предотвращения утечек данных",
+                cost: 350000,
+                impacts: {
+                    security: 30,
+                    reputation: 15,
+                    productivity: -10,
+                    cia: { confidentiality: 40, integrity: 10, availability: -5 }
+                },
+                tags: ["DLP", "Конфиденциальность"]
+            },
+            {
+                id: 9,
+                title: "Создание SOC",
+                description: "Центр оперативного реагирования на инциденты",
+                cost: 500000,
+                impacts: {
+                    security: 35,
+                    reputation: 20,
+                    productivity: -12,
+                    cia: { confidentiality: 20, integrity: 25, availability: 15 }
+                },
+                tags: ["SOC", "NIST Respond"]
+            },
+            // Quarter 3 - Strategic Security
+            {
+                id: 10,
+                title: "Сертификация ISO 27001",
+                description: "Внедрение системы менеджмента информационной безопасности",
+                cost: 600000,
+                impacts: {
+                    security: 40,
+                    reputation: 30,
+                    productivity: -15,
+                    cia: { confidentiality: 25, integrity: 30, availability: 20 }
+                },
+                tags: ["Стандарты", "Управление"]
+            },
+            {
+                id: 11,
+                title: "Киберстрахование",
+                description: "Страховка от последствий киберинцидентов",
+                cost: 200000,
+                impacts: {
+                    security: 5,
+                    reputation: 20,
+                    productivity: 0,
+                    cia: { confidentiality: 5, integrity: 5, availability: 10 }
+                },
+                tags: ["Страхование", "Риски"]
+            },
+            {
+                id: 12,
+                title: "Облачная безопасность",
+                description: "Миграция и защита инфраструктуры в облаке",
+                cost: 400000,
+                impacts: {
+                    security: 25,
+                    reputation: 15,
+                    productivity: 10,
+                    cia: { confidentiality: 20, integrity: 20, availability: 25 }
+                },
+                tags: ["Облако", "Масштабирование"]
+            }
+        ];
+
+        // Random events that can happen
+        const events = [
+            {
+                title: "КИБЕРИНЦИДЕНТ: УТЕЧКА ДАННЫХ",
+                description: "Хакеры получили доступ к базе данных клиентов через уязвимость в веб-приложении. Данные 50,000 клиентов скомпрометированы.",
+                icon: "🔓",
+                consequences: {
+                    security: -20,
+                    reputation: -25,
+                    budget: -200000,
+                    message: "Нарушена конфиденциальность! Нужно было инвестировать в защиту веб-приложений."
+                }
+            },
+            {
+                title: "РАССЫЛКА ВРЕДОНОСНОГО ПО",
+                description: "Сотрудник открыл фишинговое письмо, которое распространило ransomware по сети. Часть серверов зашифрована.",
+                icon: "🦠",
+                consequences: {
+                    security: -15,
+                    reputation: -20,
+                    productivity: -30,
+                    budget: -150000,
+                    message: "Нарушена целостность данных! Требуется улучшить обучение сотрудников и антивирусную защиту."
+                }
+            },
+            {
+                title: "DDoS АТАКА",
+                description: "Злоумышленники атаковали ваш основной сайт и API. Сервисы недоступны 8 часов.",
+                icon: "🌐",
+                consequences: {
+                    security: -10,
+                    reputation: -30,
+                    productivity: -40,
+                    budget: -100000,
+                    message: "Нарушена доступность! Необходимы DDoS-защита и планы восстановления."
+                }
+            },
+            {
+                title: "ИНСАЙДЕРСКАЯ УГРОЗА",
+                description: "Уволенный сотрудник скопировал исходный код проектов перед уходом и пытается его продать конкурентам.",
+                icon: "👤",
+                consequences: {
+                    security: -25,
+                    reputation: -15,
+                    budget: -180000,
+                    message: "Принцип наименьших привилегий! Сотрудники должны иметь доступ только к необходимым данным."
+                }
+            },
+            {
+                title: "УСПЕШНАЯ ЗАЩИТА",
+                description: "Ваши меры безопасности предотвратили серьезную атаку! SIEM-система вовремя обнаружила подозрительную активность.",
+                icon: "🛡️",
+                consequences: {
+                    security: 10,
+                    reputation: 15,
+                    budget: 0,
+                    message: "Отличная работа! Защита в глубину сработала."
+                }
+            }
+        ];
+
+        // Initialize game
+        function initGame() {
+            updateUI();
+            generateDecisions();
+            showTutorial();
+        }
+
+        // Update UI with current game state
+        function updateUI() {
+            // Update stat values
+            document.getElementById('budgetValue').textContent = `₽ ${gameState.budget.toLocaleString()}`;
+            document.getElementById('securityValue').textContent = `${gameState.security}%`;
+            document.getElementById('reputationValue').textContent = `${gameState.reputation}%`;
+            document.getElementById('productivityValue').textContent = `${gameState.productivity}%`;
+            document.getElementById('quarterValue').textContent = `Q${gameState.quarter}`;
+            document.getElementById('achievementsValue').textContent = `${gameState.achievements}/5`;
+            document.getElementById('currentQuarter').textContent = gameState.quarter;
+            document.getElementById('availableBudget').textContent = `₽${gameState.budget.toLocaleString()}`;
+
+            // Update progress bars
+            document.getElementById('budgetBar').style.width = `${Math.min(100, (gameState.budget / 1000000) * 100)}%`;
+            document.getElementById('securityBar').style.width = `${gameState.security}%`;
+            document.getElementById('reputationBar').style.width = `${gameState.reputation}%`;
+            document.getElementById('productivityBar').style.width = `${gameState.productivity}%`;
+
+            // Update budget bar color based on amount
+            const budgetBar = document.getElementById('budgetBar');
+            if (gameState.budget < 200000) {
+                budgetBar.style.background = 'var(--accent-red)';
+            } else if (gameState.budget < 500000) {
+                budgetBar.style.background = 'var(--accent-orange)';
+            } else {
+                budgetBar.style.background = 'var(--accent-green)';
+            }
+        }
+
+        // Generate decisions for current quarter
+        function generateDecisions() {
+            const container = document.getElementById('decisionsContainer');
+            container.innerHTML = '';
+            
+            let availableDecisions = [];
+            
+            if (gameState.quarter === 1) {
+                availableDecisions = decisions.slice(0, 5);
+            } else if (gameState.quarter === 2) {
+                availableDecisions = decisions.slice(5, 9);
+            } else if (gameState.quarter === 3) {
+                availableDecisions = decisions.slice(9, 12);
+            } else {
+                // Quarter 4 - mix of all
+                availableDecisions = [
+                    decisions[2],  // Training
+                    decisions[4],  // Backup
+                    decisions[6],  // Pentesting
+                    decisions[10], // ISO 27001
+                    decisions[11]  // Cloud security
+                ];
+            }
+            
+            availableDecisions.forEach(decision => {
+                const card = document.createElement('div');
+                card.className = 'decision-card';
+                card.dataset.id = decision.id;
+                card.onclick = () => selectDecision(decision.id);
+                
+                // Check if already selected
+                const isSelected = gameState.selectedDecisions.includes(decision.id);
+                if (isSelected) {
+                    card.style.borderColor = 'var(--accent-neon)';
+                    card.style.background = 'rgba(57, 255, 20, 0.1)';
+                }
+                
+                // Check if affordable
+                const isAffordable = decision.cost <= gameState.budget;
+                if (!isAffordable) {
+                    card.style.opacity = '0.5';
+                    card.style.cursor = 'not-allowed';
+                }
+                
+                card.innerHTML = `
+                    <h4 class="decision-title">
+                        <i class="fas fa-${isSelected ? 'check-circle' : 'question-circle'}"></i>
+                        ${decision.title}
+                    </h4>
+                    <p class="decision-description">${decision.description}</p>
+                    <div class="decision-cost">Стоимость: ₽${decision.cost.toLocaleString()}</div>
+                    <div class="decision-impact">
+                        ${decision.tags.map(tag => `<span class="impact-tag">${tag}</span>`).join('')}
+                    </div>
+                    ${isSelected ? '<div style="color: var(--accent-neon); margin-top: 0.5rem; font-size: 0.9rem;"><i class="fas fa-check"></i> Выбрано</div>' : ''}
+                    ${!isAffordable ? '<div style="color: var(--accent-red); margin-top: 0.5rem; font-size: 0.9rem;"><i class="fas fa-exclamation-triangle"></i> Не хватает бюджета</div>' : ''}
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Select a decision
+        function selectDecision(decisionId) {
+            if (!gameState.gameActive) return;
+            
+            const decision = decisions.find(d => d.id === decisionId);
+            if (!decision) return;
+            
+            // Check if affordable
+            if (decision.cost > gameState.budget) {
+                addLog(`Недостаточно бюджета для "${decision.title}"`, 'negative');
+                return;
+            }
+            
+            // Check if already selected
+            const index = gameState.selectedDecisions.indexOf(decisionId);
+            if (index > -1) {
+                // Deselect
+                gameState.selectedDecisions.splice(index, 1);
+                gameState.budget += decision.cost;
+                addLog(`Отменено: ${decision.title}`, 'neutral');
+            } else {
+                // Check if can select more (max 2)
+                if (gameState.selectedDecisions.length >= 2) {
+                    addLog('Можно выбрать только 2 решения за квартал', 'warning');
+                    return;
+                }
+                
+                // Select
+                gameState.selectedDecisions.push(decisionId);
+                gameState.budget -= decision.cost;
+                addLog(`Выбрано: ${decision.title} (-₽${decision.cost.toLocaleString()})`, 'positive');
+            }
+            
+            updateUI();
+            generateDecisions();
+        }
+
+        // Analyze decisions using CIA framework
+        function analyzeDecisions() {
+            if (!gameState.gameActive) return;
+            
+            const tool = document.getElementById('analysisTool');
+            tool.style.display = 'block';
+            
+            let totalCIA = { confidentiality: 0, integrity: 0, availability: 0 };
+            
+            gameState.selectedDecisions.forEach(decisionId => {
+                const decision = decisions.find(d => d.id === decisionId);
+                if (decision) {
+                    totalCIA.confidentiality += decision.impacts.cia.confidentiality;
+                    totalCIA.integrity += decision.impacts.cia.integrity;
+                    totalCIA.availability += decision.impacts.cia.availability;
+                }
+            });
+            
+            // Update CIA values
+            document.getElementById('ciaConfidentiality').textContent = totalCIA.confidentiality;
+            document.getElementById('ciaIntegrity').textContent = totalCIA.integrity;
+            document.getElementById('ciaAvailability').textContent = totalCIA.availability;
+            
+            // Provide analysis
+            const resultDiv = document.getElementById('analysisResult');
+            let analysis = '';
+            
+            if (gameState.selectedDecisions.length === 0) {
+                analysis = '<strong>Нет выбранных решений.</strong> Выберите 2 решения для анализа их влияния на триаду CIA.';
+            } else {
+                analysis = `<strong>Анализ ваших решений:</strong><br><br>`;
+                
+                if (totalCIA.confidentiality > totalCIA.integrity && totalCIA.confidentiality > totalCIA.availability) {
+                    analysis += '• <span style="color: var(--accent-purple)">Основной фокус на конфиденциальности</span> — хорошо для защиты данных<br>';
+                }
+                if (totalCIA.integrity > totalCIA.confidentiality && totalCIA.integrity > totalCIA.availability) {
+                    analysis += '• <span style="color: var(--accent-yellow)">Основной фокус на целостности</span> — хорошо для защиты от изменений<br>';
+                }
+                if (totalCIA.availability > totalCIA.confidentiality && totalCIA.availability > totalCIA.integrity) {
+                    analysis += '• <span style="color: var(--accent-green)">Основной фокус на доступности</span> — хорошо для бизнес-непрерывности<br>';
+                }
+                
+                // Check balance
+                const maxDiff = Math.max(
+                    Math.abs(totalCIA.confidentiality - totalCIA.integrity),
+                    Math.abs(totalCIA.confidentiality - totalCIA.availability),
+                    Math.abs(totalCIA.integrity - totalCIA.availability)
+                );
+                
+                if (maxDiff > 30) {
+                    analysis += '<br><span style="color: var(--accent-orange)">⚠️ Дисбаланс в триаде CIA!</span> Попробуйте более сбалансированный подход.';
+                } else if (maxDiff < 10) {
+                    analysis += '<br><span style="color: var(--accent-green)">✓ Отличный баланс в триаде CIA!</span>';
+                }
+                
+                // NIST CSF alignment
+                const selectedDecisions = gameState.selectedDecisions.map(id => decisions.find(d => d.id === id));
+                const hasProtect = selectedDecisions.some(d => d.tags.includes('Защита') || d.tags.includes('Аутентификация'));
+                const hasDetect = selectedDecisions.some(d => d.tags.includes('Мониторинг') || d.tags.includes('NIST Detect'));
+                const hasRespond = selectedDecisions.some(d => d.tags.includes('SOC') || d.tags.includes('NIST Respond'));
+                
+                analysis += '<br><br><strong>Соответствие NIST CSF:</strong><br>';
+                if (hasProtect) analysis += '✓ Функция PROTECT покрыта<br>';
+                if (hasDetect) analysis += '✓ Функция DETECT покрыта<br>';
+                if (hasRespond) analysis += '✓ Функция RESPOND покрыта<br>';
+                if (!hasProtect && !hasDetect && !hasRespond) {
+                    analysis += '⚠️ Рассмотрите решения, соответствующие разным функциям NIST CSF';
+                }
+            }
+            
+            resultDiv.innerHTML = analysis;
+            
+            // Scroll to analysis
+            tool.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Finish current quarter
+        function finishQuarter() {
+            if (!gameState.gameActive) return;
+            
+            if (gameState.selectedDecisions.length !== 2) {
+                addLog('Нужно выбрать ровно 2 решения перед завершением квартала', 'warning');
+                return;
+            }
+            
+            // Apply impacts of selected decisions
+            gameState.selectedDecisions.forEach(decisionId => {
+                const decision = decisions.find(d => d.id === decisionId);
+                if (decision) {
+                    gameState.security = Math.max(0, Math.min(100, gameState.security + decision.impacts.security));
+                    gameState.reputation = Math.max(0, Math.min(100, gameState.reputation + decision.impacts.reputation));
+                    gameState.productivity = Math.max(0, Math.min(100, gameState.productivity + decision.impacts.productivity));
+                    
+                    addLog(`Влияние ${decision.title}: Безопасность ${decision.impacts.security > 0 ? '+' : ''}${decision.impacts.security}%, Репутация ${decision.impacts.reputation > 0 ? '+' : ''}${decision.impacts.reputation}%`, 'positive');
+                }
+            });
+            
+            // Check achievements
+            checkAchievements();
+            
+            // Random event (30% chance)
+            if (Math.random() < 0.3) {
+                triggerRandomEvent();
+            }
+            
+            // Move to next quarter
+            gameState.quarter++;
+            gameState.selectedDecisions = [];
+            
+            // Update UI
+            updateUI();
+            generateDecisions();
+            
+            // Hide analysis tool
+            document.getElementById('analysisTool').style.display = 'none';
+            
+            // Add quarter log
+            addLog(`──────────────────────────────`, 'neutral');
+            addLog(`КВАРТАЛ ${gameState.quarter - 1} ЗАВЕРШЕН. Начинается квартал ${gameState.quarter}`, 'warning');
+            
+            // Check game end
+            if (gameState.quarter > 4) {
+                endGame();
+            }
+        }
+
+        // Trigger random event
+        function triggerRandomEvent() {
+            const event = events[Math.floor(Math.random() * events.length)];
+            
+            document.getElementById('eventIcon').textContent = event.icon;
+            document.getElementById('eventTitle').textContent = event.title;
+            document.getElementById('eventDescription').textContent = event.description;
+            
+            let consequencesHtml = '<h4>ПОСЛЕДСТВИЯ:</h4>';
+            if (event.consequences.security) {
+                consequencesHtml += `<p>Безопасность: ${event.consequences.security > 0 ? '+' : ''}${event.consequences.security}%</p>`;
+                gameState.security = Math.max(0, Math.min(100, gameState.security + event.consequences.security));
+            }
+            if (event.consequences.reputation) {
+                consequencesHtml += `<p>Репутация: ${event.consequences.reputation > 0 ? '+' : ''}${event.consequences.reputation}%</p>`;
+                gameState.reputation = Math.max(0, Math.min(100, gameState.reputation + event.consequences.reputation));
+            }
+            if (event.consequences.productivity) {
+                consequencesHtml += `<p>Производительность: ${event.consequences.productivity > 0 ? '+' : ''}${event.consequences.productivity}%</p>`;
+                gameState.productivity = Math.max(0, Math.min(100, gameState.productivity + event.consequences.productivity));
+            }
+            if (event.consequences.budget) {
+                consequencesHtml += `<p>Бюджет: ${event.consequences.budget > 0 ? '+' : '-'}₽${Math.abs(event.consequences.budget).toLocaleString()}</p>`;
+                gameState.budget = Math.max(0, gameState.budget + event.consequences.budget);
+            }
+            consequencesHtml += `<p style="color: var(--accent-yellow); margin-top: 0.5rem;"><i class="fas fa-lightbulb"></i> ${event.consequences.message}</p>`;
+            
+            document.getElementById('eventConsequences').innerHTML = consequencesHtml;
+            
+            // Show event popup
+            document.getElementById('eventPopup').style.display = 'block';
+            
+            // Add to log
+            addLog(`СОБЫТИЕ: ${event.title}`, 'negative');
+            
+            updateUI();
+        }
+
+        // Close event popup
+        function closeEvent() {
+            document.getElementById('eventPopup').style.display = 'none';
+        }
+
+        // Check and award achievements
+        function checkAchievements() {
+            const newAchievements = [];
+            
+            // Achievement 1: Perfect security
+            if (gameState.security >= 90 && gameState.achievements < 1) {
+                newAchievements.push("Идеальная безопасность");
+                gameState.achievements++;
+            }
+            
+            // Achievement 2: High reputation
+            if (gameState.reputation >= 90 && gameState.achievements < 2) {
+                newAchievements.push("Безупречная репутация");
+                gameState.achievements++;
+            }
+            
+            // Achievement 3: Good budget management
+            if (gameState.budget >= 500000 && gameState.quarter >= 3 && gameState.achievements < 3) {
+                newAchievements.push("Эффективный бюджет");
+                gameState.achievements++;
+            }
+            
+            // Achievement 4: Balanced CIA
+            const currentDecisions = gameState.selectedDecisions.map(id => decisions.find(d => d.id === id));
+            let ciaTotal = { c: 0, i: 0, a: 0 };
+            currentDecisions.forEach(d => {
+                ciaTotal.c += d.impacts.cia.confidentiality;
+                ciaTotal.i += d.impacts.cia.integrity;
+                ciaTotal.a += d.impacts.cia.availability;
+            });
+            
+            const maxDiff = Math.max(
+                Math.abs(ciaTotal.c - ciaTotal.i),
+                Math.abs(ciaTotal.c - ciaTotal.a),
+                Math.abs(ciaTotal.i - ciaTotal.a)
+            );
+            
+            if (maxDiff <= 15 && gameState.achievements < 4) {
+                newAchievements.push("Баланс триады CIA");
+                gameState.achievements++;
+            }
+            
+            // Achievement 5: Survived all quarters
+            if (gameState.quarter === 4 && gameState.achievements < 5) {
+                newAchievements.push("Выживание");
+                gameState.achievements++;
+            }
+            
+            // Award achievements
+            newAchievements.forEach(achievement => {
+                addLog(`🏆 ДОСТИЖЕНИЕ: ${achievement}`, 'positive');
+            });
+            
+            updateUI();
+        }
+
+        // End game
+        function endGame() {
+            gameState.gameActive = false;
+            
+            // Calculate final score
+            let finalScore = 0;
+            finalScore += gameState.security * 10;
+            finalScore += gameState.reputation * 8;
+            finalScore += gameState.productivity * 5;
+            finalScore += gameState.budget / 1000;
+            finalScore += gameState.achievements * 1000;
+            
+            gameState.totalScore = Math.round(finalScore);
+            
+            // Determine result
+            let title = "ИГРА ЗАВЕРШЕНА";
+            let message = "";
+            
+            if (gameState.security < 30) {
+                title = "КАТАСТРОФА!";
+                message = "Безопасность компании полностью провалена. Регуляторы оштрафовали компанию на миллионы.";
+            } else if (gameState.reputation < 30) {
+                title = "ПОТЕРЯ ДОВЕРИЯ";
+                message = "Клиенты массово ушли к конкурентам из-за проблем с безопасностью.";
+            } else if (gameState.budget < 10000) {
+                title = "БАНКРОТСТВО";
+                message = "Закончился бюджет на безопасность. Компания не смогла отразить атаки.";
+            } else if (finalScore > 5000) {
+                title = "БЛЕСТЯЩАЯ ПОБЕДА!";
+                message = "Вы создали одну из самых защищенных компаний в индустрии! Акции компании выросли на 300%.";
+            } else if (finalScore > 3000) {
+                title = "УСПЕХ!";
+                message = "Компания успешно прошла 4 квартала под вашим руководством! Безопасность на хорошем уровне.";
+            } else {
+                title = "ВЫЖИЛИ";
+                message = "Компания пережила 4 квартала, но есть над чем работать. Безопасность требует улучшений.";
+            }
+            
+            // Show game over screen
+            document.getElementById('gameOverTitle').textContent = title;
+            document.getElementById('gameOverScore').textContent = `Ваш итоговый счет: ${gameState.totalScore.toLocaleString()}`;
+            document.getElementById('gameOverMessage').textContent = message;
+            document.getElementById('gameOver').style.display = 'block';
+            
+            addLog("════════════════════════════════", "neutral");
+            addLog(`ИГРА ЗАВЕРШЕНА. Итоговый счет: ${gameState.totalScore.toLocaleString()}`, "warning");
+        }
+
+        // Add entry to game log
+        function addLog(message, type = 'neutral') {
+            const log = document.getElementById('gameLog');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            
+            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            const typeClass = `log-${type}`;
+            
+            entry.innerHTML = `<span class="log-time">[${time}]</span> <span class="${typeClass}">${message}</span>`;
+            
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // Show tutorial
+        function showTutorial() {
+            document.getElementById('tutorialOverlay').style.display = 'flex';
+        }
+
+        // Hide tutorial
+        function hideTutorial() {
+            document.getElementById('tutorialOverlay').style.display = 'none';
+        }
+
+        // Start game (from tutorial)
+        function startGame() {
+            hideTutorial();
+            addLog("Игра началась! Ваша задача — продержаться 4 квартала.", "positive");
+            addLog("Используйте знания из модуля: триада CIA, защита в глубину, управление рисками.", "neutral");
+        }
+
+        // Restart game
+        function restartGame() {
+            // Reset game state
+            gameState = {
+                budget: 1000000,
+                security: 50,
+                reputation: 100,
+                productivity: 100,
+                quarter: 1,
+                selectedDecisions: [],
+                achievements: 0,
+                totalScore: 0,
+                gameActive: true
+            };
+            
+            // Clear log
+            document.getElementById('gameLog').innerHTML = `
+                <div class="log-entry">
+                    <span class="log-time">[Q1]</span>
+                    <span class="log-neutral">Добро пожаловать в Techno Corp! Ваш бюджет: ₽1,000,000</span>
+                </div>
+            `;
+            
+            // Hide popups
+            document.getElementById('eventPopup').style.display = 'none';
+            document.getElementById('gameOver').style.display = 'none';
+            document.getElementById('analysisTool').style.display = 'none';
+            
+            // Update UI
+            updateUI();
+            generateDecisions();
+            
+            addLog("Новая игра началась!", "positive");
+        }
+
+        // Initialize game on load
+        window.onload = initGame;
+    </script>
+</body>
+</html>

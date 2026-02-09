@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Модуль 5: Оборона и реагирование | CyberShield Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #0a0a14;
+            --secondary-dark: #121225;
+            --accent-neon: #39FF14;
+            --accent-cyan: #00F0FF;
+            --accent-purple: #9D4EDD;
+            --accent-orange: #FFA500;
+            --accent-red: #FF6B6B;
+            --accent-pink: #FF4D9E;
+            --accent-yellow: #FFD700;
+            --accent-green: #00FF7F;
+            --text-light: #F8F9FA;
+            --text-gray: #CCCCCC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(to bottom, rgba(9, 2, 26, 0.9), rgba(9, 2, 26, 0.95)),
+                url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%2300f0ff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        /* Animated scan lines */
+        .scan-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 240, 255, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: -1;
+            animation: scan 10s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* Pixel Art Smiley Styles */
+        .pixel-smiley {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            margin: 20px auto;
+            display: block;
+            width: 100px;
+            height: 100px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .good-result {
+            color: var(--accent-green);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 0 0 10px var(--accent-green);
+            animation: pulse 1.5s infinite;
+        }
+
+        .bad-result {
+            color: var(--accent-red);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 0 0 10px var(--accent-red);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Header */
+        header {
+            padding: 2rem;
+            border-bottom: 3px solid var(--accent-purple);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 0 20px rgba(157, 78, 221, 0.2);
+            background: rgba(10, 10, 20, 0.95);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            image-rendering: pixelated;
+        }
+
+        .logo-inner {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-neon), var(--accent-cyan));
+            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 2px 2px 0px var(--accent-purple);
+            animation: logo-pulse 4s infinite;
+        }
+
+        @keyframes logo-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-neon), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 0.8rem 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-btn:hover::after {
+            left: 100%;
+        }
+
+        .login-btn {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            color: white;
+        }
+
+        .login-btn:hover {
+            background: rgba(157, 78, 221, 0.8);
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        .nav-btn.active {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            color: var(--text-light);
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        /* Main Content */
+        main {
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Module Header */
+        .module-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            position: relative;
+            background: rgba(18, 18, 37, 0.5);
+            border: 2px solid var(--accent-purple);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(157, 78, 221, 0.3);
+        }
+
+        .module-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--accent-purple), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(157, 78, 221, 0.3);
+        }
+
+        .module-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Topics Navigation */
+        .topics-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0 3rem;
+        }
+
+        .topic-btn {
+            background: rgba(18, 18, 37, 0.8);
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 1rem 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .topic-btn:hover {
+            background: rgba(0, 240, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .topic-btn.active {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            color: white;
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        /* Content Sections */
+        .topic-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .topic-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Theory Sections */
+        .theory-section {
+            background: rgba(18, 18, 37, 0.7);
+            border: 1px solid var(--accent-purple);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theory-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            color: var(--accent-purple);
+        }
+
+        /* Real-world Examples */
+        .real-example {
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.1), rgba(0, 240, 255, 0.1));
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .example-title {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .example-icon {
+            color: var(--accent-orange);
+        }
+
+        /* Info Boxes */
+        .info-box {
+            background: rgba(10, 10, 20, 0.8);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-left: 4px solid var(--accent-purple);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+        }
+
+        .info-box-title {
+            color: var(--accent-purple);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Historical Context */
+        .historical-box {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
+            border: 1px solid var(--accent-yellow);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .historical-title {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Analogy Sections */
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(0, 255, 127, 0.1), rgba(57, 255, 20, 0.1));
+            border: 1px solid var(--accent-green);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .analogy-title {
+            color: var(--accent-green);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Code Examples */
+        .code-block {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 5px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-title {
+            color: var(--accent-neon);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .highlight {
+            color: var(--accent-neon);
+            background: rgba(57, 255, 20, 0.1);
+            padding: 0 5px;
+        }
+
+        /* Practice Section */
+        .practice-section {
+            background: rgba(18, 18, 37, 0.9);
+            border: 2px solid var(--accent-green);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .practice-section .section-title {
+            color: var(--accent-green);
+        }
+
+        .practice-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            color: var(--accent-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+        }
+
+        .form-input {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--accent-cyan);
+            color: var(--text-light);
+            padding: 0.8rem 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-neon);
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+
+        .form-button {
+            background: linear-gradient(45deg, var(--accent-purple), var(--accent-cyan));
+            color: var(--primary-dark);
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(157, 78, 221, 0.5);
+        }
+
+        /* Incident Response Timeline */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+            margin: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--accent-purple), var(--accent-cyan));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 2rem 0;
+            width: 45%;
+            padding: 1.5rem;
+            background: rgba(18, 18, 37, 0.8);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .timeline-item:nth-child(odd) {
+            margin-left: 0;
+            margin-right: auto;
+        }
+
+        .timeline-item:nth-child(even) {
+            margin-left: auto;
+            margin-right: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-purple);
+            border-radius: 50%;
+            border: 3px solid var(--accent-cyan);
+        }
+
+        .timeline-item:nth-child(odd)::before {
+            right: -12px;
+        }
+
+        .timeline-item:nth-child(even)::before {
+            left: -12px;
+        }
+
+        .timeline-step {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Results Display */
+        .results-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--accent-neon);
+            border-radius: 5px;
+            display: none;
+        }
+
+        .result-step {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed rgba(57, 255, 20, 0.3);
+        }
+
+        .result-step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .step-title {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-content {
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            word-break: break-all;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        /* TEST SECTION */
+        .test-section {
+            background: rgba(18, 18, 37, 0.9);
+            border: 2px solid var(--accent-orange);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .test-section .section-title {
+            color: var(--accent-orange);
+        }
+
+        .question {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            border-left: 4px solid var(--accent-cyan);
+        }
+
+        .question-text {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            padding: 0.8rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .option:hover {
+            background: rgba(255, 165, 0, 0.1);
+            border-color: rgba(255, 165, 0, 0.3);
+        }
+
+        .option input {
+            accent-color: var(--accent-orange);
+            transform: scale(1.2);
+        }
+
+        .option-label {
+            color: var(--text-gray);
+            flex-grow: 1;
+        }
+
+        .test-button {
+            background: linear-gradient(45deg, var(--accent-orange), var(--accent-yellow));
+            color: var(--primary-dark);
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .test-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 165, 0, 0.5);
+        }
+
+        .test-results {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--accent-orange);
+            border-radius: 10px;
+            display: none;
+            text-align: center;
+        }
+
+        .score {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .score-percentage {
+            font-size: 2.5rem;
+            color: var(--accent-neon);
+            text-shadow: 0 0 10px currentColor;
+        }
+
+        /* Navigation Buttons */
+        .module-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(157, 78, 221, 0.3);
+        }
+
+        .nav-button {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(157, 78, 221, 0.2);
+            border: 2px solid var(--accent-purple);
+            color: var(--accent-cyan);
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .nav-button:hover {
+            background: rgba(157, 78, 221, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(157, 78, 221, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(57, 255, 20, 0.2);
+            margin-top: 4rem;
+        }
+
+        .footer-text {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-year {
+            color: var(--accent-neon);
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            .logo-container {
+                justify-content: center;
+            }
+            nav {
+                justify-content: center;
+            }
+            .module-header h1 {
+                font-size: 2.2rem;
+            }
+            .topics-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            .topic-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            .module-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .nav-button {
+                justify-content: center;
+            }
+            .timeline::before {
+                left: 20px;
+            }
+            .timeline-item {
+                width: calc(100% - 40px);
+                margin-left: 40px !important;
+            }
+            .timeline-item::before {
+                left: -32px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated scan lines -->
+    <div class="scan-lines"></div>
+    
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo">
+                <div class="logo-inner">C</div>
+            </div>
+            <div class="logo-text">CYBERSHIELD ACADEMY</div>
+        </div>
+        <nav>
+            <a href="index.html" class="nav-btn">Главная</a>
+            <a href="modules.html" class="nav-btn active">Модули</a>
+            <a href="labs.html" class="nav-btn">Лаборатории</a>
+            <a href="community.html" class="nav-btn">Сообщество</a>
+            <a href="register.html" class="nav-btn login-btn">Регистрация</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Module Header -->
+        <section class="module-header">
+            <h1>МОДУЛЬ 5: ОБОРОНА И РЕАГИРОВАНИЕ</h1>
+            <p class="module-subtitle">Искусство защиты систем и эффективного реагирования на кибератаки</p>
+        </section>
+
+        <!-- Topics Navigation -->
+        <div class="topics-nav">
+            <button class="topic-btn active" onclick="showTopic('defense')">Многоуровневая защита</button>
+            <button class="topic-btn" onclick="showTopic('monitoring')">Мониторинг угроз</button>
+            <button class="topic-btn" onclick="showTopic('incident-response')">Инцидент-ответ</button>
+            <button class="topic-btn" onclick="showTopic('forensics')">Киберкриминалистика</button>
+            <button class="topic-btn" onclick="showTopic('recovery')">Восстановление</button>
+        </div>
+
+        <!-- TOPIC 1: MULTI-LAYER DEFENSE -->
+        <section id="defense" class="topic-section active">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-shield-alt"></i> Оборона в глубину</h2>
+                
+                <p><strong>Оборона в глубину</strong> — это стратегия кибербезопасности, при которой используются несколько уровней защиты. Если злоумышленник преодолевает один барьер, его встречает следующий, что значительно увеличивает сложность атаки.</p>
+                
+                <div class="historical-box">
+                    <div class="historical-title"><i class="fas fa-history"></i> Военное происхождение</div>
+                    <p>Концепция пришла из военной стратегии и адаптирована для кибербезопасности. Вместо одной мощной стены создается серия препятствий, каждое из которых должно быть преодолено атакующим.</p>
+                </div>
+                
+                <div class="analogy-box">
+                    <div class="analogy-title"><i class="fas fa-lightbulb example-icon"></i> Аналогия с замком</div>
+                    <p>Представьте средневековый замок:
+                    <br>• <strong>Ров</strong> — сетевой фаервол
+                    <br>• <strong>Стены</strong> — системы обнаружения вторжений (IDS)
+                    <br>• <strong>Ворота</strong> — аутентификация и авторизация
+                    <br>• <strong>Внутренний двор</strong> — сегментация сети
+                    <br>• <strong>Донжон</strong> — защита конечных точек
+                    <br>• <strong>Сокровищница</strong> — шифрование данных</p>
+                </div>
+                
+                <h3>7 уровней современной защиты:</h3>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-step">1. Физическая безопасность</div>
+                        <p>Контроль доступа в помещения, камеры наблюдения, охрана.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">2. Периметровая защита</div>
+                        <p>Фаерволы, IPS/IDS, защита от DDoS-атак.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">3. Сетевая безопасность</div>
+                        <p>Сегментация сети, VLAN, VPN, NAC (Network Access Control).</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">4. Безопасность хостов</div>
+                        <p>Антивирусы, EDR, обновления безопасности, харденинг.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">5. Безопасность приложений</div>
+                        <p>WAF, сканеры уязвимостей, безопасная разработка (DevSecOps).</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">6. Безопасность данных</div>
+                        <p>Шифрование, DLP, резервное копирование, классификация данных.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">7. Человеческий фактор</div>
+                        <p>Обучение сотрудников, тестирование на фишинг, создание культуры безопасности.</p>
+                    </div>
+                </div>
+                
+                <div class="real-example">
+                    <div class="example-title"><i class="fas fa-building example-icon"></i> Пример: Финансовая организация</div>
+                    <p>Крупный банк использует все 7 уровней:
+                    <br>• Физический: Пропускная система, биометрика
+                    <br>• Периметр: Next-Gen Firewall, защита от DDoS
+                    <br>• Сеть: Микросегментация, Zero Trust
+                    <br>• Хосты: EDR на всех устройствах
+                    <br>• Приложения: WAF, SAST/DAST тестирование
+                    <br>• Данные: Шифрование end-to-end
+                    <br>• Люди: Ежеквартальные тренировки по безопасности</p>
+                </div>
+                
+                <div class="info-box">
+                    <h4 class="info-box-title">Ключевые принципы:</h4>
+                    <ul>
+                        <li><strong>Принцип наименьших привилегий</strong> — давать доступ только к тому, что необходимо</li>
+                        <li><strong>Защита в глубину</strong> — множественные уровни защиты</li>
+                        <li><strong>Сегментация</strong> — разделение сетей для ограничения распространения атак</li>
+                        <li><strong>Защита откровенно</strong> — предполагать, что периметр уже скомпрометирован</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="practice-section">
+                <h3 class="section-title"><i class="fas fa-flask"></i> Практика: Анализ уровней защиты</h3>
+                <p>Проанализируйте, какие уровни защиты использует ваша организация или выберите тип организации для анализа:</p>
+                
+                <form class="practice-form">
+                    <div class="form-group">
+                        <label for="orgType" class="form-label">Тип организации:</label>
+                        <select id="orgType" class="form-input">
+                            <option value="startup">Стартап (10-50 сотрудников)</option>
+                            <option value="sme">Средний бизнес (50-500 сотрудников)</option>
+                            <option value="enterprise">Корпорация (500+ сотрудников)</option>
+                            <option value="bank">Банк/Финансы</option>
+                            <option value="hospital">Медицинское учреждение</option>
+                            <option value="government">Государственное учреждение</option>
+                        </select>
+                    </div>
+                    
+                    <button type="button" onclick="analyzeDefenseLayers()" class="form-button">
+                        <i class="fas fa-search"></i> Проанализировать защиту
+                    </button>
+                </form>
+                
+                <div id="defenseAnalysisResults" class="results-container">
+                    <div class="result-step">
+                        <div class="step-title">Рекомендуемые меры защиты:</div>
+                        <div class="step-content" id="recommendedMeasures"></div>
+                    </div>
+                    <div class="result-step">
+                        <div class="step-title">Приоритеты внедрения:</div>
+                        <div class="step-content" id="implementationPriorities"></div>
+                    </div>
+                    <div class="result-step">
+                        <div class="step-title">Оценка стоимости:</div>
+                        <div class="step-content" id="costEstimate"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOPIC 2: THREAT MONITORING -->
+        <section id="monitoring" class="topic-section">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-eye"></i> Мониторинг и обнаружение угроз</h2>
+                
+                <p><strong>«Вы не можете защитить то, что не видите»</strong> — золотое правило кибербезопасности. Эффективный мониторинг позволяет обнаруживать аномалии до того, как они станут инцидентами.</p>
+                
+                <div class="info-box">
+                    <h4 class="info-box-title">Три типа мониторинга:</h4>
+                    <ul>
+                        <li><strong>Реактивный</strong> — реагирование на уже произошедшие события</li>
+                        <li><strong>Проактивный</strong> — поиск признаков потенциальных атак</li>
+                        <li><strong>Предиктивный</strong> — использование AI/ML для предсказания атак</li>
+                    </ul>
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-title">Пример правила SIEM для обнаружения брутфорса:</div>
+                    <div>source="firewall.log"</div>
+                    <div>action="deny" AND dst_port=22</div>
+                    <div>| stats count by src_ip</div>
+                    <div>| where count > 10</div>
+                    <div>| alert "Возможная атака брутфорса на SSH"</div>
+                </div>
+                
+                <div class="real-example">
+                    <div class="example-title"><i class="fas fa-chart-line example-icon"></i> Пример: Обнаружение APT</div>
+                    <p>Продвинутая постоянная угроза (APT) обычно обнаруживается по косвенным признакам:
+                    <br>• Аномальная активность в нерабочее время
+                    <br>• Необычные объемы исходящего трафика
+                    <br>• Попытки доступа к критическим системам
+                    <br>• Использование легитимных учетных записей для вредоносных действий
+                    <br>• Подозрительные DNS-запросы</p>
+                </div>
+                
+                <div class="analogy-box">
+                    <div class="analogy-title"><i class="fas fa-video example-icon"></i> Аналогия с системой видеонаблюдения</div>
+                    <p>Хороший SOC (Security Operations Center) похож на современную систему видеонаблюдения:
+                    <br>• <strong>Камеры</strong> — агенты сбора логов на конечных точках
+                    <br>• <strong>Запись</strong> — хранение логов в SIEM
+                    <br>• <strong>Детекция движения</strong> — правила корреляции событий
+                    <br>• <strong>Оператор</strong> — аналитик SOC первого уровня
+                    <br>• <strong>Автоматическое оповещение</strong> — SOAR платформы</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOPIC 3: INCIDENT RESPONSE -->
+        <section id="incident-response" class="topic-section">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-first-aid"></i> Инцидент-ответ</h2>
+                
+                <p><strong>Не «если», а «когда»</strong> — мантра команды реагирования на инциденты. Каждая организация должна быть готова к кибератаке.</p>
+                
+                <div class="historical-box">
+                    <div class="historical-title"><i class="fas fa-history"></i> Стандарт NIST 800-61</div>
+                    <p>Национальный институт стандартов и технологий США разработал стандарт, который описывает 4 фазы реагирования на инциденты: подготовка, обнаружение и анализ, сдерживание, ликвидация и восстановление, последующие действия.</p>
+                </div>
+                
+                <h3>6 этапов реагирования на инциденты:</h3>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-step">1. Подготовка</div>
+                        <p>Создание плана реагирования, назначение ролей, подготовка инструментов, тренировки.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">2. Обнаружение и анализ</div>
+                        <p>Получение оповещения, подтверждение инцидента, определение масштаба и воздействия.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">3. Сдерживание</div>
+                        <p>Изоляция затронутых систем, блокировка атакующего, сохранение доказательств.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">4. Ликвидация</div>
+                        <p>Удаление вредоносного ПО, закрытие уязвимостей, восстановление систем.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">5. Восстановление</div>
+                        <p>Возврат систем в рабочее состояние, мониторинг на предмет повторного заражения.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">6. Последующие действия</div>
+                        <p>Анализ причин, улучшение защиты, обновление документации, юридические действия.</p>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <h4 class="info-box-title">Ключевые роли в команде реагирования:</h4>
+                    <ul>
+                        <li><strong>Руководитель инцидента</strong> — координация всех действий</li>
+                        <li><strong>Технические специалисты</strong> — анализ и устранение угрозы</li>
+                        <li><strong>Юристы</strong> — правовые аспекты и соответствие требованиям</li>
+                        <li><strong>PR-специалисты</strong> — коммуникация с внешним миром</li>
+                        <li><strong>Руководство</strong> — принятие стратегических решений</li>
+                    </ul>
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-title">Чек-лист первых действий при инциденте:</div>
+                    <div>1. [ ] Сохранить спокойствие и не паниковать</div>
+                    <div>2. [ ] Изолировать затронутые системы от сети</div>
+                    <div>3. [ ] Сохранить логи и доказательства</div>
+                    <div>4. [ ] Уведомить руководство и команду безопасности</div>
+                    <div>5. [ ] Начать документирование всех действий</div>
+                    <div>6. [ ] Определить масштаб и критичность инцидента</div>
+                    <div>7. [ ] Разработать план сдерживания и ликвидации</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOPIC 4: DIGITAL FORENSICS -->
+        <section id="forensics" class="topic-section">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-search"></i> Киберкриминалистика</h2>
+                
+                <p><strong>Цифровая криминалистика</strong> — это наука о сборе, анализе и представлении цифровых доказательств таким образом, чтобы они были допустимы в суде.</p>
+                
+                <div class="analogy-box">
+                    <div class="analogy-title"><i class="fas fa-fingerprint example-icon"></i> Аналогия с криминалистикой</div>
+                    <p>Киберкриминалистика похожа на обычную криминалистику:
+                    <br>• <strong>Место преступления</strong> — зараженная система или сеть
+                    <br>• <strong>Отпечатки пальцев</strong> — хэши файлов, IP-адреса, MAC-адреса
+                    <br>• <strong>Свидетели</strong> — логи системы и приложений
+                    <br>• <strong>Вещественные доказательства</strong> — вредоносные файлы, дампы памяти
+                    <br>• <strong>Криминалистическая лаборатория</strong> — изолированная среда для анализа</p>
+                </div>
+                
+                <h3>4 принципа цифровой криминалистики:</h3>
+                
+                <div class="info-box">
+                    <h4 class="info-box-title">Принципы доказательств:</h4>
+                    <ul>
+                        <li><strong>Минимизация изменений</strong> — не изменять оригинальные данные</li>
+                        <li><strong>Документирование</strong> — записывать каждое действие</li>
+                        <li><strong>Цепочка custody</strong> — отслеживать кто, когда и зачем имел доступ к доказательствам</li>
+                        <li><strong>Повторяемость</strong> — любой эксперт должен получить те же результаты</li>
+                    </ul>
+                </div>
+                
+                <div class="real-example">
+                    <div class="example-title"><i class="fas fa-laptop-code example-icon"></i> Пример: Расследование утечки данных</div>
+                    <p>При утечке данных криминалистическое расследование включает:
+                    <br>1. <strong>Сбор доказательств</strong>: Дампы памяти, логи, образы дисков
+                    <br>2. <strong>Анализ временных меток</strong>: Когда произошла утечка
+                    <br>3. <strong>Анализ сетевого трафика</strong>: Куда ушли данные
+                    <br>4. <strong>Исследование вредоносного ПО</strong>: Как работал эксплойт
+                    <br>5. <strong>Восстановление цепочки атаки</strong>: Все этапы компрометации</p>
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-title">Базовые команды криминалистики:</div>
+                    <div># Создание образа диска (Linux)</div>
+                    <div>dd if=/dev/sda of=/evidence/disk.img bs=4M</div>
+                    <div class="highlight"># Проверка целостности образа</div>
+                    <div>md5sum /evidence/disk.img > /evidence/disk.md5</div>
+                    <div class="highlight"># Анализ дампа памяти</div>
+                    <div>volatility -f memory.dump imageinfo</div>
+                    <div class="highlight"># Поиск удаленных файлов</div>
+                    <div>foremost -t all -i disk.img -o /recovery/</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOPIC 5: RECOVERY -->
+        <section id="recovery" class="topic-section">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-sync-alt"></i> Восстановление после атак</h2>
+                
+                <p><strong>Восстановление</strong> — это процесс возврата систем, данных и операций в нормальное состояние после кибератаки.</p>
+                
+                <div class="info-box">
+                    <h4 class="info-box-title">Ключевые метрики восстановления:</h4>
+                    <ul>
+                        <li><strong>RTO (Recovery Time Objective)</strong> — максимально допустимое время простоя</li>
+                        <li><strong>RPO (Recovery Point Objective)</strong> — максимально допустимая потеря данных</li>
+                        <li><strong>MTTR (Mean Time To Recovery)</strong> — среднее время восстановления</li>
+                        <li><strong>MTBF (Mean Time Between Failures)</strong> — среднее время между сбоями</li>
+                    </ul>
+                </div>
+                
+                <div class="real-example">
+                    <div class="example-title"><i class="fas fa-database example-icon"></i> Пример: Восстановление после ransomware</div>
+                    <p>При атаке ransomware правильное восстановление включает:
+                    <br>1. <strong>Изоляция</strong>: Отключить зараженные системы
+                    <br>2. <strong>Идентификация</strong>: Определить тип ransomware и уязвимость
+                    <br>3. <strong>Ликвидация</strong>: Удалить ransomware со всех систем
+                    <br>4. <strong>Восстановление</strong>: Восстановить данные из резервных копий
+                    <br>5. <strong>Проверка</strong>: Убедиться, что ransomware полностью удален
+                    <br>6. <strong>Улучшение</strong>: Закрыть уязвимости, усилить защиту</p>
+                </div>
+                
+                <div class="analogy-box">
+                    <div class="analogy-title"><i class="fas fa-ambulance example-icon"></i> Аналогия с медицинской помощью</div>
+                    <p>Восстановление после кибератаки похоже на медицинскую помощь:
+                    <br>• <strong>Скорая помощь</strong> — немедленное реагирование на инцидент
+                    <br>• <strong>Диагностика</strong> — анализ масштаба и воздействия
+                    <br>• <strong>Лечение</strong> — удаление угрозы и восстановление систем
+                    <br>• <strong>Реабилитация</strong> — постепенный возврат к нормальной работе
+                    <br>• <strong>Профилактика</strong> — укрепление защиты от будущих атак</p>
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-title">Чек-лист восстановления:</div>
+                    <div>[ ] 1. Проверить целостность резервных копий</div>
+                    <div>[ ] 2. Восстановить наиболее критичные системы первыми</div>
+                    <div>[ ] 3. Провести тестирование восстановленных систем</div>
+                    <div>[ ] 4. Обновить все системы безопасности</div>
+                    <div>[ ] 5. Изменить все пароли и ключи доступа</div>
+                    <div>[ ] 6. Провести пентест восстановленной среды</div>
+                    <div>[ ] 7. Обновить документацию и планы восстановления</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINAL TEST -->
+        <section class="test-section">
+            <h2 class="section-title"><i class="fas fa-question-circle"></i> Финальный тест по обороне и реагированию</h2>
+            <p>Проверьте свои знания по всем пяти темам модуля:</p>
+            
+            <div class="question">
+                <div class="question-text">1. Что означает принцип "оборона в глубину" в кибербезопасности?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="A">
+                        <span class="option-label">A) Использование только самых современных технологий защиты</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="B">
+                        <span class="option-label">B) Создание множественных уровней защиты, которые должны быть преодолены атакующим</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="C">
+                        <span class="option-label">C) Фокус исключительно на защите периметра сети</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">2. Какая из следующих мер НЕ относится к мониторингу угроз?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="A">
+                        <span class="option-label">A) Сбор и анализ логов с помощью SIEM-системы</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="B">
+                        <span class="option-label">B) Установка антивируса на рабочие станции</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="C">
+                        <span class="option-label">C) Использование систем обнаружения вторжений (IDS)</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">3. Что такое RTO в контексте восстановления после атак?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="A">
+                        <span class="option-label">A) Recovery Time Objective - максимально допустимое время простоя системы</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="B">
+                        <span class="option-label">B) Response Time Overview - общее время реагирования на инцидент</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="C">
+                        <span class="option-label">C) Recovery Team Organization - организация команды восстановления</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">4. Какой этап инцидент-ответа следует сразу после обнаружения кибератаки?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q4" value="A">
+                        <span class="option-label">A) Сдерживание - изоляция затронутых систем</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="B">
+                        <span class="option-label">B) Подготовка - создание плана реагирования</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="C">
+                        <span class="option-label">C) Восстановление - возврат систем в рабочее состояние</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">5. Что такое "цепочка custody" в цифровой криминалистике?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q5" value="A">
+                        <span class="option-label">A) Протокол, отслеживающий кто, когда и зачем имел доступ к цифровым доказательствам</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="B">
+                        <span class="option-label">B) Метод шифрования доказательств для их защиты</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="C">
+                        <span class="option-label">C) Способ организации командной работы при расследовании</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">6. Какой принцип НЕ является частью концепции Zero Trust?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q6" value="A">
+                        <span class="option-label">A) "Никогда не доверяй, всегда проверяй"</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="B">
+                        <span class="option-label">B) Предоставление доступа на основе наименьших необходимых привилегий</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="C">
+                        <span class="option-label">C) Доверие всем пользователям внутри корпоративной сети</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">7. Что такое SOAR в контексте SOC?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q7" value="A">
+                        <span class="option-label">A) Security Orchestration, Automation and Response - автоматизация процессов безопасности</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="B">
+                        <span class="option-label">B) System Observation and Analysis Report - отчет об анализе системы</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="C">
+                        <span class="option-label">C) Security Operations and Audit Review - обзор операций безопасности и аудита</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">8. Какая из следующих стратегий восстановления данных является наиболее надежной?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q8" value="A">
+                        <span class="option-label">A) Правило 3-2-1: три копии данных, на двух разных носителях, одна копия вне площадки</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="B">
+                        <span class="option-label">B) Ежедневное резервное копирование на внешний жесткий диск</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="C">
+                        <span class="option-label">C) Хранение всех данных в облачном хранилище одного провайдера</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">9. Что такое "песочница" в контексте кибербезопасности?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q9" value="A">
+                        <span class="option-label">A) Изолированная среда для запуска подозрительных файлов без риска для основной системы</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="B">
+                        <span class="option-label">B) Метод шифрования данных с использованием случайных значений</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="C">
+                        <span class="option-label">C) Способ организации рабочих мест в SOC</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">10. Какой показатель измеряет эффективность программы безопасности?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q10" value="A">
+                        <span class="option-label">A) MTTR (Mean Time To Recovery) - среднее время восстановления</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="B">
+                        <span class="option-label">B) ROI (Return On Investment) - возврат инвестиций в безопасность</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="C">
+                        <span class="option-label">C) Оба показателя важны для измерения эффективности</span>
+                    </label>
+                </div>
+            </div>
+            
+            <button onclick="checkFinalTest()" class="test-button">
+                <i class="fas fa-check"></i> Проверить все ответы
+            </button>
+            
+            <div id="finalTestResults" class="test-results">
+                <div class="score">Ваш результат: <span id="finalScore">0</span>/10</div>
+                <div class="score">Процент: <span class="score-percentage" id="percentage">0%</span></div>
+                <div id="smileyContainer"></div>
+                <div id="resultMessage"></div>
+                <div id="testDetails" style="margin-top: 20px;"></div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="module-nav">
+            <a href="pentesting.html" class="nav-button">
+                <i class="fas fa-arrow-left"></i> Предыдущий модуль: Тестирование на проникновение
+            </a>
+            <a href="modules.html" class="nav-button">
+                <i class="fas fa-th"></i> Все модули
+            </a>
+            <a href="law.html" class="nav-button">
+                Следующий модуль: Законодательство и управление <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">© <span class="current-year">2025</span> CyberShield Academy. Все права защищены.</p>
+        <p class="footer-text">Образовательная платформа нового поколения</p>
+    </footer>
+
+    <script>
+        // Обновляем год в футере
+        document.querySelector('.current-year').textContent = new Date().getFullYear();
+        
+        // Переключение между темами
+        function showTopic(topicId) {
+            // Скрыть все темы
+            document.querySelectorAll('.topic-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Убрать активный класс со всех кнопок
+            document.querySelectorAll('.topic-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Показать выбранную тему
+            document.getElementById(topicId).classList.add('active');
+            
+            // Активировать кнопку
+            document.querySelector(`button[onclick="showTopic('${topicId}')"]`).classList.add('active');
+        }
+
+        // Анализ уровней защиты
+        function analyzeDefenseLayers() {
+            const orgType = document.getElementById('orgType').value;
+            let recommended = '';
+            let priorities = '';
+            let cost = '';
+            
+            switch(orgType) {
+                case 'startup':
+                    recommended = '1. Базовый фаервол\n2. Антивирус на всех устройствах\n3. Двухфакторная аутентификация\n4. Регулярное резервное копирование\n5. Обучение сотрудников основам безопасности';
+                    priorities = '1. Защита конечных точек\n2. Резервное копирование\n3. Обучение сотрудников\n4. Базовый мониторинг\n5. План реагирования на инциденты';
+                    cost = '~$5,000 - $15,000 в год';
+                    break;
+                    
+                case 'sme':
+                    recommended = '1. Next-Gen Firewall\n2. EDR решения\n3. SIEM для мониторинга\n4. VPN для удаленного доступа\n5. WAF для веб-приложений\n6. Политики безопасности\n7. Регулярные аудиты';
+                    priorities = '1. Сетевая безопасность\n2. Защита данных\n3. Мониторинг угроз\n4. Инцидент-ответ\n5. Соответствие требованиям';
+                    cost = '~$50,000 - $150,000 в год';
+                    break;
+                    
+                case 'enterprise':
+                    recommended = '1. Zero Trust архитектура\n2. Полноценный SOC 24/7\n3. Расширенная SIEM/SOAR\n4. DLP системы\n5. Пентестинг и red teaming\n6. Угрозный интеллект\n7. Киберстрахование';
+                    priorities = '1. Управление идентификацией\n2. Защита от APT\n3. Киберкриминалистика\n4. Безопасность цепочки поставок\n5. Соответствие международным стандартам';
+                    cost = '~$500,000 - $5M+ в год';
+                    break;
+                    
+                case 'bank':
+                    recommended = '1. Соответствие PCI DSS\n2. Шифрование всех данных\n3. Многофакторная аутентификация\n4. Фрод-мониторинг\n5. Аудит и логирование всех действий\n6. Физическая безопасность дата-центров';
+                    priorities = '1. Защита финансовых данных\n2. Предотвращение мошенничества\n3. Непрерывность бизнеса\n4. Соответствие регуляторным требованиям\n5. Управление рисками третьих сторон';
+                    cost = '~$1M - $10M+ в год';
+                    break;
+                    
+                case 'hospital':
+                    recommended = '1. Соответствие HIPAA\n2. Шифрование медицинских данных\n3. Контроль доступа к системам\n4. Защита медицинского оборудования IoT\n5. Резервное копирование критических систем\n6. Обучение медицинского персонала';
+                    priorities = '1. Конфиденциальность пациентов\n2. Доступность медицинских систем\n3. Защита медицинских устройств\n4. Инцидент-ответ для healthcare\n5. Соответствие регуляторным требованиям';
+                    cost = '~$200,000 - $2M в год';
+                    break;
+                    
+                case 'government':
+                    recommended = '1. Защита гостайны\n2. Системы контроля доступа\n3. Криптографическая защита\n4. Аудит всех действий\n5. Физическая безопасность\n6. Проверка персонала\n7. Реагирование на киберинциденты';
+                    priorities = '1. Защита государственной информации\n2. Национальная безопасность\n3. Критическая инфраструктура\n4. Кибероборона\n5. Международное сотрудничество';
+                    cost = 'Зависит от масштаба и секретности';
+                    break;
+            }
+            
+            document.getElementById('recommendedMeasures').textContent = recommended;
+            document.getElementById('implementationPriorities').textContent = priorities;
+            document.getElementById('costEstimate').textContent = cost;
+            
+            document.getElementById('defenseAnalysisResults').style.display = 'block';
+        }
+
+        // Проверка финального теста
+        function checkFinalTest() {
+            // Правильные ответы
+            const correctAnswers = {
+                'q1': 'B',
+                'q2': 'B',
+                'q3': 'A',
+                'q4': 'A',
+                'q5': 'A',
+                'q6': 'C',
+                'q7': 'A',
+                'q8': 'A',
+                'q9': 'A',
+                'q10': 'C'
+            };
+            
+            let score = 0;
+            let details = '<div style="margin-top: 1rem; text-align: left;">';
+            
+            // Проверяем каждый вопрос
+            for (const question in correctAnswers) {
+                const selected = document.querySelector(`input[name="${question}"]:checked`);
+                const correctAnswer = correctAnswers[question];
+                
+                if (selected) {
+                    if (selected.value === correctAnswer) {
+                        score++;
+                        details += `<div style="color: var(--accent-green); margin: 0.5rem 0;">
+                            <i class="fas fa-check-circle"></i> Вопрос ${question.substring(1)}: Правильно!
+                        </div>`;
+                    } else {
+                        let explanation = '';
+                        switch(question) {
+                            case 'q1': explanation = 'Оборона в глубину предполагает множественные уровни защиты'; break;
+                            case 'q2': explanation = 'Антивирус - это защита конечных точек, а не мониторинг угроз'; break;
+                            case 'q3': explanation = 'RTO (Recovery Time Objective) - это максимально допустимое время простоя'; break;
+                            case 'q4': explanation = 'После обнаружения следует этап сдерживания'; break;
+                            case 'q5': explanation = 'Цепочка custody отслеживает доступ к доказательствам'; break;
+                            case 'q6': explanation = 'Zero Trust предполагает проверку всех, даже внутри сети'; break;
+                            case 'q7': explanation = 'SOAR - Security Orchestration, Automation and Response'; break;
+                            case 'q8': explanation = 'Правило 3-2-1 - наиболее надежная стратегия резервного копирования'; break;
+                            case 'q9': explanation = 'Песочница - изолированная среда для анализа подозрительных файлов'; break;
+                            case 'q10': explanation = 'Оба показателя важны для измерения эффективности'; break;
+                        }
+                        
+                        details += `<div style="color: var(--accent-red); margin: 0.5rem 0;">
+                            <i class="fas fa-times-circle"></i> Вопрос ${question.substring(1)}: Неправильно.<br>
+                            <span style="color: var(--text-gray); font-size: 0.9rem;">Правильный ответ: ${correctAnswer}. ${explanation}</span>
+                        </div>`;
+                    }
+                } else {
+                    details += `<div style="color: var(--accent-orange); margin: 0.5rem 0;">
+                        <i class="fas fa-question-circle"></i> Вопрос ${question.substring(1)}: Не отвечен
+                    </div>`;
+                }
+            }
+            
+            details += '</div>';
+            
+            // Вычисляем процент
+            const percentage = Math.round((score / 10) * 100);
+            
+            // Показываем результаты
+            const results = document.getElementById('finalTestResults');
+            results.style.display = 'block';
+            
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('percentage').textContent = percentage + '%';
+            document.getElementById('testDetails').innerHTML = details;
+            
+            // Создаем пиксельные смайлики и сообщения
+            const smileyContainer = document.getElementById('smileyContainer');
+            const resultMessage = document.getElementById('resultMessage');
+            
+            smileyContainer.innerHTML = '';
+            resultMessage.innerHTML = '';
+            
+            if (percentage >= 70) {
+                // Зеленый пиксельный смайлик
+                smileyContainer.innerHTML = `
+                    <canvas id="greenSmiley" width="100" height="100" class="pixel-smiley green-smiley"></canvas>
+                `;
+                
+                resultMessage.innerHTML = '<div class="good-result">МОЛОДЕЦ!</div>';
+                
+                // Рисуем зеленый смайлик
+                const canvas = document.getElementById('greenSmiley');
+                const ctx = canvas.getContext('2d');
+                
+                // Очищаем canvas
+                ctx.fillStyle = '#0a0a14';
+                ctx.fillRect(0, 0, 100, 100);
+                
+                // Рисуем лицо (зеленое)
+                ctx.fillStyle = '#00FF7F';
+                for (let x = 20; x < 80; x += 10) {
+                    for (let y = 20; y < 80; y += 10) {
+                        ctx.fillRect(x, y, 8, 8);
+                    }
+                }
+                
+                // Глаза
+                ctx.fillStyle = '#0a0a14';
+                ctx.fillRect(35, 35, 10, 10);
+                ctx.fillRect(55, 35, 10, 10);
+                
+                // Улыбка
+                for (let i = 0; i < 5; i++) {
+                    ctx.fillRect(35 + i*5, 60, 5, 5);
+                }
+                
+            } else {
+                // Красный пиксельный смайлик
+                smileyContainer.innerHTML = `
+                    <canvas id="redSmiley" width="100" height="100" class="pixel-smiley red-smiley"></canvas>
+                `;
+                
+                resultMessage.innerHTML = '<div class="bad-result">ИДИ УЧИСЬ!</div>';
+                
+                // Рисуем красный смайлик
+                const canvas = document.getElementById('redSmiley');
+                const ctx = canvas.getContext('2d');
+                
+                // Очищаем canvas
+                ctx.fillStyle = '#0a0a14';
+                ctx.fillRect(0, 0, 100, 100);
+                
+                // Рисуем лицо (красное)
+                ctx.fillStyle = '#FF6B6B';
+                for (let x = 20; x < 80; x += 10) {
+                    for (let y = 20; y < 80; y += 10) {
+                        ctx.fillRect(x, y, 8, 8);
+                    }
+                }
+                
+                // Глаза (злые)
+                ctx.fillStyle = '#0a0a14';
+                ctx.fillRect(35, 35, 10, 5);
+                ctx.fillRect(55, 35, 10, 5);
+                
+                // Брови (злые)
+                ctx.fillRect(30, 25, 15, 5);
+                ctx.fillRect(55, 25, 15, 5);
+                
+                // Рот (грустный/злой)
+                for (let i = 0; i < 5; i++) {
+                    ctx.fillRect(35 + i*5, 70, 5, 5);
+                }
+            }
+            
+            // Добавляем анимацию
+            results.style.animation = 'pulse 0.5s';
+            setTimeout(() => {
+                results.style.animation = '';
+            }, 500);
+            
+            // Прокрутка к результатам
+            results.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Инициализация
+        window.onload = function() {
+            // Анализ защиты для стартапа по умолчанию
+            analyzeDefenseLayers();
+        };
+    </script>
+</body>
+</html>

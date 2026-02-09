@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Модуль 6: Законодательство и управление | CyberShield Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #0a0a14;
+            --secondary-dark: #121225;
+            --accent-neon: #39FF14;
+            --accent-cyan: #00F0FF;
+            --accent-purple: #9D4EDD;
+            --accent-orange: #FFA500;
+            --accent-red: #FF6B6B;
+            --accent-pink: #FF4D9E;
+            --accent-yellow: #FFD700;
+            --accent-green: #00FF7F;
+            --text-light: #F8F9FA;
+            --text-gray: #CCCCCC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(to bottom, rgba(9, 2, 26, 0.9), rgba(9, 2, 26, 0.95)),
+                url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%2300f0ff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        /* Animated scan lines */
+        .scan-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 240, 255, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: -1;
+            animation: scan 10s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* Pixel Art Smiley Styles */
+        .pixel-smiley {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            margin: 20px auto;
+            display: block;
+            width: 100px;
+            height: 100px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .good-result {
+            color: var(--accent-green);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 0 0 10px var(--accent-green);
+            animation: pulse 1.5s infinite;
+        }
+
+        .bad-result {
+            color: var(--accent-red);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 0 0 10px var(--accent-red);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Header */
+        header {
+            padding: 2rem;
+            border-bottom: 3px solid var(--accent-purple);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 0 20px rgba(157, 78, 221, 0.2);
+            background: rgba(10, 10, 20, 0.95);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            image-rendering: pixelated;
+        }
+
+        .logo-inner {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-neon), var(--accent-cyan));
+            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 2px 2px 0px var(--accent-purple);
+            animation: logo-pulse 4s infinite;
+        }
+
+        @keyframes logo-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-neon), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 0.8rem 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-btn:hover::after {
+            left: 100%;
+        }
+
+        .login-btn {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            color: white;
+        }
+
+        .login-btn:hover {
+            background: rgba(157, 78, 221, 0.8);
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        .nav-btn.active {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            color: var(--text-light);
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        /* Main Content */
+        main {
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Module Header */
+        .module-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            position: relative;
+            background: rgba(18, 18, 37, 0.5);
+            border: 2px solid var(--accent-purple);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(157, 78, 221, 0.3);
+        }
+
+        .module-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--accent-purple), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(157, 78, 221, 0.3);
+        }
+
+        .module-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Topics Navigation */
+        .topics-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0 3rem;
+        }
+
+        .topic-btn {
+            background: rgba(18, 18, 37, 0.8);
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 1rem 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .topic-btn:hover {
+            background: rgba(0, 240, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .topic-btn.active {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            color: white;
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        /* Content Sections */
+        .topic-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .topic-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Theory Sections */
+        .theory-section {
+            background: rgba(18, 18, 37, 0.7);
+            border: 1px solid var(--accent-purple);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theory-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            color: var(--accent-purple);
+        }
+
+        /* Real-world Examples */
+        .real-example {
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.1), rgba(0, 240, 255, 0.1));
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .example-title {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .example-icon {
+            color: var(--accent-orange);
+        }
+
+        /* Info Boxes */
+        .info-box {
+            background: rgba(10, 10, 20, 0.8);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-left: 4px solid var(--accent-purple);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+        }
+
+        .info-box-title {
+            color: var(--accent-purple);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Historical Context */
+        .historical-box {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
+            border: 1px solid var(--accent-yellow);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .historical-title {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Analogy Sections */
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(0, 255, 127, 0.1), rgba(57, 255, 20, 0.1));
+            border: 1px solid var(--accent-green);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .analogy-title {
+            color: var(--accent-green);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Code Examples */
+        .code-block {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 5px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-title {
+            color: var(--accent-neon);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .highlight {
+            color: var(--accent-neon);
+            background: rgba(57, 255, 20, 0.1);
+            padding: 0 5px;
+        }
+
+        /* Practice Section */
+        .practice-section {
+            background: rgba(18, 18, 37, 0.9);
+            border: 2px solid var(--accent-green);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .practice-section .section-title {
+            color: var(--accent-green);
+        }
+
+        .practice-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            color: var(--accent-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+        }
+
+        .form-input {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--accent-cyan);
+            color: var(--text-light);
+            padding: 0.8rem 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-neon);
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+
+        .form-button {
+            background: linear-gradient(45deg, var(--accent-purple), var(--accent-cyan));
+            color: var(--primary-dark);
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(157, 78, 221, 0.5);
+        }
+
+        /* Compliance Matrix */
+        .compliance-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .compliance-card {
+            background: rgba(18, 18, 37, 0.8);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .compliance-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 240, 255, 0.2);
+        }
+
+        .compliance-icon {
+            font-size: 2.5rem;
+            color: var(--accent-yellow);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .compliance-title {
+            color: var(--accent-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Governance Timeline */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+            margin: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--accent-purple), var(--accent-cyan));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 2rem 0;
+            width: 45%;
+            padding: 1.5rem;
+            background: rgba(18, 18, 37, 0.8);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .timeline-item:nth-child(odd) {
+            margin-left: 0;
+            margin-right: auto;
+        }
+
+        .timeline-item:nth-child(even) {
+            margin-left: auto;
+            margin-right: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-purple);
+            border-radius: 50%;
+            border: 3px solid var(--accent-cyan);
+        }
+
+        .timeline-item:nth-child(odd)::before {
+            right: -12px;
+        }
+
+        .timeline-item:nth-child(even)::before {
+            left: -12px;
+        }
+
+        .timeline-step {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Results Display */
+        .results-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--accent-neon);
+            border-radius: 5px;
+            display: none;
+        }
+
+        .result-step {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed rgba(57, 255, 20, 0.3);
+        }
+
+        .result-step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .step-title {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-content {
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            word-break: break-all;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        /* TEST SECTION */
+        .test-section {
+            background: rgba(18, 18, 37, 0.9);
+            border: 2px solid var(--accent-orange);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .test-section .section-title {
+            color: var(--accent-orange);
+        }
+
+        .question {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            border-left: 4px solid var(--accent-cyan);
+        }
+
+        .question-text {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            padding: 0.8rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .option:hover {
+            background: rgba(255, 165, 0, 0.1);
+            border-color: rgba(255, 165, 0, 0.3);
+        }
+
+        .option input {
+            accent-color: var(--accent-orange);
+            transform: scale(1.2);
+        }
+
+        .option-label {
+            color: var(--text-gray);
+            flex-grow: 1;
+        }
+
+        .test-button {
+            background: linear-gradient(45deg, var(--accent-orange), var(--accent-yellow));
+            color: var(--primary-dark);
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .test-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 165, 0, 0.5);
+        }
+
+        .test-results {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--accent-orange);
+            border-radius: 10px;
+            display: none;
+            text-align: center;
+        }
+
+        .score {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .score-percentage {
+            font-size: 2.5rem;
+            color: var(--accent-neon);
+            text-shadow: 0 0 10px currentColor;
+        }
+
+        /* Navigation Buttons */
+        .module-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(157, 78, 221, 0.3);
+        }
+
+        .nav-button {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(157, 78, 221, 0.2);
+            border: 2px solid var(--accent-purple);
+            color: var(--accent-cyan);
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .nav-button:hover {
+            background: rgba(157, 78, 221, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(157, 78, 221, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(57, 255, 20, 0.2);
+            margin-top: 4rem;
+        }
+
+        .footer-text {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-year {
+            color: var(--accent-neon);
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            .logo-container {
+                justify-content: center;
+            }
+            nav {
+                justify-content: center;
+            }
+            .module-header h1 {
+                font-size: 2.2rem;
+            }
+            .topics-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            .topic-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            .module-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .nav-button {
+                justify-content: center;
+            }
+            .timeline::before {
+                left: 20px;
+            }
+            .timeline-item {
+                width: calc(100% - 40px);
+                margin-left: 40px !important;
+            }
+            .timeline-item::before {
+                left: -32px !important;
+            }
+            .compliance-matrix {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated scan lines -->
+    <div class="scan-lines"></div>
+    
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo">
+                <div class="logo-inner">C</div>
+            </div>
+            <div class="logo-text">CYBERSHIELD ACADEMY</div>
+        </div>
+        <nav>
+            <a href="index.html" class="nav-btn">Главная</a>
+            <a href="modules.html" class="nav-btn active">Модули</a>
+            <a href="labs.html" class="nav-btn">Лаборатории</a>
+            <a href="community.html" class="nav-btn">Сообщество</a>
+            <a href="register.html" class="nav-btn login-btn">Регистрация</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Module Header -->
+        <section class="module-header">
+            <h1>МОДУЛЬ 6: ЗАКОНОДАТЕЛЬСТВО И УПРАВЛЕНИЕ</h1>
+            <p class="module-subtitle">Правовые основы, стандарты и стратегическое управление кибербезопасностью</p>
+        </section>
+
+        <!-- Topics Navigation -->
+        <div class="topics-nav">
+            <button class="topic-btn active" onclick="showTopic('legislation')">Международное законодательство</button>
+            <button class="topic-btn" onclick="showTopic('standards')">Стандарты и фреймворки</button>
+            <button class="topic-btn" onclick="showTopic('governance')">Кибер-управление</button>
+            <button class="topic-btn" onclick="showTopic('risk-management')">Управление рисками</button>
+            <button class="topic-btn" onclick="showTopic('compliance')">Соответствие требованиям</button>
+        </div>
+
+        <!-- TOPIC 1: INTERNATIONAL LEGISLATION -->
+        <section id="legislation" class="topic-section active">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-gavel"></i> Международное законодательство в кибербезопасности</h2>
+                
+                <p><strong>Киберпространство не знает границ, но законы - знают.</strong> Понимание международного законодательства критически важно для любой организации, работающей в глобальной среде.</p>
+                
+                <div class="historical-box">
+                    <div class="historical-title"><i class="fas fa-history"></i> Эволюция киберзаконодательства</div>
+                    <p>Первые законы о компьютерных преступлениях появились в 1970-х годах. Сегодня мы имеем сложную систему международных соглашений, национальных законов и отраслевых стандартов, которые постоянно эволюционируют.</p>
+                </div>
+                
+                <div class="compliance-matrix">
+                    <div class="compliance-card">
+                        <div class="compliance-icon"><i class="fas fa-globe-europe"></i></div>
+                        <div class="compliance-title">GDPR (ЕС)</div>
+                        <p>Общий регламент по защите данных ЕС. Штрафы до 4% от глобального оборота или 20 млн евро.</p>
+                    </div>
+                    
+                    <div class="compliance-card">
+                        <div class="compliance-icon"><i class="fas fa-flag-usa"></i></div>
+                        <div class="compliance-title">CCPA (Калифорния)</div>
+                        <p>Закон о конфиденциальности потребителей Калифорнии. Дает потребителям право контролировать свои данные.</p>
+                    </div>
+                    
+                    <div class="compliance-card">
+                        <div class="compliance-icon"><i class="fas fa-industry"></i></div>
+                        <div class="compliance-title">PCI DSS</div>
+                        <p>Стандарт безопасности индустрии платежных карт. Обязателен для всех, кто обрабатывает платежные карты.</p>
+                    </div>
+                    
+                    <div class="compliance-card">
+                        <div class="compliance-icon"><i class="fas fa-hospital"></i></div>
+                        <div class="compliance-title">HIPAA (США)</div>
+                        <p>Закон о переносимости и подотчетности медицинского страхования. Защищает медицинскую информацию.</p>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <h4 class="info-box-title">Ключевые принципы GDPR:</h4>
+                    <ul>
+                        <li><strong>Законность, справедливость и прозрачность</strong> — данные должны обрабатываться законно</li>
+                        <li><strong>Ограничение цели</strong> — данные собираются только для конкретных целей</li>
+                        <li><strong>Минимизация данных</strong> — собираются только необходимые данные</li>
+                        <li><strong>Точность</strong> — данные должны быть точными и актуальными</li>
+                        <li><strong>Ограничение хранения</strong> — данные хранятся только необходимое время</li>
+                        <li><strong>Целостность и конфиденциальность</strong> — данные должны быть защищены</li>
+                        <li><strong>Подотчетность</strong> — контроллер данных несет ответственность</li>
+                    </ul>
+                </div>
+                
+                <div class="real-example">
+                    <div class="example-title"><i class="fas fa-euro-sign example-icon"></i> Пример: Штрафы за нарушение GDPR</div>
+                    <p>В 2021 году Amazon был оштрафован на <strong>746 миллионов евро</strong> за нарушения GDPR в отношении обработки персональных данных.
+                    <br>В 2020 году British Airways получила штраф <strong>20 миллионов фунтов</strong> за утечку данных 400,000 клиентов.
+                    <br>В 2019 году Marriott International - <strong>18.4 миллиона фунтов</strong> за утечку данных 339 миллионов гостей.</p>
+                </div>
+            </div>
+
+            <div class="practice-section">
+                <h3 class="section-title"><i class="fas fa-flask"></i> Практика: Анализ соответствия законодательству</h3>
+                <p>Определите, какие законы и стандарты применяются к вашему бизнесу:</p>
+                
+                <form class="practice-form">
+                    <div class="form-group">
+                        <label for="companyLocation" class="form-label">Регион деятельности:</label>
+                        <select id="companyLocation" class="form-input">
+                            <option value="eu">Европейский Союз</option>
+                            <option value="usa">США</option>
+                            <option value="asia">Азия</option>
+                            <option value="russia">Россия/СНГ</option>
+                            <option value="global">Глобальная деятельность</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="industryType" class="form-label">Отрасль:</label>
+                        <select id="industryType" class="form-input">
+                            <option value="finance">Финансы/Банкинг</option>
+                            <option value="healthcare">Здравоохранение</option>
+                            <option value="retail">Розничная торговля</option>
+                            <option value="tech">Технологии</option>
+                            <option value="government">Госсектор</option>
+                            <option value="education">Образование</option>
+                        </select>
+                    </div>
+                    
+                    <button type="button" onclick="analyzeCompliance()" class="form-button">
+                        <i class="fas fa-search"></i> Анализ соответствия
+                    </button>
+                </form>
+                
+                <div id="complianceAnalysisResults" class="results-container">
+                    <div class="result-step">
+                        <div class="step-title">Применимые законы и стандарты:</div>
+                        <div class="step-content" id="applicableLaws"></div>
+                    </div>
+                    <div class="result-step">
+                        <div class="step-title">Ключевые требования:</div>
+                        <div class="step-content" id="keyRequirements"></div>
+                    </div>
+                    <div class="result-step">
+                        <div class="step-title">Штрафы за несоответствие:</div>
+                        <div class="step-content" id="penalties"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOPIC 2: STANDARDS & FRAMEWORKS -->
+        <section id="standards" class="topic-section">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-cogs"></i> Стандарты и фреймворки кибербезопасности</h2>
+                
+                <p><strong>Стандарты — это общий язык кибербезопасности.</strong> Они обеспечивают единый подход к защите информации независимо от организации или страны.</p>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-step">ISO 27001</div>
+                        <p>Международный стандарт управления информационной безопасностью. Основан на цикле PDCA (Plan-Do-Check-Act).</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">NIST Cybersecurity Framework</div>
+                        <p>Фреймворк Национального института стандартов США: Identify, Protect, Detect, Respond, Recover.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">CIS Controls</div>
+                        <p>20 критических контролей безопасности от Center for Internet Security. Практические рекомендации.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">COBIT</div>
+                        <p>Фреймворк управления IT от ISACA. Фокус на управлении и контроле бизнес-процессов.</p>
+                    </div>
+                </div>
+                
+                <div class="analogy-box">
+                    <div class="analogy-title"><i class="fas fa-building example-icon"></i> Аналогия со строительством</div>
+                    <p>Стандарты кибербезопасности похожи на строительные стандарты:
+                    <br>• <strong>ISO 27001</strong> — общие требования к безопасности здания
+                    <br>• <strong>NIST CSF</strong> — пошаговая инструкция по строительству
+                    <br>• <strong>CIS Controls</strong> — конкретные меры безопасности (замки, сигнализации)
+                    <br>• <strong>COBIT</strong> — управление строительным процессом
+                    <br>• <strong>GDPR</strong> — правила защиты жильцов и их имущества</p>
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-title">Пример политики безопасности (фрагмент):</div>
+                    <div>ПОЛИТИКА БЕЗОПАСНОСТИ ИНФОРМАЦИИ</div>
+                    <div>1. ОБЛАСТЬ ПРИМЕНЕНИЯ</div>
+                    <div>   Применяется ко всем сотрудникам, подрядчикам и третьим лицам</div>
+                    <div>2. КЛАССИФИКАЦИЯ ДАННЫХ</div>
+                    <div>   • Конфиденциальные: финансовые данные, ПДн</div>
+                    <div>   • Внутренние: бизнес-процессы, документация</div>
+                    <div>   • Публичные: маркетинговые материалы</div>
+                    <div>3. КОНТРОЛЬ ДОСТУПА</div>
+                    <div>   • Принцип наименьших привилегий</div>
+                    <div>   • Обязательная двухфакторная аутентификация</div>
+                    <div>   • Регулярный пересмотр прав доступа</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOPIC 3: CYBER GOVERNANCE -->
+        <section id="governance" class="topic-section">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-chess-king"></i> Кибер-управление и стратегия</h2>
+                
+                <p><strong>Кибер-управление — это не IT, а бизнес-функция.</strong> Эффективное управление безопасностью требует участия высшего руководства и интеграции в бизнес-стратегию.</p>
+                
+                <div class="info-box">
+                    <h4 class="info-box-title">3 уровня кибер-управления:</h4>
+                    <ul>
+                        <li><strong>Стратегический (Совет директоров)</strong> — определение политики, утверждение бюджета, надзор за рисками</li>
+                        <li><strong>Тактический (Руководство)</strong> — реализация политики, управление программой безопасности</li>
+                        <li><strong>Операционный (ИТ/безопасность)</strong> — выполнение мер безопасности, мониторинг, реагирование</li>
+                    </ul>
+                </div>
+                
+                <div class="real-example">
+                    <div class="example-title"><i class="fas fa-chart-network example-icon"></i> Пример: Организационная структура CISO</div>
+                    <p><strong>Chief Information Security Officer (CISO)</strong> — ключевая роль в современной организации:
+                    <br>• Подчиняется непосредственно CEO или CFO
+                    <br>• Участвует в заседаниях совета директоров
+                    <br>• Управляет бюджетом безопасности (обычно 3-7% от IT-бюджета)
+                    <br>• Отвечает за соответствие требованиям
+                    <br>• Координирует реагирование на инциденты
+                    <br>• Взаимодействует с регуляторами и правоохранительными органами</p>
+                </div>
+                
+                <div class="analogy-box">
+                    <div class="analogy-title"><i class="fas fa-ship example-icon"></i> Аналогия с капитаном корабля</div>
+                    <p>CISO как капитан корабля в штормовом море:
+                    <br>• <strong>Совет директоров</strong> — владельцы судна, определяющие маршрут
+                    <br>• <strong>CISO</strong> — капитан, отвечающий за безопасность плавания
+                    <br>• <strong>Команда безопасности</strong> — офицеры и матросы
+                    <br>• <strong>Стандарты</strong> — морские карты и правила навигации
+                    <br>• <strong>Угрозы</strong> — штормы, пираты, айсберги
+                    <br>• <strong>Страхование</strong> — киберстрахование от потерь</p>
+                </div>
+                
+                <h3>Ключевые показатели эффективности (KPI) для CISO:</h3>
+                
+                <div class="code-block">
+                    <div class="code-title">Дашборд CISO:</div>
+                    <div>1. УРОВЕНЬ ЗРЕЛОСТИ БЕЗОПАСНОСТИ: 72%</div>
+                    <div>2. СООТВЕТСТВИЕ ТРЕБОВАНИЯМ: 95%</div>
+                    <div>3. СРЕДНЕЕ ВРЕМЯ ОБНАРУЖЕНИЯ: 48 часов</div>
+                    <div>4. СРЕДНЕЕ ВРЕМЯ РЕАГИРОВАНИЯ: 4 часа</div>
+                    <div>5. КОЛИЧЕСТВО УСПЕШНЫХ АТАК: 2 в месяц</div>
+                    <div>6. ПОКРЫТИЕ ОБУЧЕНИЕМ: 98% сотрудников</div>
+                    <div>7. ROI ПРОГРАММЫ БЕЗОПАСНОСТИ: 142%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOPIC 4: RISK MANAGEMENT -->
+        <section id="risk-management" class="topic-section">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-chart-line"></i> Управление киберрисками</h2>
+                
+                <p><strong>Управление рисками — это про деньги, а не про технологии.</strong> Цель — принимать обоснованные бизнес-решения о том, какие риски принимать, снижать, передавать или избегать.</p>
+                
+                <div class="info-box">
+                    <h4 class="info-box-title">4 стратегии управления рисками:</h4>
+                    <ul>
+                        <li><strong>Принятие</strong> — риск незначителен, меры контроля дороже возможных потерь</li>
+                        <li><strong>Снижение</strong> — внедрение контролей для уменьшения вероятности или воздействия</li>
+                        <li><strong>Передача</strong> — страхование, аутсорсинг, контракты с третьими сторонами</li>
+                        <li><strong>Избегание</strong> — отказ от деятельности, несущей неприемлемые риски</li>
+                    </ul>
+                </div>
+                
+                <div class="real-example">
+                    <div class="example-title"><i class="fas fa-calculator example-icon"></i> Пример: Количественная оценка рисков</div>
+                    <p><strong>Формула: Риск = Вероятность × Воздействие</strong>
+                    <br>• Утечка данных клиентов: Вероятность 10% × Воздействие $10M = Риск $1M
+                    <br>• DDoS-атака: Вероятность 25% × Воздействие $2M = Риск $500K
+                    <br>• Вредоносное ПО: Вероятность 40% × Воздействие $500K = Риск $200K
+                    <br><strong>Решение:</strong> При бюджете $800K инвестировать в защиту от утечек данных и DDoS.</p>
+                </div>
+                
+                <div class="analogy-box">
+                    <div class="analogy-title"><i class="fas fa-umbrella example-icon"></i> Аналогия с медицинской диагностикой</div>
+                    <p>Управление рисками похоже на медицинскую диагностику:
+                    <br>• <strong>Идентификация активов</strong> — осмотр пациента
+                    <br>• <strong>Оценка уязвимостей</strong> — анализы и обследования
+                    <br>• <strong>Оценка угроз</strong> — выявление болезней и рисков
+                    <br>• <strong>Расчет рисков</strong> — диагноз и прогноз
+                    <br>• <strong>Выбор контролей</strong> — назначение лечения
+                    <br>• <strong>Мониторинг</strong> — регулярные осмотры и контроль</p>
+                </div>
+                
+                <h3>Матрица оценки рисков:</h3>
+                
+                <div class="code-block">
+                    <div class="code-title">Матрица рисков (Вероятность × Воздействие):</div>
+                    <div>          | НИЗКОЕ | СРЕДНЕЕ | ВЫСОКОЕ</div>
+                    <div>ВЫСОКАЯ  | СРЕДНИЙ| ВЫСОКИЙ| КРИТИЧЕСКИЙ</div>
+                    <div>СРЕДНЯЯ  | НИЗКИЙ | СРЕДНИЙ | ВЫСОКИЙ</div>
+                    <div>НИЗКАЯ   | НИЗКИЙ | НИЗКИЙ  | СРЕДНИЙ</div>
+                    <div class="highlight">Примеры:</div>
+                    <div>• КРИТИЧЕСКИЙ: Утечка ПДн клиентов (Высокая вер. × Высокое возд.)</div>
+                    <div>• ВЫСОКИЙ: DDoS во время Black Friday (Средняя вер. × Высокое возд.)</div>
+                    <div>• СРЕДНИЙ: Потеря ноутбука с данными (Высокая вер. × Низкое возд.)</div>
+                    <div>• НИЗКИЙ: Вирус на тестовом сервере (Низкая вер. × Низкое возд.)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOPIC 5: COMPLIANCE -->
+        <section id="compliance" class="topic-section">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-clipboard-check"></i> Соответствие требованиям и аудит</h2>
+                
+                <p><strong>Compliance ≠ Security.</strong> Соответствие требованиям — это минимальный набор контролей, в то время как безопасность — это постоянный процесс защиты от реальных угроз.</p>
+                
+                <div class="info-box">
+                    <h4 class="info-box-title">Типы аудитов безопасности:</h4>
+                    <ul>
+                        <li><strong>Внутренний аудит</strong> — проводится сотрудниками организации для самопроверки</li>
+                        <li><strong>Внешний аудит</strong> — независимая проверка сторонней организацией</li>
+                        <li><strong>Регуляторный аудит</strong> — проверка государственными органами</li>
+                        <li><strong>Аудит третьей стороны</strong> — проверка поставщиков и партнеров</li>
+                    </ul>
+                </div>
+                
+                <div class="real-example">
+                    <div class="example-title"><i class="fas fa-file-certificate example-icon"></i> Пример: Процесс сертификации ISO 27001</div>
+                    <p>1. <strong>Предварительная оценка</strong> (6 месяцев) — анализ текущего состояния
+                    <br>2. <strong>Разработка СМИБ</strong> (3 месяца) — политики, процедуры, документы
+                    <br>3. <strong>Внедрение контролей</strong> (6 месяцев) — технические и организационные меры
+                    <br>4. <strong>Внутренний аудит</strong> (1 месяц) — проверка готовности
+                    <br>5. <strong>Сертификационный аудит</strong> (2 недели) — проверка сертифицирующим органом
+                    <br>6. <strong>Поддержание сертификата</strong> (ежегодно) — надзорные аудиты, пересертификация каждые 3 года
+                    <br><strong>Стоимость:</strong> $20,000 - $100,000+ в зависимости от размера организации</p>
+                </div>
+                
+                <div class="analogy-box">
+                    <div class="analogy-title"><i class="fas fa-car example-icon"></i> Аналогия с автомобилем</div>
+                    <p>Соответствие требованиям похоже на техосмотр автомобиля:
+                    <br>• <strong>Стандарты</strong> — правила дорожного движения и техосмотра
+                    <br>• <strong>Политики</strong> — руководство по эксплуатации автомобиля
+                    <br>• <strong>Контроли</strong> — ремни безопасности, подушки, ABS
+                    <br>• <strong>Аудит</strong> — техосмотр в ГИБДД
+                    <br>• <strong>Сертификация</strong> — получение диагностической карты
+                    <br>• <strong>Безопасность</strong> — навыки водителя и внимательность на дороге</p>
+                </div>
+                
+                <h3>Чек-лист подготовки к аудиту:</h3>
+                
+                <div class="code-block">
+                    <div class="code-title">Подготовка за 90 дней до аудита:</div>
+                    <div>[ ] 1. Назначить ответственного за координацию аудита</div>
+                    <div>[ ] 2. Определить область аудита и применимые требования</div>
+                    <div>[ ] 3. Провести внутренний предварительный аудит</div>
+                    <div>[ ] 4. Подготовить все необходимые документы</div>
+                    <div>[ ] 5. Провести обучение сотрудников</div>
+                    <div>[ ] 6. Исправить выявленные несоответствия</div>
+                    <div>[ ] 7. Подготовить помещения и оборудование для аудиторов</div>
+                    <div>[ ] 8. Назначить сопровождающих для аудиторов</div>
+                    <div>[ ] 9. Провести репетицию интервью с сотрудниками</div>
+                    <div>[ ] 10. Разработать план действий на случай выявленных несоответствий</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINAL TEST -->
+        <section class="test-section">
+            <h2 class="section-title"><i class="fas fa-question-circle"></i> Финальный тест по законодательству и управлению</h2>
+            <p>Проверьте свои знания по всем пяти темам модуля:</p>
+            
+            <div class="question">
+                <div class="question-text">1. Какой максимальный штраф предусмотрен GDPR за наиболее серьезные нарушения?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="A">
+                        <span class="option-label">A) До 4% от глобального оборота компании или 20 млн евро</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="B">
+                        <span class="option-label">B) До 10% от годовой выручки</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="C">
+                        <span class="option-label">C) До 1 миллиона евро за каждое нарушение</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">2. Какой из перечисленных стандартов НЕ является фреймворком управления информационной безопасностью?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="A">
+                        <span class="option-label">A) ISO 27001</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="B">
+                        <span class="option-label">B) NIST Cybersecurity Framework</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="C">
+                        <span class="option-label">C) Windows Server 2022</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">3. Кто обычно несет окончательную ответственность за кибербезопасность в организации?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="A">
+                        <span class="option-label">A) Совет директоров и высшее руководство</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="B">
+                        <span class="option-label">B) IT-отдел</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="C">
+                        <span class="option-label">C) Отдел кадров</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">4. Что означает аббревиатура CISO?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q4" value="A">
+                        <span class="option-label">A) Chief Information Security Officer</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="B">
+                        <span class="option-label">B) Cyber Intelligence and Security Operations</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="C">
+                        <span class="option-label">C) Corporate Information Systems Office</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">5. Какой из перечисленных методов НЕ является стратегией управления рисками?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q5" value="A">
+                        <span class="option-label">A) Игнорирование</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="B">
+                        <span class="option-label">B) Принятие</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="C">
+                        <span class="option-label">C) Снижение</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">6. Какой стандарт регулирует безопасность платежных карт?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q6" value="A">
+                        <span class="option-label">A) PCI DSS</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="B">
+                        <span class="option-label">B) HIPAA</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="C">
+                        <span class="option-label">C) SOX</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">7. Как часто проводятся надзорные аудиты после получения сертификата ISO 27001?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q7" value="A">
+                        <span class="option-label">A) Ежегодно</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="B">
+                        <span class="option-label">B) Раз в два года</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="C">
+                        <span class="option-label">C) Раз в три года</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">8. Какой принцип GDPR требует, чтобы данные собирались только для конкретных, явно указанных целей?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q8" value="A">
+                        <span class="option-label">A) Ограничение цели</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="B">
+                        <span class="option-label">B) Минимизация данных</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="C">
+                        <span class="option-label">C) Подотчетность</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">9. Что из перечисленного является примером передачи риска?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q9" value="A">
+                        <span class="option-label">A) Покупка киберстрахования</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="B">
+                        <span class="option-label">B) Установка антивируса</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="C">
+                        <span class="option-label">C) Отказ от использования облачных сервисов</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">10. Какой фреймворк использует подход Identify, Protect, Detect, Respond, Recover?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q10" value="A">
+                        <span class="option-label">A) NIST Cybersecurity Framework</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="B">
+                        <span class="option-label">B) ISO 27001</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="C">
+                        <span class="option-label">C) COBIT</span>
+                    </label>
+                </div>
+            </div>
+            
+            <button onclick="checkFinalTest()" class="test-button">
+                <i class="fas fa-check"></i> Проверить все ответы
+            </button>
+            
+            <div id="finalTestResults" class="test-results">
+                <div class="score">Ваш результат: <span id="finalScore">0</span>/10</div>
+                <div class="score">Процент: <span class="score-percentage" id="percentage">0%</span></div>
+                <div id="smileyContainer"></div>
+                <div id="resultMessage"></div>
+                <div id="testDetails" style="margin-top: 20px;"></div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="module-nav">
+            <a href="defense.html" class="nav-button">
+                <i class="fas fa-arrow-left"></i> Предыдущий модуль: Оборона и реагирование
+            </a>
+            <a href="modules.html" class="nav-button">
+                <i class="fas fa-th"></i> Все модули
+            </a>
+            <a href="game-cyber.html" class="nav-button">
+                Следующий модуль: Симулятор Киберменеджера <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">© <span class="current-year">2025</span> CyberShield Academy. Все права защищены.</p>
+        <p class="footer-text">Образовательная платформа нового поколения</p>
+    </footer>
+
+    <script>
+        // Обновляем год в футере
+        document.querySelector('.current-year').textContent = new Date().getFullYear();
+        
+        // Переключение между темами
+        function showTopic(topicId) {
+            // Скрыть все темы
+            document.querySelectorAll('.topic-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Убрать активный класс со всех кнопок
+            document.querySelectorAll('.topic-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Показать выбранную тему
+            document.getElementById(topicId).classList.add('active');
+            
+            // Активировать кнопку
+            document.querySelector(`button[onclick="showTopic('${topicId}')"]`).classList.add('active');
+        }
+
+        // Анализ соответствия законодательству
+        function analyzeCompliance() {
+            const location = document.getElementById('companyLocation').value;
+            const industry = document.getElementById('industryType').value;
+            
+            let laws = '';
+            let requirements = '';
+            let penalties = '';
+            
+            // Определяем применимые законы
+            switch(location) {
+                case 'eu':
+                    laws = 'GDPR, ePrivacy Directive, NIS Directive, Cyber Resilience Act';
+                    if (industry === 'finance') laws += ', PSD2, MiFID II';
+                    if (industry === 'healthcare') laws += ', Medical Devices Regulation';
+                    break;
+                    
+                case 'usa':
+                    laws = 'CCPA, HIPAA (если healthcare), GLBA (если finance), SOX (публичные компании)';
+                    if (industry === 'finance') laws += ', PCI DSS, FFIEC Guidelines';
+                    if (industry === 'healthcare') laws += ', HITECH Act';
+                    break;
+                    
+                case 'asia':
+                    laws = 'PIPL (Китай), PDPA (Сингапур), APPI (Япония), PDPA (Таиланд)';
+                    break;
+                    
+                case 'russia':
+                    laws = '152-ФЗ "О персональных данных", 187-ФЗ "О безопасности КИИ", требования ФСТЭК и ФСБ';
+                    break;
+                    
+                case 'global':
+                    laws = 'GDPR (если клиенты из ЕС), CCPA (если клиенты из Калифорнии), местные законы каждой страны деятельности';
+                    break;
+            }
+            
+            // Добавляем отраслевые стандарты
+            switch(industry) {
+                case 'finance':
+                    laws += ', PCI DSS, ISO 27001, SWIFT CSP';
+                    requirements = 'Шифрование данных, двухфакторная аутентификация, мониторинг транзакций, регулярное тестирование на проникновение';
+                    penalties = 'Штрафы до 4% от глобального оборота (GDPR), запрет на обработку платежей (PCI DSS), отзыв лицензии';
+                    break;
+                    
+                case 'healthcare':
+                    laws += ', ISO 27799, HITRUST CSF';
+                    requirements = 'Защита медицинских записей, контроль доступа, аудит всех действий с данными, шифрование устройств';
+                    penalties = 'Штрафы до $1.5M в год за нарушения HIPAA, уголовная ответственность, исключение из государственных программ';
+                    break;
+                    
+                case 'retail':
+                    laws += ', PCI DSS (если принимает карты)';
+                    requirements = 'Защита данных клиентов, безопасность платежных систем, защита от мошенничества';
+                    penalties = 'Штрафы $5,000 - $100,000 в месяц за нарушения PCI DSS, компенсации клиентам, репутационный ущерб';
+                    break;
+                    
+                case 'tech':
+                    requirements = 'Защита интеллектуальной собственности, безопасность разработки (DevSecOps), защита данных пользователей';
+                    penalties = 'Штрафы за нарушения конфиденциальности, судебные иски, потеря доверия клиентов';
+                    break;
+                    
+                case 'government':
+                    laws += ', Критерии безопасности ФСТЭК (РФ), NIST SP 800-53 (США)';
+                    requirements = 'Защита государственной тайны, контроль доступа, аудит всех действий, физическая безопасность';
+                    penalties = 'Уголовная ответственность, отстранение от должности, прекращение финансирования';
+                    break;
+                    
+                case 'education':
+                    requirements = 'Защита данных студентов, безопасность исследований, фильтрация контента, защита от кибербуллинга';
+                    penalties = 'Потеря аккредитации, судебные иски от родителей, прекращение государственного финансирования';
+                    break;
+            }
+            
+            // Общие требования, если не указаны специфические
+            if (!requirements) {
+                requirements = 'Защита персональных данных, управление доступом, шифрование, резервное копирование, реагирование на инциденты, обучение сотрудников';
+            }
+            
+            // Общие штрафы, если не указаны специфические
+            if (!penalties) {
+                penalties = 'Штрафы до 4% от глобального оборота (GDPR), судебные иски от клиентов, репутационный ущерб, потеря доверия партнеров';
+            }
+            
+            document.getElementById('applicableLaws').textContent = laws;
+            document.getElementById('keyRequirements').textContent = requirements;
+            document.getElementById('penalties').textContent = penalties;
+            
+            document.getElementById('complianceAnalysisResults').style.display = 'block';
+        }
+
+        // Проверка финального теста
+        function checkFinalTest() {
+            // Правильные ответы
+            const correctAnswers = {
+                'q1': 'A',
+                'q2': 'C',
+                'q3': 'A',
+                'q4': 'A',
+                'q5': 'A',
+                'q6': 'A',
+                'q7': 'A',
+                'q8': 'A',
+                'q9': 'A',
+                'q10': 'A'
+            };
+            
+            let score = 0;
+            let details = '<div style="margin-top: 1rem; text-align: left;">';
+            
+            // Проверяем каждый вопрос
+            for (const question in correctAnswers) {
+                const selected = document.querySelector(`input[name="${question}"]:checked`);
+                const correctAnswer = correctAnswers[question];
+                
+                if (selected) {
+                    if (selected.value === correctAnswer) {
+                        score++;
+                        details += `<div style="color: var(--accent-green); margin: 0.5rem 0;">
+                            <i class="fas fa-check-circle"></i> Вопрос ${question.substring(1)}: Правильно!
+                        </div>`;
+                    } else {
+                        let explanation = '';
+                        switch(question) {
+                            case 'q1': explanation = 'GDPR предусматривает штрафы до 4% от глобального оборота или 20 млн евро'; break;
+                            case 'q2': explanation = 'Windows Server 2022 - это операционная система, а не фреймворк безопасности'; break;
+                            case 'q3': explanation = 'Совет директоров и высшее руководство несут окончательную ответственность'; break;
+                            case 'q4': explanation = 'CISO - Chief Information Security Officer'; break;
+                            case 'q5': explanation = 'Игнорирование - это не стратегия управления рисками'; break;
+                            case 'q6': explanation = 'PCI DSS регулирует безопасность платежных карт'; break;
+                            case 'q7': explanation = 'Надзорные аудиты ISO 27001 проводятся ежегодно'; break;
+                            case 'q8': explanation = 'Принцип ограничения цели требует конкретных целей сбора данных'; break;
+                            case 'q9': explanation = 'Киберстрахование - пример передачи риска'; break;
+                            case 'q10': explanation = 'NIST Cybersecurity Framework использует эти 5 функций'; break;
+                        }
+                        
+                        details += `<div style="color: var(--accent-red); margin: 0.5rem 0;">
+                            <i class="fas fa-times-circle"></i> Вопрос ${question.substring(1)}: Неправильно.<br>
+                            <span style="color: var(--text-gray); font-size: 0.9rem;">Правильный ответ: ${correctAnswer}. ${explanation}</span>
+                        </div>`;
+                    }
+                } else {
+                    details += `<div style="color: var(--accent-orange); margin: 0.5rem 0;">
+                        <i class="fas fa-question-circle"></i> Вопрос ${question.substring(1)}: Не отвечен
+                    </div>`;
+                }
+            }
+            
+            details += '</div>';
+            
+            // Вычисляем процент
+            const percentage = Math.round((score / 10) * 100);
+            
+            // Показываем результаты
+            const results = document.getElementById('finalTestResults');
+            results.style.display = 'block';
+            
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('percentage').textContent = percentage + '%';
+            document.getElementById('testDetails').innerHTML = details;
+            
+            // Создаем пиксельные смайлики и сообщения
+            const smileyContainer = document.getElementById('smileyContainer');
+            const resultMessage = document.getElementById('resultMessage');
+            
+            smileyContainer.innerHTML = '';
+            resultMessage.innerHTML = '';
+            
+            if (percentage >= 70) {
+                // Зеленый пиксельный смайлик
+                smileyContainer.innerHTML = `
+                    <canvas id="greenSmiley" width="100" height="100" class="pixel-smiley green-smiley"></canvas>
+                `;
+                
+                resultMessage.innerHTML = '<div class="good-result">МОЛОДЕЦ!</div>';
+                
+                // Рисуем зеленый смайлик
+                const canvas = document.getElementById('greenSmiley');
+                const ctx = canvas.getContext('2d');
+                
+                // Очищаем canvas
+                ctx.fillStyle = '#0a0a14';
+                ctx.fillRect(0, 0, 100, 100);
+                
+                // Рисуем лицо (зеленое)
+                ctx.fillStyle = '#00FF7F';
+                for (let x = 20; x < 80; x += 10) {
+                    for (let y = 20; y < 80; y += 10) {
+                        ctx.fillRect(x, y, 8, 8);
+                    }
+                }
+                
+                // Глаза
+                ctx.fillStyle = '#0a0a14';
+                ctx.fillRect(35, 35, 10, 10);
+                ctx.fillRect(55, 35, 10, 10);
+                
+                // Улыбка
+                for (let i = 0; i < 5; i++) {
+                    ctx.fillRect(35 + i*5, 60, 5, 5);
+                }
+                
+            } else {
+                // Красный пиксельный смайлик
+                smileyContainer.innerHTML = `
+                    <canvas id="redSmiley" width="100" height="100" class="pixel-smiley red-smiley"></canvas>
+                `;
+                
+                resultMessage.innerHTML = '<div class="bad-result">ИДИ УЧИСЬ!</div>';
+                
+                // Рисуем красный смайлик
+                const canvas = document.getElementById('redSmiley');
+                const ctx = canvas.getContext('2d');
+                
+                // Очищаем canvas
+                ctx.fillStyle = '#0a0a14';
+                ctx.fillRect(0, 0, 100, 100);
+                
+                // Рисуем лицо (красное)
+                ctx.fillStyle = '#FF6B6B';
+                for (let x = 20; x < 80; x += 10) {
+                    for (let y = 20; y < 80; y += 10) {
+                        ctx.fillRect(x, y, 8, 8);
+                    }
+                }
+                
+                // Глаза (злые)
+                ctx.fillStyle = '#0a0a14';
+                ctx.fillRect(35, 35, 10, 5);
+                ctx.fillRect(55, 35, 10, 5);
+                
+                // Брови (злые)
+                ctx.fillRect(30, 25, 15, 5);
+                ctx.fillRect(55, 25, 15, 5);
+                
+                // Рот (грустный/злой)
+                for (let i = 0; i < 5; i++) {
+                    ctx.fillRect(35 + i*5, 70, 5, 5);
+                }
+            }
+            
+            // Добавляем анимацию
+            results.style.animation = 'pulse 0.5s';
+            setTimeout(() => {
+                results.style.animation = '';
+            }, 500);
+            
+            // Прокрутка к результатам
+            results.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Инициализация
+        window.onload = function() {
+            // Анализ соответствия по умолчанию
+            analyzeCompliance();
+        };
+    </script>
+</body>
+</html>

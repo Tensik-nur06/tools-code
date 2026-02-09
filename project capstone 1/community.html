@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield Academy | Присоединяйся к команде</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #0a0a14;
+            --secondary-dark: #121225;
+            --accent-neon: #39FF14;
+            --accent-cyan: #00F0FF;
+            --accent-purple: #9D4EDD;
+            --accent-orange: #FFA500;
+            --accent-red: #FF6B6B;
+            --accent-pink: #FF4D9E;
+            --accent-yellow: #FFD700;
+            --accent-green: #00FF7F;
+            --text-light: #F8F9FA;
+            --text-gray: #CCCCCC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Кибер-снег фон */
+        .cyber-snow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+            overflow: hidden;
+            background: linear-gradient(to bottom, 
+                rgba(9, 2, 26, 0.95), 
+                rgba(9, 2, 26, 0.98),
+                rgba(10, 10, 20, 1));
+        }
+
+        .snowflake {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.8;
+            filter: blur(0.5px);
+            animation: fall linear infinite, glow 2s infinite alternate;
+        }
+
+        /* Разные типы снежинок */
+        .snowflake.type1 {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        .snowflake.type2 {
+            background: var(--accent-neon);
+            box-shadow: 0 0 10px var(--accent-neon);
+        }
+
+        .snowflake.type3 {
+            background: var(--accent-purple);
+            box-shadow: 0 0 10px var(--accent-purple);
+        }
+
+        .snowflake.type4 {
+            background: white;
+            box-shadow: 0 0 15px white;
+            filter: blur(0.8px);
+        }
+
+        .snowflake.type5 {
+            background: var(--accent-red);
+            box-shadow: 0 0 8px var(--accent-red);
+        }
+
+        .snowflake.type6 {
+            background: var(--accent-green);
+            box-shadow: 0 0 8px var(--accent-green);
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        @keyframes glow {
+            0% { opacity: 0.4; }
+            100% { opacity: 0.9; }
+        }
+
+        /* Дополнительный эффект - большие медленные снежинки */
+        .snowflake.big {
+            filter: blur(1px);
+            opacity: 0.6;
+        }
+
+        /* Animated scan lines */
+        .scan-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 240, 255, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: -1;
+            animation: scan 10s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* Header */
+        header {
+            padding: 2rem;
+            border-bottom: 3px solid var(--accent-neon);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+            background: rgba(10, 10, 20, 0.95);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            image-rendering: pixelated;
+        }
+
+        .logo-inner {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-neon), var(--accent-cyan));
+            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 2px 2px 0px var(--accent-purple);
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-neon), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 0.8rem 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-btn:hover::after {
+            left: 100%;
+        }
+
+        .login-btn {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            color: white;
+        }
+
+        .login-btn:hover {
+            background: rgba(157, 78, 221, 0.8);
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        .nav-btn.active {
+            background: var(--accent-neon);
+            border-color: var(--accent-neon);
+            color: var(--primary-dark);
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+        }
+
+        /* Main Content */
+        main {
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 200px);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 5rem 2rem;
+            position: relative;
+            margin-bottom: 4rem;
+        }
+
+        .hero-section h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.8rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--accent-neon), var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(57, 255, 20, 0.4);
+            animation: textGlow 3s infinite alternate;
+            line-height: 1.2;
+        }
+
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 20px rgba(57, 255, 20, 0.4); }
+            100% { text-shadow: 0 0 40px rgba(57, 255, 20, 0.7), 0 0 60px rgba(0, 240, 255, 0.5); }
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+            color: var(--text-gray);
+        }
+
+        .highlight-text {
+            color: var(--accent-neon);
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+
+        /* Интерактивная кнопка присоединения */
+        .join-button-container {
+            margin: 3rem 0;
+        }
+
+        .join-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+            border: none;
+            color: white;
+            padding: 1.2rem 3rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            border-radius: 0;
+            box-shadow: 0 0 30px rgba(157, 78, 221, 0.5);
+        }
+
+        .join-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 0 50px rgba(157, 78, 221, 0.8), 0 0 80px rgba(0, 240, 255, 0.4);
+            letter-spacing: 3px;
+        }
+
+        .join-btn:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .join-btn i {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .join-btn:hover i {
+            transform: rotate(90deg);
+        }
+
+        /* Секция о команде */
+        .team-section {
+            max-width: 1000px;
+            margin: 5rem auto;
+            padding: 3rem;
+            background: rgba(18, 18, 37, 0.85);
+            border: 2px solid var(--accent-cyan);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .team-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--accent-cyan);
+            margin-bottom: 2rem;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+        }
+
+        .team-content {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-light);
+        }
+
+        .team-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .team-stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0, 240, 255, 0.3);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            color: var(--accent-neon);
+            font-weight: 800;
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+
+        /* Секция "СТУДЕНТЫ, А НЕ ПЕНТЕСТЕРЫ" */
+        .students-section {
+            margin: 6rem 0;
+        }
+
+        .students-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--accent-neon);
+            margin-bottom: 3rem;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+        }
+
+        .students-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .student-card {
+            background: rgba(18, 18, 37, 0.85);
+            border-left: 5px solid var(--accent-purple);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .student-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-left-color: var(--accent-neon);
+        }
+
+        .student-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .student-card p {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        .student-icon {
+            font-size: 2.5rem;
+            color: var(--accent-purple);
+            margin-bottom: 1rem;
+        }
+
+        /* Анимированный терминал */
+        .terminal-animation {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 2.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--accent-neon);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .terminal-text {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--accent-neon);
+            line-height: 1.8;
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.3em;
+            background-color: var(--accent-neon);
+            animation: blink 1s infinite;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Секция с Telegram-ссылкой */
+        .telegram-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(0, 40, 85, 0.3);
+            border-top: 2px solid var(--accent-cyan);
+            border-bottom: 2px solid var(--accent-cyan);
+            margin: 4rem 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .telegram-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+        }
+
+        .telegram-section p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+            color: var(--text-gray);
+        }
+
+        .telegram-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: linear-gradient(135deg, #0088cc, #34b7f1);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 25px rgba(0, 136, 204, 0.5);
+        }
+
+        .telegram-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 40px rgba(0, 136, 204, 0.8);
+            gap: 1.5rem;
+        }
+
+        .telegram-link i {
+            font-size: 1.8rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(57, 255, 20, 0.2);
+            margin-top: 4rem;
+            backdrop-filter: blur(5px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-text {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-year {
+            color: var(--accent-neon);
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            .logo-container {
+                justify-content: center;
+            }
+            nav {
+                justify-content: center;
+            }
+            .hero-section h1 {
+                font-size: 2.8rem;
+            }
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            .team-section {
+                padding: 2rem 1.5rem;
+            }
+            .students-grid {
+                grid-template-columns: 1fr;
+            }
+            .join-btn, .telegram-link {
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Кибер-снег фон -->
+    <div class="cyber-snow" id="cyberSnow"></div>
+    
+    <!-- Animated scan lines -->
+    <div class="scan-lines"></div>
+    
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo">
+                <div class="logo-inner">C</div>
+            </div>
+            <div class="logo-text">CYBERSHIELD ACADEMY</div>
+        </div>
+        <nav>
+            <a href="index.html" class="nav-btn">Главная</a>
+            <a href="modules.html" class="nav-btn">Модули</a>
+            <a href="labs.html" class="nav-btn">Лаборатории</a>
+            <a href="community.html" class="nav-btn active">Сообщество</a>
+            <a href="register.html" class="nav-btn login-btn">Регистрация</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1>КИБЕРСИСТЕМА ПРИЗЫВАЕТ. ПРИСОЕДИНЯЙСЯ</h1>
+            <p class="hero-subtitle">
+                Мы не корпоративные пентёстеры со стажем. Мы — студенты, которые взламывают стереотипы. Мы строим проекты, которые ломают границы возможного. Есть только код, который всё решает. Ты пишешь историю прямо сейчас. Выбери сторону.
+            </p>
+            
+            <div class="join-button-container">
+                <a href="#join-form" class="join-btn">
+                    <i class="fas fa-terminal"></i> ПРИНЯТЬ ВЫЗОВ СИСТЕМЫ
+                </a>
+            </div>
+        </section>
+
+        <!-- Terminal Animation -->
+        <div class="terminal-animation">
+            <div class="terminal-text">
+                > СИСТЕМА ИНИЦИАЛИЗИРОВАНА ДЕКАБРЬ 2025<br>
+                > ПОИСК СОЗДАТЕЛЕЙ БУДУЩЕГО...<br>
+                > ОДНА ГРУППА. ОДНА ЦЕЛЬ. НУЛЕВОЙ КОМПРОМИСС.<br>
+                > ТВОЙ КОД — ЕДИНСТВЕННЫЙ ПРОПУСК<br>
+                > ВВЕДИ КОМАНДУ ПРИСОЕДИНЕНИЯ: <span class="terminal-cursor"></span>
+            </div>
+        </div>
+
+        <!-- Team Section -->
+        <section class="team-section">
+            <h2>НЕ КОМАНДА. КИБЕР-ОТРЯД</h2>
+            <div class="team-content">
+                <p>CyberShield — это цифровой полигон, где теории умирают, а проекты оживают. Мы не учим по учебникам. Мы разбираем реальные кейсы, строим лаборатории в облаках, пишем скрипты, которые думают быстрее людей. Здесь каждый байт — это решение. Каждая строка кода — это оружие.</p>
+                
+                <p>Мы — студенты. Но мы уже понимаем то, о чём не пишут в учебниках. Мы видим уязвимости там, где другие видят только интерфейс. Мы строим защиту не по шаблонам, а по логике угроз. Наш главный актив — не опыт, а отсутствие рамок. Мы не знаем, что "невозможно", поэтому делаем это.</p>
+                
+                <p>Здесь нет менторов с регалиями. Есть коллеги с проектами. Каждая суббота — разбор реального инцидента. Каждую ночь — CTF, который бросает вызов. Мы не растем вертикально. Мы растем сетью. Каждый новый участник — это новый узел в системе защиты будущего.</p>
+            </div>
+            
+            <div class="team-stats">
+                <div class="stat-item">
+                    <span class="stat-number">0→Эксперт</span>
+                    <span class="stat-label">Путь каждого</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Кибер-бодрствование</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label">Потенциал роста</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">Декабрь'25</span>
+                    <span class="stat-label">Запуск системы</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Students Section -->
+        <section class="students-section">
+            <h2>МЫ НЕ ИЗУЧАЕМ. МЫ СОЗДАЁМ</h2>
+            <div class="students-grid">
+                <div class="student-card">
+                    <div class="student-icon">⚡</div>
+                    <h3>ПРОЕКТЫ, А НЕ КОНСПЕКТЫ</h3>
+                    <p>У нас нет лекций о том, "как должно работать". Есть проекты, которые либо работают, либо нет. Мы строим SIEM-системы из открытых компонентов. Пишем сканеры уязвимостей на Python. Разворачиваем honeypots, которые учатся на атаках. Каждый проект — это битва. Каждая победа — это уровень.</p>
+                </div>
+                
+                <div class="student-card">
+                    <div class="student-icon">🔓</div>
+                    <h3>СТУДЕНТЫ, А НЕ ПЕНТЕСТЕРЫ</h3>
+                    <p>Мы не притворяемся опытными. Мы становимся ими. Прямо сейчас. Начинаем с анализа простых веб-приложений, заканчиваем reverse engineering вредоносного ПО. Мы не ждём дипломов. Мы создаём портфолио из реальных кейсов. Наш стаж — это GitHub. Наша репутация — это найденные уязвимости.</p>
+                </div>
+                
+                <div class="student-card">
+                    <div class="student-icon">🚀</div>
+                    <h3>СПЕЦИАЛИСТЫ ИЗ БУДУЩЕГО</h3>
+                    <p>Мы учимся не для оценок. Мы учимся для рынка, который ещё не существует. ИБ через 5 лет будет другой. Мы готовимся к ней сегодня. Криптография пост-квантовой эры. AI-driven security. Анализ угроз на стыке digital и physical. Мы строим навыки, которые будут нужны завтра.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Telegram Section -->
+        <section class="telegram-section">
+            <h2>ЦИФРОВОЙ ШТАБ — В ТЕЛЕГРАМ</h2>
+            <p>Вся оперативная информация, обсуждения, вызовы и победы — здесь. Одна группа. Один канал связи. Ноль бюрократии. Новый CTF-челлендж появляется в 2 ночи? Обсуждение проходит в 3. Решение публикуется в 4. Мы живём в часовом поясе кода.</p>
+            <p>Присоединяйся к цифровому отряду. Нажми на ссылку — и ты внутри системы. Первый шаг к тому, чтобы перестать изучать безопасность и начать её создавать.</p>
+            
+            <!-- ВСТАВЛЕНА ВАША ССЫЛКА НА ТЕЛЕГРАМ -->
+            <a href="https://t.me/+9AtkCbxrKNYzOGQy" target="_blank" class="telegram-link">
+                <i class="fab fa-telegram"></i> ПРОРЫВ В ТЕЛЕГРАМ
+            </a>
+            
+            <p style="margin-top: 2rem; color: var(--accent-cyan); font-size: 1rem; font-family: 'Share Tech Mono', monospace;">
+                > Ссылка ведёт прямо в эпицентр. Не ищи обходных путей.
+            </p>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="hero-section">
+            <h1>ТВОЙ КОД ЖДЁТ КОМАНДУ</h1>
+            <p class="hero-subtitle">
+                Неважно, сколько строк кода ты написал в жизни. Важно, сколько из них решали реальные проблемы. У нас нет вступительных испытаний. Есть только одно требование: готовность делать. Каждый день. Каждую ночь. Пока другие спят — мы пишем историю кибербезопасности.
+            </p>
+            
+            <div class="join-button-container">
+                <a href="https://t.me/+9AtkCbxrKNYzOGQy" target="_blank" class="join-btn">
+                    <i class="fas fa-rocket"></i> СТАРТ ПРЯМО СЕЙЧАС
+                </a>
+            </div>
+            
+            <p style="margin-top: 2rem; color: var(--text-gray); font-size: 1rem;">
+                P.S. Запуск произведён в декабре 2025. Мы первые. Мы основоположники. Ты можешь стать одним из создателей системы.
+            </p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">© <span class="current-year">2025</span> CyberShield Academy. Все права защищены.</p>
+        <p class="footer-text">Образовательная платформа нового поколения</p>
+        <p class="footer-text" style="margin-top: 1rem; font-size: 0.8rem;">Декабрь 2025 — запуск кибер-системы</p>
+    </footer>
+
+    <script>
+        // Обновляем год в футере
+        document.querySelector('.current-year').textContent = new Date().getFullYear();
+        
+        // Создаем кибер-снег
+        const cyberSnow = document.getElementById('cyberSnow');
+        const snowflakeTypes = ['type1', 'type2', 'type3', 'type4', 'type5', 'type6'];
+        
+        // Создаем 200 снежинок разных типов
+        for (let i = 0; i < 200; i++) {
+            const snowflake = document.createElement('div');
+            const type = snowflakeTypes[Math.floor(Math.random() * snowflakeTypes.length)];
+            
+            snowflake.className = `snowflake ${type}`;
+            
+            // Случайные параметры
+            const size = Math.random() * 6 + 2;
+            const left = Math.random() * 100;
+            const animationDuration = Math.random() * 15 + 10;
+            const animationDelay = Math.random() * 10;
+            const isBig = Math.random() > 0.8; // 20% шанс на большую снежинку
+            
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            snowflake.style.left = `${left}vw`;
+            snowflake.style.animationDuration = `${animationDuration}s`;
+            snowflake.style.animationDelay = `${animationDelay}s`;
+            
+            if (isBig) {
+                snowflake.classList.add('big');
+                snowflake.style.width = `${size * 2}px`;
+                snowflake.style.height = `${size * 2}px`;
+                snowflake.style.animationDuration = `${animationDuration * 1.5}s`;
+                snowflake.style.opacity = '0.5';
+            }
+            
+            cyberSnow.appendChild(snowflake);
+        }
+        
+        // Анимация появления элементов при скролле
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Наблюдаем за элементами для анимации
+        document.querySelectorAll('.team-section, .students-section, .telegram-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'all 0.8s ease-out';
+            observer.observe(section);
+        });
+        
+        // Анимация для карточек студентов
+        document.querySelectorAll('.student-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = `all 0.6s ease-out ${index * 0.1}s`;
+            
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 500 + index * 100);
+        });
+        
+        // Интерактивность для терминала
+        const terminal = document.querySelector('.terminal-animation');
+        terminal.addEventListener('click', () => {
+            const text = document.querySelector('.terminal-text');
+            text.innerHTML = `
+                > КОМАНДА ПРИНЯТА: JOIN_CYBERSHIELD<br>
+                > ДОСТУП К СИСТЕМЕ РАЗРЕШЁН<br>
+                > ПЕРЕНАПРАВЛЕНИЕ В TELEGRAM...<br>
+                > УСПЕЙ СДЕЛАТЬ ПЕРВЫЙ ШАГ ПЕРВЫМ<span class="terminal-cursor"></span>
+            `;
+            
+            // Добавляем звуковой эффект
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.2);
+                
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (e) {
+                console.log("AudioContext не поддерживается");
+            }
+            
+            // Через 3 секунды возвращаем оригинальный текст
+            setTimeout(() => {
+                text.innerHTML = `
+                    > СИСТЕМА ИНИЦИАЛИЗИРОВАНА ДЕКАБРЬ 2025<br>
+                    > ПОИСК СОЗДАТЕЛЕЙ БУДУЩЕГО...<br>
+                    > ОДНА ГРУППА. ОДНА ЦЕЛЬ. НУЛЕВОЙ КОМПРОМИСС.<br>
+                    > ТВОЙ КОД — ЕДИНСТВЕННЫЙ ПРОПУСК<br>
+                    > ВВЕДИ КОМАНДУ ПРИСОЕДИНЕНИЯ: <span class="terminal-cursor"></span>
+                `;
+            }, 3000);
+        });
+        
+        // Эффект при наведении на терминал
+        terminal.addEventListener('mouseenter', () => {
+            terminal.style.boxShadow = '0 0 40px var(--accent-neon)';
+            terminal.style.transform = 'translateY(-8px)';
+            terminal.style.transition = 'all 0.3s ease';
+        });
+        
+        terminal.addEventListener('mouseleave', () => {
+            terminal.style.boxShadow = '';
+            terminal.style.transform = '';
+        });
+        
+        // Случайное мигание терминальных строк
+        function randomTerminalEffect() {
+            const texts = [
+                "> СИСТЕМА ИНИЦИАЛИЗИРОВАНА ДЕКАБРЬ 2025",
+                "> ПОИСК СОЗДАТЕЛЕЙ БУДУЩЕГО...", 
+                "> ОДНА ГРУППА. ОДНА ЦЕЛЬ. НУЛЕВОЙ КОМПРОМИСС.",
+                "> ТВОЙ КОД — ЕДИНСТВЕННЫЙ ПРОПУСК",
+                "> ВВЕДИ КОМАНДУ ПРИСОЕДИНЕНИЯ: "
+            ];
+            
+            const randomLine = Math.floor(Math.random() * texts.length);
+            const textElement = document.querySelector('.terminal-text');
+            const lines = textElement.innerHTML.split('<br>');
+            
+            if (lines[randomLine].includes('cursor')) return;
+            
+            const originalLine = lines[randomLine];
+            lines[randomLine] = `<span style="color: var(--accent-cyan); text-shadow: 0 0 10px var(--accent-cyan);">${lines[randomLine]}</span>`;
+            textElement.innerHTML = lines.join('<br>');
+            
+            setTimeout(() => {
+                lines[randomLine] = originalLine;
+                textElement.innerHTML = lines.join('<br>');
+            }, 500);
+        }
+        
+        // Запускаем случайные эффекты каждые 5-10 секунд
+        setInterval(randomTerminalEffect, Math.random() * 5000 + 5000);
+        
+        // Интерактивный снег - при клике добавляется больше снежинок
+        document.addEventListener('click', function(e) {
+            // Создаем взрыв снежинок в месте клика
+            for (let i = 0; i < 15; i++) {
+                const snowflake = document.createElement('div');
+                const type = snowflakeTypes[Math.floor(Math.random() * snowflakeTypes.length)];
+                
+                snowflake.className = `snowflake ${type}`;
+                
+                const size = Math.random() * 8 + 4;
+                const left = e.clientX + (Math.random() * 80 - 40);
+                const animationDuration = Math.random() * 8 + 4;
+                
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                snowflake.style.left = `${left}px`;
+                snowflake.style.top = `${e.clientY - 20}px`;
+                snowflake.style.animationDuration = `${animationDuration}s`;
+                snowflake.style.position = 'fixed';
+                snowflake.style.zIndex = '9999';
+                
+                // Рандомное направление
+                const horizontalMove = Math.random() * 100 - 50;
+                snowflake.style.animation = `fall ${animationDuration}s linear forwards, glow 2s infinite alternate`;
+                
+                // Добавляем горизонтальное движение
+                snowflake.animate([
+                    { transform: `translate(0, 0) rotate(0deg)` },
+                    { transform: `translate(${horizontalMove}px, 100vh) rotate(360deg)` }
+                ], {
+                    duration: animationDuration * 1000,
+                    easing: 'linear'
+                });
+                
+                cyberSnow.appendChild(snowflake);
+                
+                // Удаляем через время
+                setTimeout(() => {
+                    if (snowflake.parentNode) {
+                        snowflake.parentNode.removeChild(snowflake);
+                    }
+                }, animationDuration * 1000);
+            }
+        });
+    </script>
+</body>
+</html>

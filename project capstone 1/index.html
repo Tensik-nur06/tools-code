@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield Academy | 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #0a0a14;
+            --secondary-dark: #121225;
+            --accent-neon: #39FF14;
+            --accent-cyan: #00F0FF;
+            --accent-purple: #9D4EDD;
+            --text-light: #F8F9FA;
+            --text-gray: #CCCCCC;
+            --pixel-size: 4px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(to bottom, rgba(9, 2, 26, 0.9), rgba(9, 2, 26, 0.95)),
+                url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%2300f0ff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+        
+        /* Pixel grid animation */
+        .pixel-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(57, 255, 20, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(57, 255, 20, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: -1;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(30px) translateX(30px); }
+        }
+        
+        /* Header & Logo */
+        header {
+            padding: 2rem;
+            border-bottom: 3px solid var(--accent-neon);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            image-rendering: pixelated;
+        }
+        
+        .logo-inner {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-neon), var(--accent-cyan));
+            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 2px 2px 0px var(--accent-purple);
+            animation: pulse 4s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-neon), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+            letter-spacing: 1px;
+        }
+        
+        /* Navigation */
+        nav {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            background: transparent;
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 0.8rem 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .nav-btn:hover::after {
+            left: 100%;
+        }
+        
+        .login-btn {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            color: white;
+        }
+        
+        .login-btn:hover {
+            background: rgba(157, 78, 221, 0.8);
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+        
+        /* Main Content */
+        main {
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 3rem 0;
+            margin-bottom: 4rem;
+        }
+        
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--accent-neon), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+            color: var(--text-gray);
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, var(--accent-neon), var(--accent-cyan));
+            border: none;
+            color: var(--primary-dark);
+            padding: 1.2rem 2.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 0;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(57, 255, 20, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(57, 255, 20, 0.5);
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s;
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+        
+        .feature-card {
+            background: rgba(18, 18, 37, 0.8);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 240, 255, 0.2);
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-neon), var(--accent-cyan));
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-cyan);
+        }
+        
+        .feature-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-neon);
+        }
+        
+        .feature-card p {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+        
+        /* Terminal Section */
+        .terminal-section {
+            background: rgba(0, 0, 0, 0.7);
+            border: 3px solid var(--accent-neon);
+            padding: 2rem;
+            margin-bottom: 5rem;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
+            line-height: 1.8;
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.2);
+            position: relative;
+        }
+        
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--accent-neon);
+        }
+        
+        .terminal-title {
+            color: var(--accent-neon);
+            font-size: 1rem;
+        }
+        
+        .terminal-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .terminal-control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .control-close { background: #FF5F57; }
+        .control-min { background: #FFBD2E; }
+        .control-max { background: #28CA42; }
+        
+        .terminal-line {
+            margin-bottom: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .prompt {
+            color: var(--accent-cyan);
+            margin-right: 0.5rem;
+        }
+        
+        .command {
+            color: var(--accent-neon);
+        }
+        
+        .output {
+            color: var(--text-light);
+            margin-left: 1.5rem;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background-color: var(--accent-neon);
+            animation: blink 1s infinite;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        /* Team Section */
+        .team-section {
+            margin-top: 5rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(0, 240, 255, 0.3);
+        }
+        
+        .team-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            color: var(--accent-cyan);
+        }
+        
+        .team-subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .team-card {
+            background: rgba(18, 18, 37, 0.8);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .team-card:hover {
+            border-color: var(--accent-purple);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(157, 78, 221, 0.2);
+        }
+        
+        .team-avatar {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .team-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+        
+        .team-role {
+            color: var(--accent-cyan);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .team-bio {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+        
+        .team-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .team-link {
+            color: var(--accent-neon);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .team-link:hover {
+            color: var(--accent-cyan);
+            transform: translateY(-3px);
+        }
+        
+        /* Pixel Cat Section - Добавлен новый раздел */
+        .pixel-cat-section {
+            margin-top: 5rem;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .pixel-cat-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--accent-neon);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+        
+        .pixel-cat-subtitle {
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .pixel-cat-container {
+            margin: 2rem auto;
+            width: 300px;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+            background: rgba(18, 18, 37, 0.6);
+        }
+        
+        .pixel-cat {
+            position: absolute;
+            font-size: 4rem;
+            user-select: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+            image-rendering: pixelated;
+            filter: drop-shadow(0 0 5px var(--accent-purple));
+            z-index: 10;
+        }
+        
+        .pixel-cat:hover {
+            transform: scale(1.1);
+        }
+        
+        .pixel-cat-trail {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.7;
+            user-select: none;
+            z-index: 5;
+            image-rendering: pixelated;
+        }
+        
+        .cat-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .cat-btn {
+            background: transparent;
+            border: 2px solid var(--accent-purple);
+            color: var(--accent-purple);
+            padding: 0.8rem 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .cat-btn:hover {
+            background: rgba(157, 78, 221, 0.1);
+            box-shadow: 0 0 10px rgba(157, 78, 221, 0.5);
+        }
+        
+        .cat-stats {
+            margin-top: 1.5rem;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(57, 255, 20, 0.2);
+            margin-top: 4rem;
+        }
+        
+        .footer-text {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .current-year {
+            color: var(--accent-neon);
+            font-weight: bold;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            
+            .logo-container {
+                justify-content: center;
+            }
+            
+            nav {
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .terminal-section {
+                font-size: 0.7rem;
+                padding: 1.5rem;
+            }
+            
+            .pixel-cat-container {
+                width: 250px;
+                height: 180px;
+            }
+            
+            .pixel-cat {
+                font-size: 3rem;
+            }
+        }
+        
+        /* Pixel Border Effect */
+        .pixel-border {
+            position: relative;
+        }
+        
+        .pixel-border::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 50%, rgba(57, 255, 20, 0.1) 50%),
+                        linear-gradient(0deg, transparent 50%, rgba(57, 255, 20, 0.1) 50%);
+            background-size: 10px 10px;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        /* Glitch effect for headers */
+        .glitch {
+            position: relative;
+        }
+        
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--accent-purple);
+            animation: glitch-1 2s infinite linear alternate-reverse;
+        }
+        
+        .glitch::after {
+            left: -2px;
+            text-shadow: 2px 0 var(--accent-cyan);
+            animation: glitch-2 3s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-1 {
+            0% { clip: rect(20px, 9999px, 15px, 0); }
+            5% { clip: rect(12px, 9999px, 65px, 0); }
+            10% { clip: rect(55px, 9999px, 90px, 0); }
+            15% { clip: rect(30px, 9999px, 75px, 0); }
+            20% { clip: rect(50px, 9999px, 99px, 0); }
+            25% { clip: rect(25px, 9999px, 50px, 0); }
+            30% { clip: rect(15px, 9999px, 80px, 0); }
+            35% { clip: rect(60px, 9999px, 95px, 0); }
+            40% { clip: rect(10px, 9999px, 55px, 0); }
+            45% { clip: rect(85px, 9999px, 40px, 0); }
+            50% { clip: rect(45px, 9999px, 85px, 0); }
+            55% { clip: rect(20px, 9999px, 65px, 0); }
+            60% { clip: rect(70px, 9999px, 30px, 0); }
+            65% { clip: rect(35px, 9999px, 70px, 0); }
+            70% { clip: rect(90px, 9999px, 25px, 0); }
+            75% { clip: rect(5px, 9999px, 45px, 0); }
+            80% { clip: rect(65px, 9999px, 15px, 0); }
+            85% { clip: rect(40px, 9999px, 60px, 0); }
+            90% { clip: rect(95px, 9999px, 10px, 0); }
+            95% { clip: rect(25px, 9999px, 35px, 0); }
+            100% { clip: rect(75px, 9999px, 20px, 0); }
+        }
+        
+        @keyframes glitch-2 {
+            0% { clip: rect(65px, 9999px, 30px, 0); }
+            5% { clip: rect(25px, 9999px, 95px, 0); }
+            10% { clip: rect(85px, 9999px, 10px, 0); }
+            15% { clip: rect(45px, 9999px, 65px, 0); }
+            20% { clip: rect(5px, 9999px, 40px, 0); }
+            25% { clip: rect(90px, 9999px, 25px, 0); }
+            30% { clip: rect(50px, 9999px, 75px, 0); }
+            35% { clip: rect(15px, 9999px, 55px, 0); }
+            40% { clip: rect(70px, 9999px, 15px, 0); }
+            45% { clip: rect(35px, 9999px, 85px, 0); }
+            50% { clip: rect(80px, 9999px, 5px, 0); }
+            55% { clip: rect(20px, 9999px, 60px, 0); }
+            60% { clip: rect(95px, 9999px, 20px, 0); }
+            65% { clip: rect(55px, 9999px, 35px, 0); }
+            70% { clip: rect(10px, 9999px, 80px, 0); }
+            75% { clip: rect(65px, 9999px, 10px, 0); }
+            80% { clip: rect(30px, 9999px, 95px, 0); }
+            85% { clip: rect(75px, 9999px, 45px, 0); }
+            90% { clip: rect(40px, 9999px, 70px, 0); }
+            95% { clip: rect(100px, 9999px, 30px, 0); }
+            100% { clip: rect(50px, 9999px, 90px, 0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated pixel grid background -->
+    <div class="pixel-grid"></div>
+    
+    <!-- Header with Logo -->
+    <header>
+        <div class="logo-container">
+            <div class="logo">
+                <div class="logo-inner">C</div>
+            </div>
+            <div class="logo-text">CYBERSHIELD ACADEMY</div>
+        </div>
+        
+<nav>
+    <a href="index.html" class="nav-btn">Главная</a>
+    <a href="modules.html" class="nav-btn active">Модули</a>
+    <a href="labs.html" class="nav-btn">Лаборатории</a>
+    <a href="community.html" class="nav-btn">Сообщество</a>
+    <a href="register.html" class="nav-btn login-btn">Регистрация</a>
+</nav>
+    </header>
+    
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="glitch" data-text="БУДУЩЕЕ ОБРАЗОВАНИЯ УЖЕ ЗДЕСЬ">БУДУЩЕЕ ОБРАЗОВАНИЯ УЖЕ ЗДЕСЬ</h1>
+            <p>Интерактивная образовательная платформа для подготовки специалистов в области кибербезопасности, анализа данных и разработки. Освойте навыки будущего с помощью инновационных технологий и экспертного подхода.</p>
+            <button class="cta-button">НАЧАТЬ ОБУЧЕНИЕ <i class="fas fa-arrow-right"></i></button>
+        </section>
+        
+        <!-- Features Section -->
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-code"></i></div>
+                <h3>Практические Лаборатории</h3>
+                <p>Реальные сценарии и симуляции кибератак для отработки навыков в безопасной среде. От теории к практике без рисков.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-gamepad"></i></div>
+                <h3>Геймификация Обучения</h3>
+                <p>Интерактивные квесты, достижения и рейтинговая система для поддержания мотивации и вовлеченности.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                <h3>AI-Ассистент</h3>
+                <p>Персонализированные траектории обучения на основе анализа вашего прогресса и адаптивные рекомендации.</p>
+            </div>
+        </section>
+        
+        <!-- Terminal Section -->
+        <section class="terminal-section pixel-border">
+            <div class="terminal-header">
+                <div class="terminal-title">cybershield-terminal.exe</div>
+                <div class="terminal-controls">
+                    <div class="terminal-control control-close"></div>
+                    <div class="terminal-control control-min"></div>
+                    <div class="terminal-control control-max"></div>
+                </div>
+            </div>
+            
+            <div class="terminal-content">
+                <div class="terminal-line">
+                    <span class="prompt">user@cybershield:~$</span>
+                    <span class="command">check_modules --active</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">✓ Модуль "Основы криптографии" - ВЫПОЛНЕНО</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">✓ Модуль "Сетевая безопасность" - В ПРОЦЕССЕ</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">✓ Модуль "Этичный хакинг" - ДОСТУПЕН</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">✗ Модуль "Форензика" - ЗАБЛОКИРОВАН</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="prompt">user@cybershield:~$</span>
+                    <span class="command">unlock --module forensics</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">Для разблокировки модуля выполните задание #A7-B3</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="prompt">user@cybershield:~$</span>
+                    <span class="command"></span>
+                    <span class="cursor"></span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Team Section -->
+        <section class="team-section">
+            <h2>СОЗДАТЕЛИ ПЛАТФОРМЫ</h2>
+            <p class="team-subtitle">Команда энтузиастов, создавших будущее образования</p>
+            
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar">ТА</div>
+                    <h3>Турарбек Асылжан</h3>
+                    <p class="team-role">Ведущий разработчик и архитектор платформы</p>
+                    <p class="team-bio">Специалист по кибербезопасности, full-stack разработчик и создатель интерактивных лабораторий.</p>
+                    <div class="team-links">
+                        <a href="#" class="team-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="team-link"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">ТД</div>
+                    <h3>Таранова Дарья</h3>
+                    <p class="team-role">Учебные материалы & Контент</p>
+                    <p class="team-bio">Специалист по сбору образовательного контента и разработке учебных программ.</p>
+                    <div class="team-links">
+                        <a href="#" class="team-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="team-link"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">УН</div>
+                    <h3>Ундаганов Нуржан</h3>
+                    <p class="team-role">Backend & DevOps инженер</p>
+                    <p class="team-bio">Архитектор серверной части, настройка инфраструктуры и облачных решений.</p>
+                    <div class="team-links">
+                        <a href="#" class="team-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="team-link"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Pixel Cat Section (новая секция вместо кота) -->
+        <section class="pixel-cat-section">
+            <h2 class="pixel-cat-title">КИБЕР-КОТ 🐈</h2>
+            <p class="pixel-cat-subtitle">Наш пиксельный защитник патрулирует систему 24/7</p>
+            
+            <div class="pixel-cat-container" id="catContainer">
+                <!-- Пиксельный кот будет добавлен через JavaScript -->
+            </div>
+            
+            <div class="cat-controls">
+                <button class="cat-btn" id="moveCatBtn">Запустить патруль</button>
+                <button class="cat-btn" id="addCatBtn">Добавить кота</button>
+                <button class="cat-btn" id="removeCatBtn">Удалить кота</button>
+                <button class="cat-btn" id="clearTrailBtn">Очистить следы</button>
+                <button class="cat-btn" id="resetBtn">Сбросить всё</button>
+            </div>
+            
+            <div class="cat-stats">
+                <p>Позиция: <span id="catPos">x: 150, y: 100</span></p>
+                <p>Пройдено: <span id="distance">0</span> пикселей</p>
+                <p>Котов в патруле: <span id="catCount">1</span></p>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">© <span class="current-year">2025</span> CyberShield Academy. Все права защищены.</p>
+        <p class="footer-text">Образовательная платформа нового поколения</p>
+    </footer>
+    
+    <script>
+        // Simple interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers to nav buttons
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    alert('Навигация: ' + this.textContent + ' (функционал в разработке)');
+                });
+            });
+            
+            // Add click handler to CTA button
+            const ctaButton = document.querySelector('.cta-button');
+            ctaButton.addEventListener('click', function() {
+                alert('Добро пожаловать в CyberShield Academy! Регистрация откроется в ближайшее время.');
+            });
+            
+            // Animate team cards on scroll
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe team cards
+            const teamCards = document.querySelectorAll('.team-card');
+            teamCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+            
+            // Update year in footer
+            document.querySelector('.current-year').textContent = new Date().getFullYear();
+            
+            // Terminal typing effect
+            const terminalCursor = document.querySelector('.cursor');
+            const commandSpan = document.querySelector('.terminal-line:last-child .command');
+            const commands = [
+                'solve_challenge --id A7-B3',
+                'start_lab --network_forensics',
+                'connect --peer_group',
+                'help --modules'
+            ];
+            
+            let currentCommand = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            let typingSpeed = 100;
+            
+            function typeTerminalCommand() {
+                const currentText = commands[currentCommand];
+                
+                if (!isDeleting && charIndex <= currentText.length) {
+                    commandSpan.textContent = currentText.substring(0, charIndex);
+                    charIndex++;
+                    typingSpeed = 100;
+                } else if (isDeleting && charIndex >= 0) {
+                    commandSpan.textContent = currentText.substring(0, charIndex);
+                    charIndex--;
+                    typingSpeed = 50;
+                }
+                
+                if (!isDeleting && charIndex > currentText.length) {
+                    isDeleting = true;
+                    typingSpeed = 1000; // Pause at the end
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    currentCommand = (currentCommand + 1) % commands.length;
+                    typingSpeed = 500; // Pause before starting new word
+                }
+                
+                setTimeout(typeTerminalCommand, typingSpeed);
+            }
+            
+            // Start typing effect after a delay
+            setTimeout(typeTerminalCommand, 2000);
+            
+            // ============================================
+            // ПИКСЕЛЬНЫЙ КОТ - НОВЫЙ КОД
+            // ============================================
+            
+            const catContainer = document.getElementById('catContainer');
+            const moveCatBtn = document.getElementById('moveCatBtn');
+            const addCatBtn = document.getElementById('addCatBtn');
+            const removeCatBtn = document.getElementById('removeCatBtn');
+            const clearTrailBtn = document.getElementById('clearTrailBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const catPos = document.getElementById('catPos');
+            const distanceSpan = document.getElementById('distance');
+            const catCountSpan = document.getElementById('catCount');
+            
+            let cats = [];
+            let trails = [];
+            let isMoving = false;
+            let moveInterval;
+            let totalDistance = 0;
+            
+            // Создаем первого кота
+            createCat(150, 100);
+            
+            // Функция создания пиксельного кота
+            function createCat(x, y) {
+                const cat = document.createElement('div');
+                cat.className = 'pixel-cat';
+                cat.textContent = '🐈';
+                cat.style.left = `${x}px`;
+                cat.style.top = `${y}px`;
+                
+                // Случайный цвет для кота
+                const colors = ['#39FF14', '#00F0FF', '#9D4EDD', '#FFA500', '#FF6B6B', '#4ECDC4'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                cat.style.filter = `drop-shadow(0 0 8px ${randomColor})`;
+                
+                // Добавляем анимацию появления
+                cat.style.transform = 'scale(0)';
+                cat.style.transition = 'transform 0.3s ease';
+                
+                catContainer.appendChild(cat);
+                
+                // Анимация появления
+                setTimeout(() => {
+                    cat.style.transform = 'scale(1)';
+                }, 10);
+                
+                // Добавляем обработчик клика
+                cat.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    // Анимация клика
+                    cat.style.transform = 'scale(1.3)';
+                    setTimeout(() => {
+                        cat.style.transform = 'scale(1)';
+                    }, 300);
+                    
+                    // Создаем эффект взрыва
+                    createExplosion(x, y, randomColor);
+                });
+                
+                const catObj = {
+                    element: cat,
+                    x: x,
+                    y: y,
+                    dx: Math.random() * 4 - 2, // случайное направление X
+                    dy: Math.random() * 4 - 2, // случайное направление Y
+                    color: randomColor,
+                    id: Date.now() + Math.random() // уникальный ID
+                };
+                
+                cats.push(catObj);
+                updateCatCount();
+                return catObj;
+            }
+            
+            // Функция удаления кота
+            function removeCat() {
+                if (cats.length === 0) return;
+                
+                // Удаляем последнего кота
+                const lastCat = cats.pop();
+                
+                // Анимация исчезновения
+                lastCat.element.style.transform = 'scale(0)';
+                lastCat.element.style.opacity = '0';
+                
+                // Создаем эффект исчезновения
+                createExplosion(lastCat.x, lastCat.y, lastCat.color, true);
+                
+                // Удаляем элемент из DOM после анимации
+                setTimeout(() => {
+                    lastCat.element.remove();
+                    updateCatCount();
+                    
+                    // Обновляем статистику позиции, если удалили первого кота
+                    if (cats.length > 0) {
+                        const firstCat = cats[0];
+                        catPos.textContent = `x: ${Math.round(firstCat.x)}, y: ${Math.round(firstCat.y)}`;
+                    } else {
+                        catPos.textContent = 'x: -, y: -';
+                    }
+                }, 300);
+            }
+            
+            // Функция создания взрыва
+            function createExplosion(x, y, color, isRemoval = false) {
+                for (let i = 0; i < (isRemoval ? 15 : 10); i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'pixel-cat-trail';
+                    particle.textContent = isRemoval ? '💥' : '🐾';
+                    particle.style.left = `${x}px`;
+                    particle.style.top = `${y}px`;
+                    particle.style.color = color;
+                    particle.style.fontSize = `${Math.random() * (isRemoval ? 2 : 1.5) + 1}rem`;
+                    particle.style.zIndex = '20';
+                    
+                    catContainer.appendChild(particle);
+                    trails.push(particle);
+                    
+                    // Анимация частиц
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * (isRemoval ? 5 : 3) + 1;
+                    
+                    let particleX = x;
+                    let particleY = y;
+                    
+                    const particleInterval = setInterval(() => {
+                        particleX += Math.cos(angle) * speed;
+                        particleY += Math.sin(angle) * speed;
+                        particle.style.left = `${particleX}px`;
+                        particle.style.top = `${particleY}px`;
+                        
+                        // Уменьшаем прозрачность
+                        const currentOpacity = parseFloat(particle.style.opacity || 1);
+                        particle.style.opacity = (currentOpacity - 0.05).toString();
+                        
+                        if (currentOpacity <= 0.1) {
+                            clearInterval(particleInterval);
+                            particle.remove();
+                            const index = trails.indexOf(particle);
+                            if (index > -1) trails.splice(index, 1);
+                        }
+                    }, 30);
+                }
+            }
+            
+            // Функция обновления счетчика котов
+            function updateCatCount() {
+                catCountSpan.textContent = cats.length;
+                
+                // Если котов нет, останавливаем движение
+                if (cats.length === 0 && isMoving) {
+                    toggleMovement();
+                }
+            }
+            
+            // Функция переключения движения
+            function toggleMovement() {
+                isMoving = !isMoving;
+                
+                if (isMoving) {
+                    moveCatBtn.textContent = 'Остановить патруль';
+                    moveCatBtn.style.backgroundColor = 'rgba(255, 107, 107, 0.1)';
+                    
+                    // Запускаем анимацию движения
+                    moveInterval = setInterval(moveCats, 50);
+                    
+                    // Анимация кнопки
+                    moveCatBtn.style.animation = 'pulse 0.5s infinite alternate';
+                } else {
+                    moveCatBtn.textContent = 'Запустить патруль';
+                    moveCatBtn.style.backgroundColor = '';
+                    clearInterval(moveInterval);
+                    moveCatBtn.style.animation = 'none';
+                }
+            }
+            
+            // Функция движения котов
+            function moveCats() {
+                if (!isMoving || cats.length === 0) return;
+                
+                cats.forEach((cat, index) => {
+                    // Сохраняем старую позицию для расчета дистанции
+                    const oldX = cat.x;
+                    const oldY = cat.y;
+                    
+                    // Обновляем позицию
+                    cat.x += cat.dx;
+                    cat.y += cat.dy;
+                    
+                    // Добавляем дистанцию
+                    totalDistance += Math.sqrt(Math.pow(cat.x - oldX, 2) + Math.pow(cat.y - oldY, 2));
+                    distanceSpan.textContent = Math.round(totalDistance);
+                    
+                    // Проверка границ контейнера
+                    const containerWidth = catContainer.clientWidth;
+                    const containerHeight = catContainer.clientHeight;
+                    
+                    if (cat.x <= 0 || cat.x >= containerWidth - 50) {
+                        cat.dx = -cat.dx;
+                        cat.x = cat.x <= 0 ? 1 : containerWidth - 51;
+                        
+                        // Эффект отражения от стены
+                        createExplosion(cat.x, cat.y, cat.color);
+                    }
+                    
+                    if (cat.y <= 0 || cat.y >= containerHeight - 50) {
+                        cat.dy = -cat.dy;
+                        cat.y = cat.y <= 0 ? 1 : containerHeight - 51;
+                        
+                        // Эффект отражения от стены
+                        createExplosion(cat.x, cat.y, cat.color);
+                    }
+                    
+                    // Обновляем позицию элемента
+                    cat.element.style.left = `${cat.x}px`;
+                    cat.element.style.top = `${cat.y}px`;
+                    
+                    // Обновляем позицию в статистике (только для первого кота)
+                    if (index === 0) {
+                        catPos.textContent = `x: ${Math.round(cat.x)}, y: ${Math.round(cat.y)}`;
+                    }
+                    
+                    // Случайно меняем направление
+                    if (Math.random() < 0.02) {
+                        cat.dx = Math.random() * 4 - 2;
+                        cat.dy = Math.random() * 4 - 2;
+                    }
+                    
+                    // Создаем след
+                    if (Math.random() < 0.3) {
+                        createTrail(cat.x, cat.y, cat.color);
+                    }
+                });
+            }
+            
+            // Функция создания следа
+            function createTrail(x, y, color) {
+                const trail = document.createElement('div');
+                trail.className = 'pixel-cat-trail';
+                trail.textContent = '·';
+                trail.style.left = `${x}px`;
+                trail.style.top = `${y}px`;
+                trail.style.color = color;
+                trail.style.opacity = '0.5';
+                trail.style.fontSize = '1.2rem';
+                
+                catContainer.appendChild(trail);
+                trails.push(trail);
+                
+                // Удаляем след через некоторое время
+                setTimeout(() => {
+                    trail.style.opacity = '0';
+                    setTimeout(() => {
+                        trail.remove();
+                        const index = trails.indexOf(trail);
+                        if (index > -1) trails.splice(index, 1);
+                    }, 500);
+                }, 1000);
+            }
+            
+            // Функция очистки всех следов
+            function clearAllTrails() {
+                // Анимация исчезновения следов
+                trails.forEach(trail => {
+                    trail.style.opacity = '0';
+                    trail.style.transition = 'opacity 0.5s ease';
+                    
+                    setTimeout(() => {
+                        trail.remove();
+                    }, 500);
+                });
+                
+                trails = [];
+            }
+            
+            // Функция полного сброса
+            function resetAll() {
+                // Останавливаем движение
+                if (isMoving) {
+                    toggleMovement();
+                }
+                
+                // Удаляем всех котов
+                while (cats.length > 0) {
+                    const cat = cats.pop();
+                    cat.element.style.transform = 'scale(0)';
+                    cat.element.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        cat.element.remove();
+                    }, 300);
+                }
+                
+                // Очищаем следы
+                clearAllTrails();
+                
+                // Сбрасываем статистику
+                totalDistance = 0;
+                distanceSpan.textContent = '0';
+                catPos.textContent = 'x: -, y: -';
+                
+                // Создаем нового кота через некоторое время
+                setTimeout(() => {
+                    createCat(150, 100);
+                }, 500);
+            }
+            
+            // Обработчики кнопок
+            moveCatBtn.addEventListener('click', function() {
+                if (cats.length === 0) {
+                    alert('Нет котов для патрулирования! Добавьте кота сначала.');
+                    return;
+                }
+                toggleMovement();
+            });
+            
+            addCatBtn.addEventListener('click', function() {
+                // Создаем нового кота в случайной позиции
+                const containerWidth = catContainer.clientWidth;
+                const containerHeight = catContainer.clientHeight;
+                const x = Math.random() * (containerWidth - 50);
+                const y = Math.random() * (containerHeight - 50);
+                
+                createCat(x, y);
+                
+                // Анимация кнопки
+                addCatBtn.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    addCatBtn.style.transform = 'scale(1)';
+                }, 300);
+            });
+            
+            removeCatBtn.addEventListener('click', function() {
+                if (cats.length === 0) {
+                    alert('Нет котов для удаления!');
+                    return;
+                }
+                
+                removeCat();
+                
+                // Анимация кнопки
+                removeCatBtn.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    removeCatBtn.style.transform = 'scale(1)';
+                }, 300);
+            });
+            
+            clearTrailBtn.addEventListener('click', function() {
+                clearAllTrails();
+                
+                // Анимация кнопки
+                clearTrailBtn.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    clearTrailBtn.style.transform = 'scale(1)';
+                }, 300);
+            });
+            
+            resetBtn.addEventListener('click', function() {
+                resetAll();
+                
+                // Анимация кнопки
+                resetBtn.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    resetBtn.style.transform = 'scale(1)';
+                }, 300);
+            });
+            
+            // Обработчик клика по контейнеру для добавления кота
+            catContainer.addEventListener('click', function(e) {
+                if (e.target === catContainer) {
+                    const rect = catContainer.getBoundingClientRect();
+                    const x = e.clientX - rect.left - 25;
+                    const y = e.clientY - rect.top - 25;
+                    
+                    createCat(x, y);
+                    
+                    // Создаем эффект круга
+                    const circle = document.createElement('div');
+                    circle.style.position = 'absolute';
+                    circle.style.left = `${x}px`;
+                    circle.style.top = `${y}px`;
+                    circle.style.width = '50px';
+                    circle.style.height = '50px';
+                    circle.style.borderRadius = '50%';
+                    circle.style.border = '2px solid var(--accent-cyan)';
+                    circle.style.animation = 'pulse 0.5s forwards';
+                    circle.style.pointerEvents = 'none';
+                    
+                    catContainer.appendChild(circle);
+                    
+                    setTimeout(() => {
+                        circle.remove();
+                    }, 500);
+                }
+            });
+            
+            // Добавляем CSS анимацию для кнопок
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    100% { transform: scale(1.1); }
+                }
+                
+                @keyframes fadeOut {
+                    from { opacity: 1; }
+                    to { opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>

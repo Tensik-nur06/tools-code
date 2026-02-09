@@ -1,0 +1,1912 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Модуль 1: Основы кибербезопасности | CyberShield Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #0a0a14;
+            --secondary-dark: #121225;
+            --accent-neon: #39FF14;
+            --accent-cyan: #00F0FF;
+            --accent-purple: #9D4EDD;
+            --accent-orange: #FFA500;
+            --accent-red: #FF6B6B;
+            --accent-pink: #FF4D9E;
+            --accent-yellow: #FFD700;
+            --accent-green: #00FF7F;
+            --text-light: #F8F9FA;
+            --text-gray: #CCCCCC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(to bottom, rgba(9, 2, 26, 0.9), rgba(9, 2, 26, 0.95)),
+                url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%2300f0ff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        /* Animated scan lines */
+        .scan-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 240, 255, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: -1;
+            animation: scan 10s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* Header */
+        header {
+            padding: 2rem;
+            border-bottom: 3px solid var(--accent-neon);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+            background: rgba(10, 10, 20, 0.95);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            image-rendering: pixelated;
+        }
+
+        .logo-inner {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-neon), var(--accent-cyan));
+            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 2px 2px 0px var(--accent-purple);
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-neon), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 0.8rem 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-btn:hover::after {
+            left: 100%;
+        }
+
+        .login-btn {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            color: white;
+        }
+
+        .login-btn:hover {
+            background: rgba(157, 78, 221, 0.8);
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        .nav-btn.active {
+            background: var(--accent-neon);
+            border-color: var(--accent-neon);
+            color: var(--primary-dark);
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+        }
+
+        /* Main Content */
+        main {
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Module Header */
+        .module-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            position: relative;
+            background: rgba(18, 18, 37, 0.5);
+            border: 2px solid var(--accent-neon);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.3);
+        }
+
+        .module-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--accent-neon), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+        }
+
+        .module-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Lessons Navigation */
+        .lessons-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0 3rem;
+        }
+
+        .lesson-btn {
+            background: rgba(18, 18, 37, 0.8);
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 1rem 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .lesson-btn:hover {
+            background: rgba(0, 240, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .lesson-btn.active {
+            background: var(--accent-neon);
+            border-color: var(--accent-neon);
+            color: var(--primary-dark);
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+        }
+
+        /* Lesson Sections */
+        .lesson-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .lesson-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Theory Sections */
+        .theory-section {
+            background: rgba(18, 18, 37, 0.7);
+            border: 1px solid var(--accent-neon);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theory-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-neon), var(--accent-cyan));
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            color: var(--accent-neon);
+        }
+
+        /* Visual Explanations */
+        .visual-explanation {
+            background: linear-gradient(135deg, rgba(57, 255, 20, 0.1), rgba(0, 240, 255, 0.1));
+            border: 1px solid rgba(57, 255, 20, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .concept-card {
+            background: rgba(10, 10, 20, 0.8);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 5px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .concept-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .concept-icon {
+            font-size: 2.5rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+        }
+
+        .concept-title {
+            color: var(--accent-neon);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Practice Sections */
+        .practice-section {
+            background: rgba(18, 18, 37, 0.9);
+            border: 2px solid var(--accent-green);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .practice-section .section-title {
+            color: var(--accent-green);
+        }
+
+        .scenario-box {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--accent-orange);
+            border-radius: 5px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .scenario-title {
+            color: var(--accent-orange);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .interactive-exercise {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
+            border: 1px solid var(--accent-yellow);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .exercise-title {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Interactive Elements */
+        .drag-drop-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .drag-item {
+            background: rgba(0, 240, 255, 0.1);
+            border: 2px dashed var(--accent-cyan);
+            border-radius: 5px;
+            padding: 1rem;
+            cursor: grab;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .drag-item:hover {
+            background: rgba(0, 240, 255, 0.2);
+        }
+
+        .drop-zone {
+            background: rgba(57, 255, 20, 0.1);
+            border: 2px dashed var(--accent-neon);
+            border-radius: 5px;
+            padding: 1.5rem;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Materials Box */
+        .materials-box {
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.1), rgba(255, 77, 158, 0.1));
+            border: 1px solid var(--accent-purple);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .materials-title {
+            color: var(--accent-purple);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .material-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 4px solid var(--accent-purple);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        /* Form Elements */
+        .practice-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            color: var(--accent-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+        }
+
+        .form-input, .form-textarea {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--accent-cyan);
+            color: var(--text-light);
+            padding: 0.8rem 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-neon);
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+
+        .form-button {
+            background: linear-gradient(45deg, var(--accent-neon), var(--accent-cyan));
+            color: var(--primary-dark);
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(57, 255, 20, 0.5);
+        }
+
+        /* Results Display */
+        .results-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--accent-neon);
+            border-radius: 5px;
+            display: none;
+        }
+
+        .result-step {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed rgba(57, 255, 20, 0.3);
+        }
+
+        .result-step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .step-title {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-content {
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        /* Test Section */
+        .test-section {
+            background: rgba(18, 18, 37, 0.9);
+            border: 2px solid var(--accent-orange);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .test-section .section-title {
+            color: var(--accent-orange);
+        }
+
+        .question {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+        }
+
+        .question-text {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
+
+        .option:hover {
+            background: rgba(255, 165, 0, 0.1);
+        }
+
+        .option input {
+            accent-color: var(--accent-orange);
+        }
+
+        .option-label {
+            color: var(--text-gray);
+        }
+
+        .test-button {
+            background: linear-gradient(45deg, var(--accent-orange), var(--accent-yellow));
+            color: var(--primary-dark);
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
+
+        .test-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 165, 0, 0.5);
+        }
+
+        .test-results {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--accent-orange);
+            border-radius: 5px;
+            display: none;
+        }
+
+        .score {
+            color: var(--accent-yellow);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        /* Final Assignment */
+        .assignment-section {
+            background: rgba(18, 18, 37, 0.9);
+            border: 2px solid var(--accent-pink);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .assignment-section .section-title {
+            color: var(--accent-pink);
+        }
+
+        /* Navigation Buttons */
+        .module-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(57, 255, 20, 0.3);
+        }
+
+        .nav-button {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(57, 255, 20, 0.2);
+            border: 2px solid var(--accent-neon);
+            color: var(--accent-cyan);
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .nav-button:hover {
+            background: rgba(57, 255, 20, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(57, 255, 20, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(57, 255, 20, 0.2);
+            margin-top: 4rem;
+        }
+
+        .footer-text {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-year {
+            color: var(--accent-neon);
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            .logo-container {
+                justify-content: center;
+            }
+            nav {
+                justify-content: center;
+            }
+            .module-header h1 {
+                font-size: 2.2rem;
+            }
+            .lessons-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            .lesson-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            .module-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .nav-button {
+                justify-content: center;
+            }
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            .drag-drop-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated scan lines -->
+    <div class="scan-lines"></div>
+    
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo">
+                <div class="logo-inner">C</div>
+            </div>
+            <div class="logo-text">CYBERSHIELD ACADEMY</div>
+        </div>
+        <nav>
+            <a href="index.html" class="nav-btn">Главная</a>
+            <a href="modules.html" class="nav-btn active">Модули</a>
+            <a href="labs.html" class="nav-btn">Лаборатории</a>
+            <a href="community.html" class="nav-btn">Сообщество</a>
+            <a href="register.html" class="nav-btn login-btn">Регистрация</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Module Header -->
+        <section class="module-header">
+            <h1>МОДУЛЬ 1: ОСНОВЫ КИБЕРБЕЗОПАСНОСТИ</h1>
+            <p class="module-subtitle">Формирование системного понимания фундаментальных принципов, терминологии и подходов в информационной безопасности</p>
+        </section>
+
+        <!-- Lessons Navigation -->
+        <div class="lessons-nav">
+            <button class="lesson-btn active" onclick="showLesson('lesson1')">Урок 1.1: Триада CIA</button>
+            <button class="lesson-btn" onclick="showLesson('lesson2')">Урок 1.2: Угрозы и риски</button>
+            <button class="lesson-btn" onclick="showLesson('lesson3')">Урок 1.3: Эволюция угроз</button>
+            <button class="lesson-btn" onclick="showLesson('final')">Итоговое задание</button>
+        </div>
+
+        <!-- LESSON 1.1: CIA Triad -->
+        <section id="lesson1" class="lesson-section active">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-shield-alt"></i> Урок 1.1: Концептуальный фундамент. Триада CIA и принципы защиты</h2>
+                
+                <p><strong>Ключевая цель урока:</strong> Усвоить три ключевые цели защиты информации и два основополагающих принципа построения защищённых систем.</p>
+                
+                <div class="visual-explanation">
+                    <h3>Триада CIA — основа информационной безопасности:</h3>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <div class="concept-icon">🔒</div>
+                            <div class="concept-title">КОНФИДЕНЦИАЛЬНОСТЬ</div>
+                            <p>Доступ к информации только для авторизованных лиц и систем</p>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-icon">✓</div>
+                            <div class="concept-title">ЦЕЛОСТНОСТЬ</div>
+                            <p>Защита информации от несанкционированного изменения</p>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-icon">⚡</div>
+                            <div class="concept-title">ДОСТУПНОСТЬ</div>
+                            <p>Гарантия доступа к информации для авторизованных лиц, когда это необходимо</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="visual-explanation">
+                    <h3>Основополагающие принципы защиты:</h3>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <div class="concept-icon">👮‍♂️</div>
+                            <div class="concept-title">Принцип наименьших привилегий (PoLP)</div>
+                            <p>Пользователи и системы должны иметь доступ ровно к тем ресурсам, которые необходимы для выполнения их задач, и не более</p>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-icon">🛡️</div>
+                            <div class="concept-title">Защита в глубину (Defense-in-Depth)</div>
+                            <p>Создание многоуровневой обороны, чтобы при компрометации одного слоя следующий мог остановить атаку</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="materials-box">
+                    <div class="materials-title"><i class="fas fa-book"></i> Материалы для изучения:</div>
+                    <div class="material-item">
+                        <strong>Хабр: «Триада CIA: краеугольный камень информационной безопасности»</strong>
+                        <p>Изучите практические примеры для каждого компонента триады. Обратите внимание на взаимовлияние принципов.</p>
+                    </div>
+                    <div class="material-item">
+                        <strong>Microsoft: «Защита информационной безопасности»</strong>
+                        <p>Изучите визуальную модель «защиты в глубину». Запомните названия и последовательность слоёв защиты.</p>
+                    </div>
+                    <div class="material-item">
+                        <strong>OWASP: «Principle of Least Privilege»</strong>
+                        <p>Прочтите определение и примеры применения принципа наименьших привилегий.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRACTICE: CIA Triad -->
+            <div class="practice-section">
+                <h3 class="section-title"><i class="fas fa-flask"></i> Практическое задание: Анализ сценариев</h3>
+                
+                <div class="scenario-box">
+                    <div class="scenario-title">Сценарий 1: DDoS-атака на сайт онлайн-банка</div>
+                    <p>Злоумышленники запускают распределённую атаку на отказ в обслуживании, делая сайт банка недоступным для клиентов.</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Какой принцип триады CIA нарушается в первую очередь?</label>
+                        <select id="scenario1" class="form-input">
+                            <option value="">Выберите ответ...</option>
+                            <option value="confidentiality">Конфиденциальность</option>
+                            <option value="integrity">Целостность</option>
+                            <option value="availability">Доступность</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="scenario-box">
+                    <div class="scenario-title">Сценарий 2: Утечка базы данных паспортов клиентов</div>
+                    <p>Хакеры получили доступ к базе данных и опубликовали паспортные данные 100,000 клиентов в открытом доступе.</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Какой принцип триады CIA нарушается в первую очередь?</label>
+                        <select id="scenario2" class="form-input">
+                            <option value="">Выберите ответ...</option>
+                            <option value="confidentiality">Конфиденциальность</option>
+                            <option value="integrity">Целостность</option>
+                            <option value="availability">Доступность</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="scenario-box">
+                    <div class="scenario-title">Задание: Проектирование защиты</div>
+                    <p>Нарисуйте схему «защиты в глубину» для защиты вашего личного ноутбука, на котором хранятся семейные фото и ведётся онлайн-банкинг.</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Предложите 4 слоя защиты:</label>
+                        <textarea id="defenseLayers" class="form-textarea" placeholder="Например:
+1. Шифрование диска (слой данных)
+2. Антивирус (слой приложения/узла)
+3. Брандмауэр (слой сети)
+4. Регулярное обновление ПО (слой управления)"></textarea>
+                    </div>
+                </div>
+
+                <button onclick="checkLesson1()" class="form-button">
+                    <i class="fas fa-check"></i> Проверить ответы
+                </button>
+
+                <div id="lesson1Results" class="results-container">
+                    <div class="result-step">
+                        <div class="step-title">Результаты анализа:</div>
+                        <div class="step-content" id="scenarioResults"></div>
+                    </div>
+                    <div class="result-step">
+                        <div class="step-title">Ваши слои защиты:</div>
+                        <div class="step-content" id="defenseResults"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LESSON 1.2: Threats and Risks -->
+        <section id="lesson2" class="lesson-section">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-exclamation-triangle"></i> Урок 1.2: Угрозы, уязвимости, риски. Введение в управление рисками</h2>
+                
+                <p><strong>Ключевая цель урока:</strong> Научиться четко различать понятия «угроза», «уязвимость» и «риск». Понять базовый цикл управления рисками.</p>
+                
+                <div class="visual-explanation">
+                    <h3>Взаимосвязь ключевых понятий:</h3>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <div class="concept-icon">👹</div>
+                            <div class="concept-title">УГРОЗА</div>
+                            <p>Потенциальное событие, которое может нанести ущерб активам</p>
+                            <p style="color: var(--accent-red); font-size: 0.9rem;">Пример: Хакер, ошибка сотрудника, пожар</p>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-icon">🕳️</div>
+                            <div class="concept-title">УЯЗВИМОСТЬ</div>
+                            <p>Слабость в системе, процедуре или контроле</p>
+                            <p style="color: var(--accent-yellow); font-size: 0.9rem;">Пример: Неустановленное обновление, слабый пароль</p>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-icon">⚖️</div>
+                            <div class="concept-title">РИСК</div>
+                            <p>Вероятность того, что угроза воспользуется уязвимостью</p>
+                            <p style="color: var(--accent-orange); font-size: 0.9rem;">Формула: Угроза × Уязвимость × Ценность актива</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="visual-explanation">
+                    <h3>Фреймворки управления рисками:</h3>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <div class="concept-icon">🏛️</div>
+                            <div class="concept-title">NIST CSF 2.0</div>
+                            <p>5 функций управления: Выявление → Защита → Обнаружение → Реагирование → Восстановление</p>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-icon">📋</div>
+                            <div class="concept-title">ISO/IEC 27001:2022</div>
+                            <p>Система менеджмента информационной безопасности (СМИБ)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="materials-box">
+                    <div class="materials-title"><i class="fas fa-book"></i> Материалы для изучения:</div>
+                    <div class="material-item">
+                        <strong>NIST: «Introductory Cybersecurity Concepts»</strong>
+                        <p>Найдите формальные определения для терминов: Threat, Vulnerability, Risk. Поймите связь между ними.</p>
+                    </div>
+                    <div class="material-item">
+                        <strong>NIST Cybersecurity Framework (CSF) 2.0</strong>
+                        <p>Изучите 5 функций фреймворка: Identify, Protect, Detect, Respond, Recover.</p>
+                    </div>
+                    <div class="material-item">
+                        <strong>ISO/IEC 27001:2022 (ru)</strong>
+                        <p>Уловите ключевую фразу: «система менеджмента информационной безопасности».</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRACTICE: Risk Analysis -->
+            <div class="practice-section">
+                <h3 class="section-title"><i class="fas fa-flask"></i> Практическое задание: Разбор кейса</h3>
+                
+                <div class="interactive-exercise">
+                    <div class="exercise-title">Кейс: Утерянный ноутбук</div>
+                    <p>Сотрудник потерял корпоративный ноутбук с незашифрованным жестким диском, на котором есть файлы с персональными данными клиентов.</p>
+                    
+                    <div class="drag-drop-container">
+                        <div class="drag-item" draggable="true" data-type="threat">
+                            <strong>Угроза:</strong> Что может пойти не так?
+                        </div>
+                        <div class="drag-item" draggable="true" data-type="vulnerability">
+                            <strong>Уязвимость:</strong> Почему это стало возможным?
+                        </div>
+                        <div class="drag-item" draggable="true" data-type="risk">
+                            <strong>Риск:</strong> Чем это грозит бизнесу?
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Выберите правильные соответствия:</label>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                            <div>
+                                <div class="drop-zone" id="threat-drop" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                    <span>Перетащите УГРОЗУ сюда</span>
+                                </div>
+                                <div id="threat-options" style="display: none;">
+                                    <select class="form-input" style="margin-top: 0.5rem;">
+                                        <option value="unauthorized_access">Несанкционированный доступ к данным</option>
+                                        <option value="theft">Кража оборудования</option>
+                                        <option value="data_leak">Утечка конфиденциальной информации</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="drop-zone" id="vulnerability-drop" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                    <span>Перетащите УЯЗВИМОСТЬ сюда</span>
+                                </div>
+                                <div id="vulnerability-options" style="display: none;">
+                                    <select class="form-input" style="margin-top: 0.5rem;">
+                                        <option value="no_encryption">Отсутствие полного шифрования диска</option>
+                                        <option value="weak_password">Слабый пароль на ноутбуке</option>
+                                        <option value="no_policy">Отсутствие политики безопасности</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="drop-zone" id="risk-drop" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                    <span>Перетащите РИСК сюда</span>
+                                </div>
+                                <div id="risk-options" style="display: none;">
+                                    <select class="form-input" style="margin-top: 0.5rem;">
+                                        <option value="fines">Штрафы регулятора</option>
+                                        <option value="reputation">Репутационные потери</option>
+                                        <option value="lawsuits">Судебные иски от клиентов</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interactive-exercise">
+                    <div class="exercise-title">Сопоставление с NIST CSF:</div>
+                    <p>К каким функциям NIST CSF вы отнесете следующие мероприятия?</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Составление реестра всех информационных систем компании:</label>
+                        <select id="nist1" class="form-input">
+                            <option value="">Выберите функцию...</option>
+                            <option value="identify">Identify (Выявление)</option>
+                            <option value="protect">Protect (Защита)</option>
+                            <option value="detect">Detect (Обнаружение)</option>
+                            <option value="respond">Respond (Реагирование)</option>
+                            <option value="recover">Recover (Восстановление)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Внедрение системы антивирусной защиты:</label>
+                        <select id="nist2" class="form-input">
+                            <option value="">Выберите функцию...</option>
+                            <option value="identify">Identify (Выявление)</option>
+                            <option value="protect">Protect (Защита)</option>
+                            <option value="detect">Detect (Обнаружение)</option>
+                            <option value="respond">Respond (Реагирование)</option>
+                            <option value="recover">Recover (Восстановление)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Настройка SIEM-системы для анализа логов:</label>
+                        <select id="nist3" class="form-input">
+                            <option value="">Выберите функцию...</option>
+                            <option value="identify">Identify (Выявление)</option>
+                            <option value="protect">Protect (Защита)</option>
+                            <option value="detect">Detect (Обнаружение)</option>
+                            <option value="respond">Respond (Реагирование)</option>
+                            <option value="recover">Recover (Восстановление)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button onclick="checkLesson2()" class="form-button">
+                    <i class="fas fa-check"></i> Проверить ответы
+                </button>
+
+                <div id="lesson2Results" class="results-container">
+                    <div class="result-step">
+                        <div class="step-title">Анализ кейса:</div>
+                        <div class="step-content" id="caseAnalysis"></div>
+                    </div>
+                    <div class="result-step">
+                        <div class="step-title">Сопоставление NIST CSF:</div>
+                        <div class="step-content" id="nistAnalysis"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LESSON 1.3: Threat Evolution -->
+        <section id="lesson3" class="lesson-section">
+            <div class="theory-section">
+                <h2 class="section-title"><i class="fas fa-history"></i> Урок 1.3: Эволюция и современный ландшафт киберугроз</h2>
+                
+                <p><strong>Ключевая цель урока:</strong> Сформировать представление об исторической динамике развития киберугроз и понять мотивацию современных злоумышленников.</p>
+                
+                <div class="visual-explanation">
+                    <h3>Эволюция киберугроз:</h3>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <div class="concept-icon">🦠</div>
+                            <div class="concept-title">1990-е: Вандализм</div>
+                            <p>Вирусы и черви для демонстрации возможностей</p>
+                            <p style="color: var(--text-gray); font-size: 0.9rem;">Цель: Известность, доказательство концепции</p>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-icon">💰</div>
+                            <div class="concept-title">2000-е: Финансовая выгода</div>
+                            <p>Банковские трояны, программы-вымогатели</p>
+                            <p style="color: var(--text-gray); font-size: 0.9rem;">Цель: Прямой финансовый доход</p>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-icon">🎯</div>
+                            <div class="concept-title">2010-е: Целевые атаки</div>
+                            <p>APT, государственный шпионаж, хактивизм</p>
+                            <p style="color: var(--text-gray); font-size: 0.9rem;">Цель: Данные, влияние, политические цели</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="visual-explanation">
+                    <h3>Типы современных злоумышленников:</h3>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <div class="concept-icon">👨‍💼</div>
+                            <div class="concept-title">Киберпреступники</div>
+                            <p>Финансовая мотивация, организованные группы</p>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-icon">🏛️</div>
+                            <div class="concept-title">Государственные структуры</div>
+                            <p>Шпионаж, кибервойна, геополитические цели</p>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-icon">🎭</div>
+                            <div class="concept-title">Хактивисты</div>
+                            <p>Идеологическая, политическая мотивация</p>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-icon">👤</div>
+                            <div class="concept-title">Инсайдеры</div>
+                            <p>Действующие или бывшие сотрудники организации</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="materials-box">
+                    <div class="materials-title"><i class="fas fa-book"></i> Материалы для изучения:</div>
+                    <div class="material-item">
+                        <strong>Kaspersky: «История компьютерных вирусов»</strong>
+                        <p>Пройдите по интерактивной timeline. Обратите внимание на смену эпох и целей атак.</p>
+                    </div>
+                    <div class="material-item">
+                        <strong>Group-IB Threat Intelligence</strong>
+                        <p>Изучите ежегодный отчет «Hi-Tech Crime Trends». Выпишите 3-5 главных трендов.</p>
+                    </div>
+                    <div class="material-item">
+                        <strong>Cisco: «Что такое кибербезопасность?»</strong>
+                        <p>Изучите типы киберугроз и типы злоумышленников. Свяжите мотивацию с целями.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRACTICE: Threat Analysis -->
+            <div class="practice-section">
+                <h3 class="section-title"><i class="fas fa-flask"></i> Практическое задание: Сравнительный анализ</h3>
+                
+                <div class="interactive-exercise">
+                    <div class="exercise-title">Сравнение угроз разных эпох:</div>
+                    <p>Назовите 3 ключевых отличия компьютерного червя начала 2000-х (например, Slammer) от современной целеной атаки (APT):</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">По цели атаки:</label>
+                        <textarea id="difference1" class="form-textarea" placeholder="Червь 2000-х: ... | Современная APT: ..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">По степени скрытности:</label>
+                        <textarea id="difference2" class="form-textarea" placeholder="Червь 2000-х: ... | Современная APT: ..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">По методу распространения:</label>
+                        <textarea id="difference3" class="form-textarea" placeholder="Червь 2000-х: ... | Современная APT: ..."></textarea>
+                    </div>
+                </div>
+
+                <div class="interactive-exercise">
+                    <div class="exercise-title">Анализ мотивации и защиты:</div>
+                    <p>Для каждого типа организации предположите наиболее вероятного злоумышленника и приоритетный принцип защиты:</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Интернет-магазин:</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <select id="attacker1" class="form-input">
+                                <option value="">Тип злоумышленника...</option>
+                                <option value="cybercriminal">Киберпреступник</option>
+                                <option value="hacktivist">Хактивист</option>
+                                <option value="state">Государственный</option>
+                                <option value="insider">Инсайдер</option>
+                            </select>
+                            <select id="protection1" class="form-input">
+                                <option value="">Приоритетный принцип CIA...</option>
+                                <option value="confidentiality">Конфиденциальность</option>
+                                <option value="integrity">Целостность</option>
+                                <option value="availability">Доступность</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Научно-исследовательский институт:</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <select id="attacker2" class="form-input">
+                                <option value="">Тип злоумышленника...</option>
+                                <option value="cybercriminal">Киберпреступник</option>
+                                <option value="hacktivist">Хактивист</option>
+                                <option value="state">Государственный</option>
+                                <option value="insider">Инсайдер</option>
+                            </select>
+                            <select id="protection2" class="form-input">
+                                <option value="">Приоритетный принцип CIA...</option>
+                                <option value="confidentiality">Конфиденциальность</option>
+                                <option value="integrity">Целостность</option>
+                                <option value="availability">Доступность</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="checkLesson3()" class="form-button">
+                    <i class="fas fa-check"></i> Проверить ответы
+                </button>
+
+                <div id="lesson3Results" class="results-container">
+                    <div class="result-step">
+                        <div class="step-title">Сравнительный анализ:</div>
+                        <div class="step-content" id="comparisonResults"></div>
+                    </div>
+                    <div class="result-step">
+                        <div class="step-title">Анализ мотивации:</div>
+                        <div class="step-content" id="motivationResults"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINAL ASSIGNMENT -->
+        <section id="final" class="lesson-section">
+            <div class="assignment-section">
+                <h2 class="section-title"><i class="fas fa-tasks"></i> Итоговое задание по Модулю 1</h2>
+                
+                <div class="scenario-box">
+                    <div class="scenario-title">Сценарий:</div>
+                    <p>Вы — новый специалист по безопасности в небольшой компании-разработчике мобильных приложений (~50 сотрудников). Компания хранит исходный код проектов на своих серверах, а также собирает аналитику от пользователей приложений.</p>
+                </div>
+
+                <div class="practice-form">
+                    <div class="form-group">
+                        <label class="form-label">1. Объясните важность безопасности, используя триаду CIA применительно к активам компании:</label>
+                        <textarea id="task1" class="form-textarea" placeholder="Для исходного кода: Конфиденциальность - ..., Целостность - ..., Доступность - ...
+Для данных пользователей: Конфиденциальность - ..., Целостность - ..., Доступность - ..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">2. Опишите 2-3 наиболее вероятные угрозы для такого бизнеса (основываясь на современных трендах):</label>
+                        <textarea id="task2" class="form-textarea" placeholder="1. [Угроза] - [Почему актуально]
+2. [Угроза] - [Почему актуально]
+3. [Угроза] - [Почему актуально]"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">3. Предложите подход к защите, используя концепцию «защиты в глубину» (опишите слои):</label>
+                        <textarea id="task3" class="form-textarea" placeholder="Слой 1: [Название] - [Что защищает]
+Слой 2: [Название] - [Что защищает]
+Слой 3: [Название] - [Что защищает]
+Слой 4: [Название] - [Что защищает]"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">4. Порекомендуйте первый шаг в духе NIST CSF:</label>
+                        <textarea id="task4" class="form-textarea" placeholder="Функция: [Identify/Protect/Detect/Respond/Recover]
+Действие: [Что именно нужно сделать]
+Обоснование: [Почему именно с этого нужно начать]"></textarea>
+                    </div>
+                    
+                    <button onclick="checkFinalAssignment()" class="form-button" style="background: linear-gradient(45deg, var(--accent-pink), var(--accent-purple));">
+                        <i class="fas fa-paper-plane"></i> Отправить итоговое задание
+                    </button>
+                </div>
+
+                <div id="finalResults" class="results-container">
+                    <div class="result-step">
+                        <div class="step-title">Ваша аналитическая записка:</div>
+                        <div class="step-content" id="assignmentSummary"></div>
+                    </div>
+                    <div class="result-step">
+                        <div class="step-title">Рекомендации по улучшению:</div>
+                        <div class="step-content" id="assignmentFeedback"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FINAL TEST -->
+            <div class="test-section">
+                <h2 class="section-title"><i class="fas fa-question-circle"></i> Финальный тест по Модулю 1</h2>
+                
+                <div class="question">
+                    <div class="question-text">1. Какой принцип триады CIA нарушается при DDoS-атаке на сайт банка?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="A">
+                            <span class="option-label">A) Конфиденциальность</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="B">
+                            <span class="option-label">B) Целостность</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="C">
+                            <span class="option-label">C) Доступность</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">2. Что из перечисленного является примером принципа наименьших привилегий?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="A">
+                            <span class="option-label">A) Все сотрудники имеют доступ ко всем системам</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="B">
+                            <span class="option-label">B) Бухгалтер имеет доступ только к финансовым системам</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="C">
+                            <span class="option-label">C) У всех одинаковые пароли для удобства</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">3. Какой компонент необходим для существования риска?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="A">
+                            <span class="option-label">A) Только угроза</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="B">
+                            <span class="option-label">B) Только уязвимость</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="C">
+                            <span class="option-label">C) И угроза, и уязвимость</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">4. Какая функция NIST CSF связана с созданием реестра информационных активов?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="A">
+                            <span class="option-label">A) Protect (Защита)</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="B">
+                            <span class="option-label">B) Identify (Выявление)</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="C">
+                            <span class="option-label">C) Detect (Обнаружение)</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">5. Какой тип злоумышленника наиболее вероятно атакует интернет-магазин?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="A">
+                            <span class="option-label">A) Киберпреступник (финансовая выгода)</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="B">
+                            <span class="option-label">B) Государственный шпион</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="C">
+                            <span class="option-label">C) Хактивист (идеологические цели)</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button onclick="checkFinalTest()" class="test-button">
+                    <i class="fas fa-check"></i> Завершить тест
+                </button>
+                
+                <div id="testResults" class="test-results">
+                    <div class="score">Ваш результат: <span id="scoreValue">0</span>/5</div>
+                    <div id="testDetails"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="module-nav">
+            <a href="modules.html" class="nav-button">
+                <i class="fas fa-arrow-left"></i> К списку модулей
+            </a>
+            <a href="modules.html" class="nav-button">
+                <i class="fas fa-th"></i> Все модули
+            </a>
+            <a href="network-security.html" class="nav-button">
+                Следующий модуль: Сетевая безопасность <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">© <span class="current-year">2025</span> CyberShield Academy. Все права защищены.</p>
+        <p class="footer-text">Образовательная платформа нового поколения</p>
+    </footer>
+
+    <script>
+        // Обновляем год в футере
+        document.querySelector('.current-year').textContent = new Date().getFullYear();
+        
+        // Переключение между уроками
+        function showLesson(lessonId) {
+            // Скрыть все уроки
+            document.querySelectorAll('.lesson-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Убрать активный класс со всех кнопок
+            document.querySelectorAll('.lesson-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Показать выбранный урок
+            document.getElementById(lessonId).classList.add('active');
+            
+            // Активировать кнопку
+            document.querySelector(`button[onclick="showLesson('${lessonId}')"]`).classList.add('active');
+            
+            // Прокрутить к началу урока
+            window.scrollTo({ top: document.querySelector('.module-header').offsetHeight + 150, behavior: 'smooth' });
+        }
+
+        // Драг-энд-дроп функции
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drag(event) {
+            event.dataTransfer.setData("text", event.target.dataset.type);
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            const data = event.dataTransfer.getData("text");
+            const dropZone = event.target.closest('.drop-zone');
+            
+            if (dropZone) {
+                // Показываем соответствующие опции
+                const type = dropZone.id.replace('-drop', '');
+                const optionsDiv = document.getElementById(`${type}-options`);
+                if (optionsDiv) {
+                    optionsDiv.style.display = 'block';
+                    dropZone.style.display = 'none';
+                }
+            }
+        }
+
+        // Настройка драг-энд-дроп
+        document.querySelectorAll('.drag-item').forEach(item => {
+            item.addEventListener('dragstart', drag);
+        });
+
+        // Проверка урока 1.1
+        function checkLesson1() {
+            const scenario1 = document.getElementById('scenario1').value;
+            const scenario2 = document.getElementById('scenario2').value;
+            const defenseLayers = document.getElementById('defenseLayers').value;
+            
+            let results = '';
+            let score = 0;
+            
+            // Проверка сценариев
+            if (scenario1 === 'availability') {
+                results += '✓ Сценарий 1: Правильно! DDoS нарушает доступность<br>';
+                score++;
+            } else {
+                results += '✗ Сценарий 1: Неправильно. DDoS нарушает доступность<br>';
+            }
+            
+            if (scenario2 === 'confidentiality') {
+                results += '✓ Сценарий 2: Правильно! Утечка данных нарушает конфиденциальность<br>';
+                score++;
+            } else {
+                results += '✗ Сценарий 2: Неправильно. Утечка данных нарушает конфиденциальность<br>';
+            }
+            
+            // Проверка слоев защиты
+            const layersCount = defenseLayers.split('\n').filter(line => line.trim().length > 0).length;
+            if (layersCount >= 4) {
+                results += `✓ Вы предложили ${layersCount} слоя защиты. Хорошо!<br>`;
+                score++;
+            } else {
+                results += `✗ Нужно предложить минимум 4 слоя. У вас ${layersCount}<br>`;
+            }
+            
+            // Показываем результаты
+            const resultsDiv = document.getElementById('lesson1Results');
+            resultsDiv.style.display = 'block';
+            
+            document.getElementById('scenarioResults').innerHTML = results;
+            document.getElementById('defenseResults').textContent = defenseLayers || 'Нет ответа';
+            
+            // Анимация
+            resultsDiv.style.animation = 'pulse 0.5s';
+            setTimeout(() => {
+                resultsDiv.style.animation = '';
+            }, 500);
+            
+            // Уведомление
+            showNotification(`Проверка завершена! Правильных ответов: ${score}/3`, score === 3 ? 'success' : 'warning');
+        }
+
+        // Проверка урока 1.2
+        function checkLesson2() {
+            const nist1 = document.getElementById('nist1').value;
+            const nist2 = document.getElementById('nist2').value;
+            const nist3 = document.getElementById('nist3').value;
+            
+            let nistResults = '';
+            let score = 0;
+            
+            // Проверка NIST
+            if (nist1 === 'identify') {
+                nistResults += '✓ Реестр систем: Правильно! Это функция Identify<br>';
+                score++;
+            } else {
+                nistResults += '✗ Реестр систем: Неправильно. Это функция Identify<br>';
+            }
+            
+            if (nist2 === 'protect') {
+                nistResults += '✓ Антивирус: Правильно! Это функция Protect<br>';
+                score++;
+            } else {
+                nistResults += '✗ Антивирус: Неправильно. Это функция Protect<br>';
+            }
+            
+            if (nist3 === 'detect') {
+                nistResults += '✓ SIEM-система: Правильно! Это функция Detect<br>';
+                score++;
+            } else {
+                nistResults += '✗ SIEM-система: Неправильно. Это функция Detect<br>';
+            }
+            
+            // Проверка драг-энд-дроп
+            let caseAnalysis = 'Перетащите элементы в соответствующие зоны, чтобы увидеть правильные ответы.<br>';
+            
+            // Проверяем, выбраны ли опции
+            const threatSelect = document.querySelector('#threat-options select');
+            const vulnerabilitySelect = document.querySelector('#vulnerability-options select');
+            const riskSelect = document.querySelector('#risk-options select');
+            
+            if (threatSelect && threatSelect.value) {
+                caseAnalysis += `Угроза: ${threatSelect.options[threatSelect.selectedIndex].text}<br>`;
+            }
+            if (vulnerabilitySelect && vulnerabilitySelect.value) {
+                caseAnalysis += `Уязвимость: ${vulnerabilitySelect.options[vulnerabilitySelect.selectedIndex].text}<br>`;
+            }
+            if (riskSelect && riskSelect.value) {
+                caseAnalysis += `Риск: ${riskSelect.options[riskSelect.selectedIndex].text}<br>`;
+            }
+            
+            // Показываем результаты
+            const resultsDiv = document.getElementById('lesson2Results');
+            resultsDiv.style.display = 'block';
+            
+            document.getElementById('caseAnalysis').innerHTML = caseAnalysis;
+            document.getElementById('nistAnalysis').innerHTML = nistResults;
+            
+            // Анимация
+            resultsDiv.style.animation = 'pulse 0.5s';
+            setTimeout(() => {
+                resultsDiv.style.animation = '';
+            }, 500);
+            
+            // Уведомление
+            showNotification(`Проверка завершена! Правильных ответов: ${score}/3`, score === 3 ? 'success' : 'warning');
+        }
+
+        // Проверка урока 1.3
+        function checkLesson3() {
+            const diff1 = document.getElementById('difference1').value;
+            const diff2 = document.getElementById('difference2').value;
+            const diff3 = document.getElementById('difference3').value;
+            const attacker1 = document.getElementById('attacker1').value;
+            const attacker2 = document.getElementById('attacker2').value;
+            const protection1 = document.getElementById('protection1').value;
+            const protection2 = document.getElementById('protection2').value;
+            
+            let comparison = '';
+            let motivation = '';
+            let score = 0;
+            
+            // Проверка сравнения
+            if (diff1 && diff1.length > 10) {
+                comparison += '✓ Различие 1: Принято<br>';
+                score++;
+            } else {
+                comparison += '✗ Различие 1: Слишком короткий ответ<br>';
+            }
+            
+            if (diff2 && diff2.length > 10) {
+                comparison += '✓ Различие 2: Принято<br>';
+                score++;
+            } else {
+                comparison += '✗ Различие 2: Слишком короткий ответ<br>';
+            }
+            
+            if (diff3 && diff3.length > 10) {
+                comparison += '✓ Различие 3: Принято<br>';
+                score++;
+            } else {
+                comparison += '✗ Различие 3: Слишком короткий ответ<br>';
+            }
+            
+            // Проверка мотивации
+            if (attacker1 === 'cybercriminal') {
+                motivation += '✓ Интернет-магазин: Вероятный злоумышленник - киберпреступник<br>';
+                score++;
+            } else {
+                motivation += '✗ Интернет-магазин: Вероятный злоумышленник - киберпреступник (финансовая выгода)<br>';
+            }
+            
+            if (protection1 === 'availability') {
+                motivation += '✓ Приоритет для магазина: Доступность (чтобы клиенты могли делать покупки)<br>';
+                score++;
+            } else {
+                motivation += '✗ Приоритет для магазина: Доступность (чтобы клиенты могли делать покупки)<br>';
+            }
+            
+            if (attacker2 === 'state' || attacker2 === 'hacktivist') {
+                motivation += '✓ Научный институт: Вероятный злоумышленник - госструктура или хактивист<br>';
+                score++;
+            } else {
+                motivation += '✗ Научный институт: Вероятный злоумышленник - госструктура (шпионаж) или хактивист<br>';
+            }
+            
+            if (protection2 === 'confidentiality') {
+                motivation += '✓ Приоритет для института: Конфиденциальность (защита исследований)<br>';
+                score++;
+            } else {
+                motivation += '✗ Приоритет для института: Конфиденциальность (защита исследований)<br>';
+            }
+            
+            // Показываем результаты
+            const resultsDiv = document.getElementById('lesson3Results');
+            resultsDiv.style.display = 'block';
+            
+            document.getElementById('comparisonResults').textContent = diff1 + '\n\n' + diff2 + '\n\n' + diff3;
+            document.getElementById('motivationResults').innerHTML = motivation;
+            
+            // Анимация
+            resultsDiv.style.animation = 'pulse 0.5s';
+            setTimeout(() => {
+                resultsDiv.style.animation = '';
+            }, 500);
+            
+            // Уведомление
+            showNotification(`Проверка завершена! Правильных ответов: ${score}/8`, score >= 6 ? 'success' : 'warning');
+        }
+
+        // Проверка итогового задания
+        function checkFinalAssignment() {
+            const task1 = document.getElementById('task1').value;
+            const task2 = document.getElementById('task2').value;
+            const task3 = document.getElementById('task3').value;
+            const task4 = document.getElementById('task4').value;
+            
+            // Собираем все ответы
+            const summary = `
+<strong>1. Триада CIA для активов компании:</strong><br>${task1 || 'Нет ответа'}<br><br>
+<strong>2. Вероятные угрозы:</strong><br>${task2 || 'Нет ответа'}<br><br>
+<strong>3. Защита в глубину:</strong><br>${task3 || 'Нет ответа'}<br><br>
+<strong>4. Первый шаг по NIST CSF:</strong><br>${task4 || 'Нет ответа'}
+            `;
+            
+            // Генерируем обратную связь
+            let feedback = '';
+            let score = 0;
+            
+            if (task1 && task1.length > 50) {
+                feedback += '✓ Часть 1: Хорошо объяснили триаду CIA<br>';
+                score++;
+            } else {
+                feedback += '✗ Часть 1: Нужно подробнее объяснить триаду CIA для разных активов<br>';
+            }
+            
+            if (task2 && task2.length > 30) {
+                feedback += '✓ Часть 2: Угрозы определены<br>';
+                score++;
+            } else {
+                feedback += '✗ Часть 2: Нужно указать больше конкретных угроз<br>';
+            }
+            
+            if (task3 && task3.split('\n').filter(l => l.trim()).length >= 3) {
+                feedback += '✓ Часть 3: Предложены слои защиты<br>';
+                score++;
+            } else {
+                feedback += '✗ Часть 3: Нужно предложить минимум 3 слоя защиты<br>';
+            }
+            
+            if (task4 && task4.length > 20) {
+                feedback += '✓ Часть 4: Предложен первый шаг<br>';
+                score++;
+            } else {
+                feedback += '✗ Часть 4: Нужно предложить конкретный первый шаг<br>';
+            }
+            
+            // Рекомендации
+            feedback += '<br><strong>Рекомендации:</strong><br>';
+            if (score >= 3) {
+                feedback += 'Отличная работа! Ваша записка готова для представления руководству.<br>';
+                feedback += 'Рекомендуется добавить конкретные примеры инструментов для каждого слоя защиты.';
+            } else if (score >= 2) {
+                feedback += 'Хорошая основа. Нужно дополнить недостающие разделы.<br>';
+                feedback += 'Рекомендуется подробнее описать угрозы и конкретные меры защиты.';
+            } else {
+                feedback += 'Нужно доработать записку. Перечитайте материалы уроков.<br>';
+                feedback += 'Рекомендуется начать с четкого определения активов компании.';
+            }
+            
+            // Показываем результаты
+            const resultsDiv = document.getElementById('finalResults');
+            resultsDiv.style.display = 'block';
+            
+            document.getElementById('assignmentSummary').innerHTML = summary;
+            document.getElementById('assignmentFeedback').innerHTML = feedback;
+            
+            // Анимация
+            resultsDiv.style.animation = 'pulse 0.5s';
+            setTimeout(() => {
+                resultsDiv.style.animation = '';
+            }, 500);
+            
+            // Уведомление
+            showNotification(`Итоговое задание проверено! Оценка: ${score}/4`, score >= 3 ? 'success' : score >= 2 ? 'warning' : 'error');
+        }
+
+        // Проверка финального теста
+        function checkFinalTest() {
+            const answers = {
+                'q1': 'C',
+                'q2': 'B',
+                'q3': 'C',
+                'q4': 'B',
+                'q5': 'A'
+            };
+            
+            let score = 0;
+            let details = '<div style="margin-top: 1rem;">';
+            
+            for (const question in answers) {
+                const selected = document.querySelector(`input[name="${question}"]:checked`);
+                const correctAnswer = answers[question];
+                
+                if (selected) {
+                    if (selected.value === correctAnswer) {
+                        score++;
+                        details += `<div style="color: var(--accent-green); margin: 0.5rem 0;">
+                            <i class="fas fa-check-circle"></i> Вопрос ${question[1]}: Правильно!
+                        </div>`;
+                    } else {
+                        let explanation = '';
+                        switch(question) {
+                            case 'q1': explanation = 'DDoS нарушает доступность'; break;
+                            case 'q2': explanation = 'PoLP - доступ только к необходимым ресурсам'; break;
+                            case 'q3': explanation = 'Риск = Угроза × Уязвимость'; break;
+                            case 'q4': explanation = 'Реестр активов - часть функции Identify'; break;
+                            case 'q5': explanation = 'Интернет-магазин атакуют ради финансовой выгоды'; break;
+                        }
+                        
+                        details += `<div style="color: var(--accent-red); margin: 0.5rem 0;">
+                            <i class="fas fa-times-circle"></i> Вопрос ${question[1]}: Неправильно.<br>
+                            <span style="color: var(--text-gray); font-size: 0.9rem;">${explanation}</span>
+                        </div>`;
+                    }
+                } else {
+                    details += `<div style="color: var(--accent-orange); margin: 0.5rem 0;">
+                        <i class="fas fa-question-circle"></i> Вопрос ${question[1]}: Не отвечен
+                    </div>`;
+                }
+            }
+            
+            details += '</div>';
+            
+            // Показываем результаты
+            const results = document.getElementById('testResults');
+            results.style.display = 'block';
+            
+            document.getElementById('scoreValue').textContent = score;
+            document.getElementById('testDetails').innerHTML = details;
+            
+            // Оценка
+            let rating = '';
+            if (score === 5) {
+                rating = '<div style="color: var(--accent-green); text-align: center; margin-top: 1rem;"><i class="fas fa-trophy"></i> Отлично! Вы прекрасно усвоили основы кибербезопасности!</div>';
+            } else if (score >= 3) {
+                rating = '<div style="color: var(--accent-yellow); text-align: center; margin-top: 1rem;"><i class="fas fa-star"></i> Хорошо! Вы усвоили основные понятия модуля.</div>';
+            } else {
+                rating = '<div style="color: var(--accent-orange); text-align: center; margin-top: 1rem;"><i class="fas fa-redo"></i> Рекомендуется перечитать материалы модуля.</div>';
+            }
+            
+            document.getElementById('testDetails').innerHTML += rating;
+            
+            // Анимация
+            results.style.animation = 'pulse 0.5s';
+            setTimeout(() => {
+                results.style.animation = '';
+            }, 500);
+            
+            // Уведомление
+            showNotification(`Тест завершен! Ваш результат: ${score}/5`, score >= 4 ? 'success' : score >= 3 ? 'warning' : 'error');
+        }
+
+        // Функция для показа уведомлений
+        function showNotification(message, type = 'info') {
+            const colors = {
+                'success': 'var(--accent-green)',
+                'warning': 'var(--accent-yellow)',
+                'error': 'var(--accent-red)',
+                'info': 'var(--accent-cyan)'
+            };
+            
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                background: ${colors[type] || colors.info};
+                color: var(--primary-dark);
+                border-radius: 5px;
+                font-family: 'Orbitron', sans-serif;
+                font-weight: bold;
+                z-index: 1000;
+                box-shadow: 0 0 20px rgba(0,0,0,0.3);
+                animation: slideIn 0.3s ease;
+                max-width: 400px;
+                word-wrap: break-word;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Удаляем уведомление через 3 секунды
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Добавляем CSS для анимаций
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Инициализация при загрузке
+        window.onload = function() {
+            // Показываем приветственное сообщение
+            setTimeout(() => {
+                showNotification('Добро пожаловать в Модуль 1: Основы кибербезопасности! Начните с Урока 1.1.', 'info');
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
