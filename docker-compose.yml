@@ -1,0 +1,105 @@
+version: '3.9'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: cybershield-db
+    environment:
+      POSTGRES_USER: cybershield_user
+      POSTGRES_PASSWORD: cybershield_secure_password_change_me
+      POSTGRES_DB: cybershield
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cybershield_user -d cybershield"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cybershield-network
+
+  # FastAPI Backend
+  backend:
+    build: ./backend
+    container_name: cybershield-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app/app
+      - ./backend/alembic:/app/alembic
+    environment:
+      # Database
+      DATABASE_URL: postgresql://cybershield_user:cybershield_secure_password_change_me@db:5432/cybershield
+      DB_ECHO: "False"
+      
+      # JWT & Security
+      SECRET_KEY: your_super_secret_jwt_key_here_change_in_production_min_32_chars
+      ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+      
+      # OAuth - Google
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      
+      # OAuth - GitHub
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+      
+      # OAuth - Microsoft
+      MICROSOFT_CLIENT_ID: ${MICROSOFT_CLIENT_ID}
+      MICROSOFT_CLIENT_SECRET: ${MICROSOFT_CLIENT_SECRET}
+      
+      # OAuth - Apple
+      APPLE_CLIENT_ID: ${APPLE_CLIENT_ID}
+      APPLE_CLIENT_SECRET: ${APPLE_CLIENT_SECRET}
+      
+      # Server
+      BACKEND_URL: http://localhost:8000
+      FRONTEND_URL: http://localhost:3000
+      DEBUG: "True"
+      LOG_LEVEL: INFO
+      
+      # Cookie Settings
+      COOKIE_MAX_AGE_DAYS: 30
+      COOKIE_SECURE: "False"
+      COOKIE_HTTPONLY: "True"
+      COOKIE_SAMESITE_POLICY: lax
+    
+    depends_on:
+      db:
+        condition: service_healthy
+    
+    networks:
+      - cybershield-network
+
+  # pgAdmin (опционально для управления БД через UI)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: cybershield-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@cybershield.local
+      PGADMIN_DEFAULT_PASSWORD: admin_password_change_me
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+    networks:
+      - cybershield-network
+
+networks:
+  cybershield-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local

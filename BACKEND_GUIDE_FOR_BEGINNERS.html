@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Полное руководство Backend проекта - CyberShield Academy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+            border-left: 4px solid #667eea;
+            padding-left: 20px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section h2::before {
+            content: "📌";
+            margin-right: 10px;
+        }
+        
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .section h4 {
+            color: #667eea;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #c7254e;
+            font-size: 0.95em;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        
+        .code-block .command {
+            color: #2ecc71;
+        }
+        
+        .code-block .output {
+            color: #3498db;
+        }
+        
+        .info-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .diagram {
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        td {
+            border-bottom: 1px solid #ddd;
+            padding: 12px;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .file-tree {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-family: monospace;
+            white-space: pre;
+        }
+        
+        .highlight {
+            background: #fff9c4;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .step {
+            background: #f0f0f0;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .step strong {
+            color: #667eea;
+        }
+        
+        .toc {
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .toc h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .toc li {
+            margin: 8px 0;
+        }
+        
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        footer {
+            background: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+        }
+        
+        .emoji-icon {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Полное руководство Backend проекта</h1>
+            <p>CyberShield Academy - Образовательная платформа по кибербезопасности</p>
+            <p style="margin-top: 15px; font-size: 0.9em;">Для полных новичков в backend разработке</p>
+        </header>
+        
+        <div class="content">
+            
+            <!-- TABLE OF CONTENTS -->
+            <div class="toc">
+                <h3>📑 Содержание</h3>
+                <ul>
+                    <li><a href="#what-is">1️⃣ Что это вообще такое?</a></li>
+                    <li><a href="#structure">2️⃣ Структура проекта</a></li>
+                    <li><a href="#database">3️⃣ Как работает база данных</a></li>
+                    <li><a href="#howto-run">4️⃣ Как запустить проект</a></li>
+                    <li><a href="#flow">5️⃣ Как работает регистрация/логин</a></li>
+                    <li><a href="#endpoints">6️⃣ API endpoints (адреса запросов)</a></li>
+                    <li><a href="#security">7️⃣ Безопасность (пароли и токены)</a></li>
+                    <li><a href="#gamification">8️⃣ Геймификация (XP, уровни)</a></li>
+                    <li><a href="#errors">9️⃣ Частые ошибки и как их исправить</a></li>
+                </ul>
+            </div>
+            
+            <!-- SECTION 1: WHAT IS THIS -->
+            <div class="section" id="what-is">
+                <h2>Что это вообще такое?</h2>
+                
+                <h3>🤔 В двух словах</h3>
+                <p>
+                    Это «мозг» (backend) веб-сайта для обучения кибербезопасности. 
+                    Сайт — это то, что видит пользователь в браузере (HTML, картинки, кнопки).
+                    Backend — это то, что скрыто на сервере: база данных, логика, безопасность.
+                </p>
+                
+                <h3>📊 Что делает backend в нашем проекте?</h3>
+                <ul>
+                    <li><strong>Хранит данные</strong> — пользователей, курсы, оценки в базе данных PostgreSQL</li>
+                    <li><strong>Проверяет безопасность</strong> — когда пользователь вводит пароль, backend проверяет его через хеш</li>
+                    <li><strong>Выдает JWT токены</strong> — уникальные ключи доступа вместо пароля при каждом запросе</li>
+                    <li><strong>Рассчитывает XP</strong> — добавляет опыт, когда пользователь завершает урок</li>
+                    <li><strong>Контролирует доступ</strong> — админ может что-то, обычный пользователь не может</li>
+                    <li><strong>Возвращает данные</strong> — отправляет информацию фронтенду через API</li>
+                </ul>
+                
+                <h3>⚙️ Какие технологии используются?</h3>
+                <table>
+                    <tr>
+                        <th>Технология</th>
+                        <th>Для чего</th>
+                        <th>Простое объяснение</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Python</strong></td>
+                        <td>Язык программирования</td>
+                        <td>На нём написан весь код backend'а. Populярный для начинающих</td>
+                    </tr>
+                    <tr>
+                        <td><strong>FastAPI</strong></td>
+                        <td>Веб-фреймворк</td>
+                        <td>Фреймворк для создания API. На него опирается весь код</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PostgreSQL</strong></td>
+                        <td>База данных</td>
+                        <td>Хранилище с таблицами. Как большой Excel где хранятся юзеры и курсы</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SQLAlchemy</strong></td>
+                        <td>ORM (объектно-реляционная модель)</td>
+                        <td>Промежуточник между Python кодом и БД. Переводит код на SQL</td>
+                    </tr>
+                    <tr>
+                        <td><strong>JWT</strong></td>
+                        <td>Аутентификация</td>
+                        <td>Токены доступа. Каждый запрос содержит уникальный ключ</td>
+                    </tr>
+                </table>
+                
+                <div class="info-box">
+                    <strong>💡 Совет:</strong> Не нужно понимать всё сразу. Эти технологии связаны между собой. Когда мы пройдем пример регистрации, всё станет понятно.
+                </div>
+            </div>
+            
+            <!-- SECTION 2: STRUCTURE -->
+            <div class="section" id="structure">
+                <h2>Структура проекта</h2>
+                
+                <h3>📂 Где находятся файлы?</h3>
+                <p>Проект находится в папке: <code>c:\Users\tensik\Desktop\project capstone 1\backend</code></p>
+                
+                <h3>🏗️ Папки и их назначение</h3>
+                <div class="file-tree">backend/
+├── app/                          # Основной код приложения
+│   ├── __init__.py              # Инициализация модуля
+│   ├── main.py                  # ГЛАВНЫЙ ФАЙЛ - старт приложения
+│   ├── core/
+│   │   ├── config.py            # Настройки (БД, JWT, CORS)
+│   │   ├── database.py          # Подключение к PostgreSQL
+│   │   └── security.py          # Хеширование паролей, JWT токены
+│   ├── models/                  # Модели БД (таблицы)
+│   │   ├── user.py              # Таблица пользователей
+│   │   ├── course.py            # Таблица курсов
+│   │   ├── lesson.py            # Таблица уроков
+│   │   ├── progress.py          # Прогресс пользователя
+│   │   └── badge.py             # Бейджи и достижения
+│   ├── schemas/                 # Структуры данных для API
+│   │   ├── user.py              # Структуры юзера (email, пароль и т.д.)
+│   │   └── course.py            # Структуры курса
+│   ├── services/                # Бизнес-логика
+│   │   ├── user_service.py      # Логика регистрации, логина
+│   │   ├── gamification_service.py  # Логика XP и уровней
+│   │   └── recommendation_service.py # Рекомендации курсов
+│   └── api/                     # API endpoints
+│       ├── endpoints/
+│       │   ├── auth.py          # /register, /login
+│       │   ├── users.py         # Профиль, настройки
+│       │   ├── courses.py       # Список курсов
+│       │   ├── lessons.py       # Список уроков
+│       │   └── progress.py      # Прогресс пользователя
+│       └── deps.py              # Помощники для endpoints
+├── requirements.txt             # Список всех библиотек
+├── manage.py                    # Утилиты управления (миграции и т.д.)
+├── run.py                       # Скрипт для запуска
+└── DATABASE_SETUP.md            # Инструкции по установке БД
+</div>
+                
+                <h3>🎯 Ключевые файлы, которые нужно понимать</h3>
+                
+                <div class="step">
+                    <strong>1. main.py</strong> — Точка входа
+                    <p style="margin-top: 10px;">Это центр управления. Здесь создается приложение FastAPI, подключаются все routes (адреса), настраивается CORS для безопасности. Когда ты запускаешь сервер — запускается в первую очередь этот файл.</p>
+                </div>
+                
+                <div class="step">
+                    <strong>2. config.py</strong> — Все настройки в одном месте
+                    <p style="margin-top: 10px;">Здесь указываются: адрес БД, SECRET_KEY для JWT, время жизни токена, список разрешённых сайтов (CORS). Если что-то не работает — часто нужно менять это.</p>
+                </div>
+                
+                <div class="step">
+                    <strong>3. database.py</strong> — Подключение к PostgreSQL
+                    <p style="margin-top: 10px;">Здесь создается connection к базе данных. Функция <code>get_db()</code> предоставляет сессию для каждого запроса.</p>
+                </div>
+                
+                <div class="step">
+                    <strong>4. models/user.py, course.py, lesson.py</strong> — Таблицы БД
+                    <p style="margin-top: 10px;">Каждый файл определяет одну таблицу. Например, user.py определяет структуру пользователя: какие поля есть (email, пароль, XP), какие ограничения.</p>
+                </div>
+                
+                <div class="step">
+                    <strong>5. api/endpoints/auth.py</strong> — Маршруты регистрации/логина
+                    <p style="margin-top: 10px;">Здесь два главных endpoint: /register (создать аккаунт) и /login (получить токен). На эти адреса фронтенд отправляет запросы.</p>
+                </div>
+            </div>
+            
+            <!-- SECTION 3: DATABASE -->
+            <div class="section" id="database">
+                <h2>Как работает база данных?</h2>
+                
+                <h3>📋 Что такое таблица?</h3>
+                <p>База данных PostgreSQL — это как большой Excel файл с таблицами. Каждая таблица хранит один тип данных.</p>
+                
+                <h3>👥 Таблица Users (пользователи)</h3>
+                <table>
+                    <tr>
+                        <th>Колонка</th>
+                        <th>Тип</th>
+                        <th>Объяснение</th>
+                        <th>Примеры</th>
+                    </tr>
+                    <tr>
+                        <td><code>id</code></td>
+                        <td>Integer (ключ)</td>
+                        <td>Уникальный номер каждого пользователя</td>
+                        <td>1, 2, 3, ...</td>
+                    </tr>
+                    <tr>
+                        <td><code>email</code></td>
+                        <td>String</td>
+                        <td>Email адрес (уникальный)</td>
+                        <td>user@example.com</td>
+                    </tr>
+                    <tr>
+                        <td><code>username</code></td>
+                        <td>String</td>
+                        <td>Имя пользователя (уникальное)</td>
+                        <td>john_doe, hacker123</td>
+                    </tr>
+                    <tr>
+                        <td><code>hashed_password</code></td>
+                        <td>String</td>
+                        <td>Зашифрованный пароль (НЕ открытый!)</td>
+                        <td>$2b$12$abc...xyz (bcrypt хеш)</td>
+                    </tr>
+                    <tr>
+                        <td><code>full_name</code></td>
+                        <td>String</td>
+                        <td>ПИО пользователя</td>
+                        <td>John Doe, Иван Петров</td>
+                    </tr>
+                    <tr>
+                        <td><code>role</code></td>
+                        <td>Enum (user/admin)</td>
+                        <td>Роль пользователя</td>
+                        <td>user, admin</td>
+                    </tr>
+                    <tr>
+                        <td><code>xp</code></td>
+                        <td>Integer</td>
+                        <td>Опыт (Experience Points)</td>
+                        <td>0, 100, 5000</td>
+                    </tr>
+                    <tr>
+                        <td><code>level</code></td>
+                        <td>Integer</td>
+                        <td>Текущий уровень пользователя</td>
+                        <td>1, 2, 10, ...</td>
+                    </tr>
+                    <tr>
+                        <td><code>total_score</code></td>
+                        <td>Integer</td>
+                        <td>Сумма всех оценок</td>
+                        <td>0, 450, 1000</td>
+                    </tr>
+                    <tr>
+                        <td><code>created_at</code></td>
+                        <td>DateTime</td>
+                        <td>Когда создан аккаунт</td>
+                        <td>2026-04-06 10:30:00</td>
+                    </tr>
+                    <tr>
+                        <td><code>is_active</code></td>
+                        <td>Boolean</td>
+                        <td>Активен ли аккаунт</td>
+                        <td>true, false</td>
+                    </tr>
+                </table>
+                
+                <h3>📚 Таблица Courses (курсы)</h3>
+                <table>
+                    <tr>
+                        <th>Колонка</th>
+                        <th>Объяснение</th>
+                    </tr>
+                    <tr>
+                        <td><code>id</code></td>
+                        <td>Уникльный номер курса</td>
+                    </tr>
+                    <tr>
+                        <td><code>title</code></td>
+                        <td>Название (например: "Основы веб-безопасности")</td>
+                    </tr>
+                    <tr>
+                        <td><code>description</code></td>
+                        <td>Описание что будет в курсе</td>
+                    </tr>
+                    <tr>
+                        <td><code>category</code></td>
+                        <td>Категория ("Web Security", "Cryptography", и т.д.)</td>
+                    </tr>
+                    <tr>
+                        <td><code>difficulty</code></td>
+                        <td>Уровень сложности ("beginner", "intermediate", "advanced")</td>
+                    </tr>
+                    <tr>
+                        <td><code>creator_id</code></td>
+                        <td>ID админа, создавшего курс (связь с таблицей users)</td>
+                    </tr>
+                    <tr>
+                        <td><code>is_published</code></td>
+                        <td>Опубликован ли курс (true/false)</td>
+                    </tr>
+                </table>
+                
+                <h3>📖 Таблица Lessons (уроки)</h3>
+                <ul>
+                    <li><code>id</code> — уникальный номер урока</li>
+                    <li><code>course_id</code> — к какому курсу относится</li>
+                    <li><code>title</code> — название урока</li>
+                    <li><code>content</code> — текст/HTML уроков</li>
+                    <li><code>xp_reward</code> — сколько XP за завершение</li>
+                    <li><code>difficulty</code> — сложность</li>
+                    <li><code>is_published</code> — опубликован ли урок</li>
+                </ul>
+                
+                <h3>⏳ Таблица LessonProgress (прогресс)</h3>
+                <p>Хранит статус каждого урока для каждого пользователя:</p>
+                <ul>
+                    <li><code>user_id</code> — какой пользователь</li>
+                    <li><code>lesson_id</code> — какой урок</li>
+                    <li><code>is_completed</code> — завершен ли (true/false)</li>
+                    <li><code>score</code> — оценка (0-100)</li>
+                    <li><code>completed_at</code> — когда завершен</li>
+                </ul>
+                
+                <div class="info-box">
+                    <strong>💡 Упрощённый пример:</strong> Когда пользователь john_doe завершает урок "SQL Injection", backend записывает это в таблицу LessonProgress: пользователь #1, урок #5, завершен, оценка 85, время 2026-04-06 11:00:00
+                </div>
+                
+                <h3>🔗 Как таблицы связаны?</h3>
+                <div class="diagram">User (1) ──── (*)── LessonProgress
+         │                    │
+         └── Courses    Lessons ──┘
+
+Один пользователь: может иметь много записей о прогрессе
+Один урок: может быть в одном курсе, но с прогрессом у многих пользователей
+                </div>
+            </div>
+            
+            <!-- SECTION 4: HOW TO RUN -->
+            <div class="section" id="howto-run">
+                <h2>Как запустить проект?</h2>
+                
+                <h3>📋 Требования</h3>
+                <ul>
+                    <li>Python 3.10+ (проверить: <code>python --version</code>)</li>
+                    <li>PostgreSQL установлена</li>
+                    <li>pip (обычно идет с Python)</li>
+                </ul>
+                
+                <h3>⚙️ Шаг 1: Установка зависимостей</h3>
+                <p>Проект использует много библиотек. Их нужно установить один раз.</p>
+                
+                <div class="code-block">
+<span class="command"># 1. Открыть терминал (PowerShell на Windows)</span>
+<span class="command"># 2. Перейти в папку backend</span>
+<span class="command">cd "C:\Users\tensik\Desktop\project capstone 1\backend"</span>
+
+<span class="command"># 3. Создать виртуальное окружение</span>
+<span class="command">python -m venv venv</span>
+
+<span class="command"># 4. Активировать окружение (Windows)</span>
+<span class="command">venv\Scripts\activate</span>
+
+<span class="output"># Должно быть так: (venv) C:\Users\tensik\Desktop\project capstone 1\backend></span>
+
+<span class="command"># 5. Установить зависимости</span>
+<span class="command">pip install -r requirements.txt</span>
+
+<span class="output"># Это займет 1-3 минуты</span>
+                </div>
+                
+                <div class="warning-box">
+                    <strong>⚠️ Важно:</strong> Каждый раз когда открываешь новый терминал, нужно заново активировать окружение командой <code>venv\Scripts\activate</code>
+                </div>
+                
+                <h3>🗄️ Шаг 2: Запуск PostgreSQL и создание БД</h3>
+                
+                <p><strong>Windows:</strong></p>
+                <ul>
+                    <li>PostgreSQL должна уже быть установлена</li>
+                    <li>Открыть cmd или PowerShell</li>
+                </ul>
+                
+                <div class="code-block">
+<span class="command"># 1. Подключиться к PostgreSQL</span>
+<span class="command">psql -U postgres</span>
+
+<span class="output"># Введет пароль (тот что при установке PostgreSQL)</span>
+<span class="output">postgres=#</span>
+
+<span class="command"># 2. Создать БД</span>
+<span class="command">CREATE DATABASE cybersecurity_lms;</span>
+
+<span class="command"># 3. Создать пользователя</span>
+<span class="command">CREATE USER lms_user WITH PASSWORD 'your_password';</span>
+
+<span class="command"># 4. Выдать права</span>
+<span class="command">GRANT ALL PRIVILEGES ON DATABASE cybersecurity_lms TO lms_user;</span>
+
+<span class="command"># 5. Выход</span>
+<span class="command">\q</span>
+                </div>
+                
+                <h3>📝 Шаг 3: Создать файл .env</h3>
+                <p>В корне папки backend создайте новый файл <code>.env</code> с этим содержимым:</p>
+                
+                <div class="code-block">
+DATABASE_URL=postgresql://lms_user:your_password@localhost:5432/cybersecurity_lms
+SECRET_KEY=your-super-secret-key-change-this-in-production
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+DEBUG=False
+API_V1_STR=/api/v1
+ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8080
+                </div>
+                
+                <div class="warning-box">
+                    <strong>⚠️ Важно:</strong> SECRET_KEY должен быть случайной строкой. Можно сгенерировать так:
+                    <div class="code-block" style="margin-top: 10px;">
+<span class="command">python -c "import secrets; print(secrets.token_urlsafe(32))"</span>
+                    </div>
+                </div>
+                
+                <h3>🚀 Шаг 4: Запуск сервера</h3>
+                
+                <div class="code-block">
+<span class="command"># 1. Убедиться что окружение активировано (venv\Scripts\activate)</span>
+<span class="command"># 2. Убедиться что ты в папке backend</span>
+
+<span class="command"># 3. Запустить сервер</span>
+<span class="command">uvicorn app.main:app --reload</span>
+
+<span class="output">INFO:     Uvicorn running on http://127.0.0.1:8000</span>
+<span class="output">INFO:     Application startup complete</span>
+                </div>
+                
+                <div class="success-box">
+                    <strong>✅ Готово!</strong> Сервер запущен и слушает на порту 8000. Можешь:
+                    <ul>
+                        <li>Открыть <code>http://localhost:8000/docs</code> для Swagger UI</li>
+                        <li>Открыть <code>http://localhost:8000/health</code> для проверки здоровья</li>
+                    </ul>
+                </div>
+                
+                <h3>🧪 Шаг 5: Проверить что всё работает</h3>
+                <div class="code-block">
+<span class="command"># В отдельном окне терминала запустить:</span>
+<span class="command">curl http://localhost:8000/health</span>
+
+<span class="output">{"status":"healthy","service":"CyberSecurity LMS"}</span>
+                </div>
+            </div>
+            
+            <!-- SECTION 5: FLOW -->
+            <div class="section" id="flow">
+                <h2>Как работает регистрация/логин? (Жизненный цикл)</h2>
+                
+                <h3>🔄 Полный цикл: от регистрации до получения токена</h3>
+                
+                <div class="step">
+                    <strong>Шаг 1: Пользователь заполняет форму регистрации</strong>
+                    <p style="margin-top: 10px;">На фронтенде (HTML/JS) пользователь вводит:</p>
+                    <div class="code-block" style="background: #ecf0f1; color: #2c3e50;">
+email: "john@example.com"
+username: "john_doe"
+password: "SecurePass123"
+full_name: "John Doe"
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <strong>Шаг 2: Фронтенд отправляет POST запрос</strong>
+                    <p style="margin-top: 10px;">JavaScript отправляет эти данные на адрес <code>http://localhost:8000/api/v1/auth/register</code></p>
+                </div>
+                
+                <div class="step">
+                    <strong>Шаг 3: Backend получает данные</strong>
+                    <p style="margin-top: 10px;">Код в <code>api/endpoints/auth.py</code> ловит этот запрос в функции <code>register()</code></p>
+                </div>
+                
+                <div class="step">
+                    <strong>Шаг 4: Валидация (проверка)</strong>
+                    <p style="margin-top: 10px;">Backend проверяет:
+                    <ul>
+                        <li>Email валиден (содержит @)</li>
+                        <li>Email не используется (уникальный)</li>
+                        <li>Пароль достаточно сильный (8+ символов, заглавная буква, цифра)</li>
+                        <li>Username уникален</li>
+                    </ul>
+                    Если что-то не так — отправляет ошибку 400 (Bad Request)
+                    </p>
+                </div>
+                
+                <div class="step">
+                    <strong>Шаг 5: Хеширование пароля</strong>
+                    <p style="margin-top: 10px;">Backend НЕ сохраняет открытый пароль! Вместо этого:
+                    <ul>
+                        <li>Берет пароль "SecurePass123"</li>
+                        <li>Превращает его в хеш через bcrypt: <code>$2b$12$abc...xyz (очень длинная строка)</code></li>
+                        <li>Сохраняет в БД только хеш</li>
+                    </ul>
+                    <strong>Важно:</strong> Хеш нельзя обратно превратить в пароль. Это односторонняя функция!
+                    </p>
+                </div>
+                
+                <div class="step">
+                    <strong>Шаг 6: Запись в БД</strong>
+                    <p style="margin-top: 10px;">Backend вставляет новую запись в таблицу users:</p>
+                    <div class="code-block" style="background: #f4f4f4; color: #000;">
+INSERT INTO users (email, username, hashed_password, full_name, level, xp, created_at)
+VALUES ('john@example.com', 'john_doe', '$2b$12$abc...xyz', 'John Doe', 1, 0, NOW())
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <strong>Шаг 7: Возврат профиля фронтенду</strong>
+                    <p style="margin-top: 10px;">Backend отправляет обратно созданного пользователя (БЕЗ пароля!)</p>
+                    <div class="code-block" style="background: #ecf0f1; color: #2c3e50;">
+{
+  "id": 1,
+  "email": "john@example.com",
+  "username": "john_doe",
+  "full_name": "John Doe",
+  "level": 1,
+  "xp": 0,
+  "created_at": "2026-04-06T10:30:00"
+}
+                    </div>
+                </div>
+                
+                <hr style="margin: 30px 0; border: none; border-top: 2px solid #ddd;">
+                
+                <h3>🔑 Теперь логин (вход в аккаунт)</h3>
+                
+                <div class="step">
+                    <strong>Шаг 1: Пользователь вводит email и пароль</strong>
+                    <div class="code-block" style="background: #ecf0f1; color: #2c3e50;">
+email: "john@example.com"
+password: "SecurePass123"
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <strong>Шаг 2: Фронтенд отправляет POST на /api/v1/auth/login</strong>
+                </div>
+                
+                <div class="step">
+                    <strong>Шаг 3: Backend ищет пользователя по email</strong>
+                    <div class="code-block" style="background: #f4f4f4; color: #000;">
+SELECT * FROM users WHERE email = 'john@example.com';
+                    </div>
+                    <p style="margin-top: 10px;">Если не найден — ошибка 401 (Unauthorized)</p>
+                </div>
+                
+                <div class="step">
+                    <strong>Шаг 4: Backend сравнивает пароли</strong>
+                    <p style="margin-top: 10px;">
+                        Backend берет введенный пароль "SecurePass123" и сравнивает с хешированным паролем из БД используя bcrypt.verify(). Если не совпадает — ошибка 401.
+                    </p>
+                </div>
+                
+                <div class="step">
+                    <strong>Шаг 5: Создание JWT токена</strong>
+                    <p style="margin-top: 10px;">Если пароль правильный, backend создает JWT токен. Это длинная строка которая содержит:
+                    <ul>
+                        <li>ID пользователя</li>
+                        <li>Время создания</li>
+                        <li>Время истечения (через 30 минут)</li>
+                        <li>Все это зашифровано SECRET_KEY</li>
+                    </ul>
+                    Пример: <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjExOTI3MjAwfQ.abc...</code>
+                    </p>
+                </div>
+                
+                <div class="step">
+                    <strong>Шаг 6: Возврат токена фронтенду</strong>
+                    <p style="margin-top: 10px;">Backend отправляет:</p>
+                    <div class="code-block" style="background: #ecf0f1; color: #2c3e50;">
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "expires_in": 1800
+}
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <strong>Шаг 7: Фронтенд сохраняет токен</strong>
+                    <p style="margin-top: 10px;">JavaScript сохраняет access_token в localStorage (локальное хранилище браузера)</p>
+                </div>
+                
+                <hr style="margin: 30px 0; border: none; border-top: 2px solid #ddd;">
+                
+                <h3>📡 Теперь каждый запрос пользователя</h3>
+                
+                <div class="step">
+                    <strong>Когда пользователь хочет получить свой профиль:</strong>
+                    <p style="margin-top: 10px;">
+                        Фронтенд отправляет запрос на <code>GET /api/v1/auth/me</code> с заголовком:
+                    </p>
+                    <div class="code-block">
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <strong>Backend проверяет токен</strong>
+                    <p style="margin-top: 10px;">
+                        Функция <code>get_current_user()</code> в <code>api/deps.py</code>:
+                        <ul>
+                            <li>Извлекает токен из заголовка</li>
+                            <li>Проверяет подпись (не подделан ли)</li>
+                            <li>Проверяет не истекло ли время жизни</li>
+                            <li>Если все ок — извлекает ID пользователя</li>
+                        </ul>
+                        Если токен невалиден — ошибка 401
+                    </p>
+                </div>
+                
+                <div class="step">
+                    <strong>Backend возвращает данные</strong>
+                    <p style="margin-top: 10px;">
+                        Если токен валиден, backend получает ID из токена, ищет пользователя в БД и отправляет его профиль.
+                    </p>
+                </div>
+                
+                <div class="info-box">
+                    <strong>💡 Понимание токенов:</strong> JWT токен — это как билет в кино. Билет подписан кино-театром (зашифрован SECRET_KEY). Портной не может подделать билет, потому что не знает подпись. Когда ты входишь — театр проверяет подпись, смотрит что билет валидный, и пускает тебя.
+                </div>
+            </div>
+            
+            <!-- SECTION 6: ENDPOINTS -->
+            <div class="section" id="endpoints">
+                <h2>API endpoints (адреса запросов)</h2>
+                
+                <h3>📡 Что такое endpoint?</h3>
+                <p>Endpoint — это адрес на сервере, на который фронтенд отправляет запросы. Как дорога, по которой едят машины (запросы).</p>
+                
+                <h3>🔑 Аутентификация (auth)</h3>
+                <p>Базовый адрес: <code>http://localhost:8000/api/v1/auth</code></p>
+                
+                <table>
+                    <tr>
+                        <th>Метод</th>
+                        <th>Endpoint</th>
+                        <th>Что делает</th>
+                        <th>Требует токен?</th>
+                    </tr>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/register</code></td>
+                        <td>Создать новый аккаунт</td>
+                        <td>❌ Нет</td>
+                    </tr>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/login</code></td>
+                        <td>Получить JWT токен</td>
+                        <td>❌ Нет</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/me</code></td>
+                        <td>Получить профиль текущего пользователя</td>
+                        <td>✅ Да</td>
+                    </tr>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/logout</code></td>
+                        <td>Выход (логаут)</td>
+                        <td>✅ Да</td>
+                    </tr>
+                </table>
+                
+                <h3>👤 Пользователи (users)</h3>
+                <p>Базовый адрес: <code>http://localhost:8000/api/v1/users</code></p>
+                
+                <table>
+                    <tr>
+                        <th>Метод</th>
+                        <th>Endpoint</th>
+                        <th>Что делает</th>
+                        <th>Требует токен?</th>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/stats</code></td>
+                        <td>Получить статистику (XP, level, scores)</td>
+                        <td>✅ Да</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/leaderboard</code></td>
+                        <td>Получить лидерборд (ТОП пользователей по XP)</td>
+                        <td>❌ Нет</td>
+                    </tr>
+                    <tr>
+                        <td><code>PUT</code></td>
+                        <td><code>/profile</code></td>
+                        <td>Обновить профиль (full_name, и т.д.)</td>
+                        <td>✅ Да</td>
+                    </tr>
+                </table>
+                
+                <h3>📚 Курсы (courses)</h3>
+                <p>Базовый адрес: <code>http://localhost:8000/api/v1/courses</code></p>
+                
+                <table>
+                    <tr>
+                        <th>Метод</th>
+                        <th>Endpoint</th>
+                        <th>Что делает</th>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/</code></td>
+                        <td>Получить список всех курсов</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/{course_id}</code></td>
+                        <td>Получить информацию о конкретном курсе</td>
+                    </tr>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/</code></td>
+                        <td>Создать новый курс (только админ)</td>
+                    </tr>
+                </table>
+                
+                <h3>📖 Уроки (lessons)</h3>
+                <p>Базовый адрес: <code>http://localhost:8000/api/v1/lessons</code></p>
+                
+                <table>
+                    <tr>
+                        <th>Метод</th>
+                        <th>Endpoint</th>
+                        <th>Что делает</th>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/</code></td>
+                        <td>Получить список уроков (с фильтром по курсу)</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/{lesson_id}</code></td>
+                        <td>Получить содержимое конкретного урока</td>
+                    </tr>
+                </table>
+                
+                <h3>⏳ Прогресс (progress)</h3>
+                <p>Базовый адрес: <code>http://localhost:8000/api/v1/progress</code></p>
+                
+                <table>
+                    <tr>
+                        <th>Метод</th>
+                        <th>Endpoint</th>
+                        <th>Что делает</th>
+                        <th>Требует токен?</th>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/</code></td>
+                        <td>Получить прогресс текущего пользователя</td>
+                        <td>✅ Да</td>
+                    </tr>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/complete-lesson</code></td>
+                        <td>Отметить урок как завершённый и добавить XP</td>
+                        <td>✅ Да</td>
+                    </tr>
+                </table>
+                
+                <h3>💡 Пример запроса через Swagger UI</h3>
+                <ol>
+                    <li>Открыть <code>http://localhost:8000/docs</code> в браузере</li>
+                    <li>Нажать на один из endpoints</li>
+                    <li>Нажать "Try it out"</li>
+                    <li>Заполнить параметры (если нужны)</li>
+                    <li>Нажать "Execute"</li>
+                    <li>Внизу увидишь ответ от сервера</li>
+                </ol>
+            </div>
+            
+            <!-- SECTION 7: SECURITY -->
+            <div class="section" id="security">
+                <h2>Безопасность: пароли и токены</h2>
+                
+                <h3>🔐 Почему нельзя хранить пароли в открытом виде?</h3>
+                <p>Если база данных утечет, злоумышленник получит все пароли. Поэтому пароли нужно хешировать.</p>
+                
+                <h3>🔒 Что такое bcrypt?</h3>
+                <p>bcrypt — это функция, которая превращает пароль в невозможно-угадаемый хеш:</p>
+                
+                <div class="code-block">
+Открытый пароль:   "MySecurePassword123"
+Bcrypt хеш:        "$2b$12$R9h7cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jKMUm"
+
+Хеширование ОДНОСТОРОННЕЕ:
+пароль → хеш ✅
+хеш → пароль ❌ (невозможно)
+                </div>
+                
+                <p><strong>Почему bcrypt хорош?</strong></p>
+                <ul>
+                    <li><strong>Соль (salt)</strong> — каждый хеш содержит случайное число, поэтому один пароль имеет разные хеши</li>
+                    <li><strong>Медленный</strong> — это хорошо, потому что замедляет перебор паролей</li>
+                    <li><strong>Стандарт</strong> — используется везде</li>
+                </ul>
+                
+                <h3>🔑 Как работает проверка пароля?</h3>
+                <div class="step">
+                    <strong>При регистрации:</strong>
+                    <ol>
+                        <li>Пользователь вводит: "MySecurePassword123"</li>
+                        <li>backend вызывает: <code>bcrypt.hash("MySecurePassword123")</code></li>
+                        <li>Получается: "$2b$12$R9h7cIPz0gi.URNNX3kh2..."</li>
+                        <li>Это сохраняется в БД</li>
+                    </ol>
+                </div>
+                
+                <div class="step">
+                    <strong>При логине:</strong>
+                    <ol>
+                        <li>Пользователь вводит: "MySecurePassword123"</li>
+                        <li>backend достает хеш из БД: "$2b$12$R9h7cIPz0gi.URNNX3kh2..."</li>
+                        <li>backend вызывает: <code>bcrypt.verify("MySecurePassword123", "$2b$12$...")</code></li>
+                        <li>Если совпадает → ✅ ОК, иначе → ❌ Ошибка</li>
+                    </ol>
+                </div>
+                
+                <h3>🎫 JWT токены</h3>
+                <p>JWT (JSON Web Token) — это цифровой пропуск, который выдается при логине. Вместо того чтобы отправлять пароль при каждом запросе, фронтенд отправляет токен.</p>
+                
+                <h3>📦 Структура JWT токена</h3>
+                <div class="code-block">
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+   ↓
+   {"alg":"HS256","typ":"JWT"}
+   (Заголовок - говорит как зашифровано)
+
+.
+
+eyJzdWIiOiI1IiwiZXhwIjoxNzE3NjU3NjAwfQ
+   ↓
+   {"sub":"5","exp":1717657600}
+   (Payload - данные: ID пользователя и время истечения)
+
+.
+
+SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+   ↓
+   (Подпись - зашифровано SECRET_KEY)
+
+Формат: header.payload.signature
+                </div>
+                
+                <h3>🔐 Как backend проверяет токен?</h3>
+                <ul>
+                    <li>Извлекает токен из заголовка Authorization</li>
+                    <li>Разбивает на части: header.payload.signature</li>
+                    <li>Пересчитывает подпись с SECRET_KEY</li>
+                    <li>Сравнивает пересчитанную подпись с полученной</li>
+                    <li>Если совпадает → токен валиден</li>
+                    <li>Проверяет время истечения (exp)</li>
+                    <li>Если все ОК → извлекает его данные (ID пользователя)</li>
+                </ul>
+                
+                <h3>⏰ Время жизни токена</h3>
+                <table>
+                    <tr>
+                        <th>Токен</th>
+                        <th>Время жизни</th>
+                        <th>Назначение</th>
+                    </tr>
+                    <tr>
+                        <td>Access Token</td>
+                        <td>30 минут</td>
+                        <td>Для обычных запросов. Короткий — для безопасности</td>
+                    </tr>
+                    <tr>
+                        <td>Refresh Token</td>
+                        <td>7 дней</td>
+                        <td>Для получения нового Access Token без пароля</td>
+                    </tr>
+                </table>
+                
+                <h3>🔄 Как обновить токен?</h3>
+                <p>Когда access token истекает (через 30 минут), пользователь может отправить refresh token на endpoint <code>/api/v1/auth/refresh</code> и получить новый access token БЕЗ ввода пароля.</p>
+                
+                <div class="info-box">
+                    <strong>💡 Аналогия:</strong> JWT — это как пропуск на некую территорию. Пропуск действует 30 минут. Если пропуск истекает, охранник говорит "Поищи механизм у входа (refresh token), и он выдаст тебе новый пропуск". Это лучше, чем каждый раз вводить пароль.
+                </div>
+            </div>
+            
+            <!-- SECTION 8: GAMIFICATION -->
+            <div class="section" id="gamification">
+                <h2>Геймификация: XP, уровни и бейджи</h2>
+                
+                <h3>🎮 Что такое геймификация?</h3>
+                <p>Добавление игровых элементов (очки, уровни, достижения) чтобы сделать обучение веселее и мотивировать пользователей.</p>
+                
+                <h3>⭐ XP (Experience Points)</h3>
+                <p>XP — это опыт, который пользователь получает за завершение уроков.</p>
+                
+                <table>
+                    <tr>
+                        <th>Действие</th>
+                        <th>XP</th>
+                    </tr>
+                    <tr>
+                        <td>Завершить урок (базовое значение)</td>
+                        <td>100 XP</td>
+                    </tr>
+                    <tr>
+                        <td>Идеальный скор (100%)</td>
+                        <td>+50 бонус XP</td>
+                    </tr>
+                    <tr>
+                        <td>Получить бейдж</td>
+                        <td>+500 бонус XP</td>
+                    </tr>
+                </table>
+                
+                <h3>📈 Уровни</h3>
+                <p>Уровень повышается когда пользователь набирает достаточно XP. Каждый уровень требует 1000 XP.</p>
+                
+                <table>
+                    <tr>
+                        <th>Уровень</th>
+                        <th>Нужно XP</th>
+                        <th>Статус</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>0-999</td>
+                        <td>Новичок</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>1000-1999</td>
+                        <td>Ученик</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>2000-2999</td>
+                        <td>Адепт</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>3000-3999</td>
+                        <td>Мастер</td>
+                    </tr>
+                    <tr>
+                        <td>5+</td>
+                        <td>4000+</td>
+                        <td>Легенда</td>
+                    </tr>
+                </table>
+                
+                <p><strong>Пример:</strong></p>
+                <ul>
+                    <li>Пользователь завершает первый урок → получает 100 XP (всего 100)</li>
+                    <li>Завершает 10 уроков → 100*10 = 1000 XP → поднял уровень на 2! 🎉</li>
+                    <li>Завершает еще 10 уроков → 2000 XP → уровень 3!</li>
+                </ul>
+                
+                <div class="code-block">
+# Как это рассчитывается в коде
+level_progress = 5 * 1000  # Уровень 5 требует 5000 XP
+if user.xp >= 5000:
+    user.level = 5
+    print("Поздравляем, вы достигли 5 уровня! 🎉")
+                </div>
+                
+                <h3>🏆 Бейджи (достижения)</h3>
+                <p>Специальные значки за особые достижения:</p>
+                
+                <table>
+                    <tr>
+                        <th>Бейдж</th>
+                        <th>Условие</th>
+                        <th>XP бонус</th>
+                    </tr>
+                    <tr>
+                        <td>🥉 Бронзовый</td>
+                        <td>Набрать 500 XP</td>
+                        <td>+0 (автоматический)</td>
+                    </tr>
+                    <tr>
+                        <td>🥈 Серебряный</td>
+                        <td>Набрать 2000 XP</td>
+                        <td>+100</td>
+                    </tr>
+                    <tr>
+                        <td>🥇 Золотой</td>
+                        <td>Набрать 5000 XP</td>
+                        <td>+200</td>
+                    </tr>
+                    <tr>
+                        <td>💎 Платиновый</td>
+                        <td>Набрать 10000 XP</td>
+                        <td>+500</td>
+                    </tr>
+                </table>
+                
+                <h3>🏅 Лидерборд</h3>
+                <p>Показывает ТОП 100 пользователей, отсортированных по XP.</p>
+                
+                <div class="code-block" style="background: #ecf0f1; color: #2c3e50;">
+Место  | Пользователь | Level | XP
+-------|--------------|-------|-------
+  1.   | hack_master  |   15  | 15000
+  2.   | cyber_queen  |   14  | 13500
+  3.   | john_doe     |   10  | 9800
+  ...
+                </div>
+                
+                <h3>🔧 Как работает код геймификации?</h3>
+                <p>Файл: <code>app/services/gamification_service.py</code></p>
+                
+                <div class="step">
+                    <strong>1. Функция add_xp()</strong>
+                    <div class="code-block" style="background: #f4f4f4; color: #000;">
+def add_xp(db, user_id, xp_amount):
+    user = db.query(User).get(user_id)
+    user.xp += xp_amount  # Добавить XP
+    check_level_up(user)  # Проверить повышение уровня
+    db.commit()
+    return user
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <strong>2. Функция check_level_up()</strong>
+                    <div class="code-block" style="background: #f4f4f4; color: #000;">
+def check_level_up(user):
+    xp_needed = user.level * 1000  # 1000 XP за уровень
+    if user.xp >= xp_needed:
+        user.level += 1  # Поднять уровень
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <strong>3. Функция check_badges()</strong>
+                    <div class="code-block" style="background: #f4f4f4; color: #000;">
+def check_badges(db, user_id):
+    user = db.query(User).get(user_id)
+    badges = db.query(Badge).all()
+    for badge in badges:
+        if user.xp >= badge.xp_threshold:
+            # Дать бейдж пользователю
+            user.badges.append(badge)
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <strong>💡 Когда это срабатывает?</strong> Функции используются когда пользователь завершает урок. В endpoint <code>POST /api/v1/progress/complete-lesson</code> вызывается:
+                    <ol>
+                        <li>add_xp() — добавляет XP</li>
+                        <li>check_level_up() — проверяет повышение уровня</li>
+                        <li>check_badges() — проверяет получение бейджей</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <!-- SECTION 9: ERRORS -->
+            <div class="section" id="errors">
+                <h2>Частые ошибки и как их исправить</h2>
+                
+                <h3>❌ Ошибка: "Cannot connect to database"</h3>
+                <p><strong>Причина:</strong> Нет подключения к PostgreSQL или неправильно указан адрес в .env</p>
+                <p><strong>Решение:</strong></p>
+                <ul>
+                    <li>Проверить что PostgreSQL запущена: <code>psql --version</code></li>
+                    <li>Проверить что БД создана: <code>psql -U postgres -l | grep cybersecurity_lms</code></li>
+                    <li>Проверить DATABASE_URL в .env файле</li>
+                    <li>Убедиться что пароль правильный</li>
+                </ul>
+                
+                <h3>❌ Ошибка: "ModuleNotFoundError: No module named 'fastapi'"</h3>
+                <p><strong>Причина:</strong> Виртуальное окружение не активировано или зависимости не установлены</p>
+                <p><strong>Решение:</strong></p>
+                <div class="code-block">
+<span class="command"># 1. Активировать окружение</span>
+<span class="command">venv\Scripts\activate  # Windows</span>
+<span class="command">source venv/bin/activate  # Linux/Mac</span>
+
+<span class="command"># 2. Установить зависимости</span>
+<span class="command">pip install -r requirements.txt</span>
+                </div>
+                
+                <h3>❌ Ошибка: "Port 8000 already in use"</h3>
+                <p><strong>Причина:</strong> Другой процесс использует порт 8000</p>
+                <p><strong>Решение:</strong></p>
+                <div class="code-block">
+<span class="command"># Вариант 1: Остановить существующий сервер (Ctrl+C)</span>
+<span class="command"># Вариант 2: Использовать другой порт</span>
+<span class="command">uvicorn app.main:app --reload --port 8001</span>
+                </div>
+                
+                <h3>❌ Ошибка: "Invalid email or password" при логине</h3>
+                <p><strong>Причина:</strong> Email не найден в БД или пароль неправильный</p>
+                <p><strong>Решение:</strong></p>
+                <ul>
+                    <li>Убедиться что вы зарегистрировались (произошла ошибка при регистрации?)</li>
+                    <li>Проверить что email написан правильно (точные прописные буквы)</li>
+                    <li>Проверить что пароль правильный</li>
+                    <li>Проверить в БД напрямую: <code>psql -U lms_user -d cybersecurity_lms -c "SELECT email FROM users;"</code></li>
+                </ul>
+                
+                <h3>❌ Ошибка: "1 validation error for UserRegisterRequest"</h3>
+                <p><strong>Причина:</strong> Невалидные данные при регистрации</p>
+                <p><strong>Решение:</strong></p>
+                <p>Проверить требования к полям:</p>
+                <ul>
+                    <li><strong>email</strong>: Должен быть email (содержать @)</li>
+                    <li><strong>username</strong>: 3-50 символов, только буквы/цифры/_</li>
+                    <li><strong>password</strong>: минимум 8 символов, заглавная буква, цифра</li>
+                </ul>
+                
+                <h3>❌ Ошибка: "401 Unauthorized" при запросе с токеном</h3>
+                <p><strong>Причина:</strong> Токен истек вышел, невалиден или забыли ввести</p>
+                <p><strong>Решение:</strong></p>
+                <ul>
+                    <li>Проверить что токен передан: <code>Authorization: Bearer {token}</code></li>
+                    <li>Получить новый токен: выполнить логин еще раз</li>
+                    <li>Проверить что SECRET_KEY не изменился (иначе все токены станут невалидными)</li>
+                </ul>
+                
+                <h3>❌ Ошибка: "CORS error" при запросе с фронтенда</h3>
+                <p><strong>Причина:</strong> Frontend попытался обратиться с запрещённого домена</p>
+                <p><strong>Решение:</strong></p>
+                <p>Добавить домен в ALLOWED_ORIGINS в .env или config.py:</p>
+                <div class="code-block">
+# .env
+ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8080,https://example.com
+                </div>
+                
+                <h3>❌ Ошибка: "table users does not exist"</h3>
+                <p><strong>Причина:</strong> Таблицы не были автоматически созданы</p>
+                <p><strong>Решение:</strong></p>
+                <p>Backend создает таблицы автоматически при запуске. Если ошибка — проверить логи:</p>
+                <div class="code-block">
+<span class="command"># При запуске сервера должно быть</span>
+<span class="output">✅ Database tables initialized</span>
+
+<span class="command"># Если не видите — BД может быть пустой</span>
+<span class="command"># Проверить:</span>
+<span class="command">psql -U lms_user -d cybersecurity_lms -c "\dt"</span>
+                </div>
+                
+                <h3>💡 Общие советы при ошибках</h3>
+                <ol>
+                    <li><strong>Читай логи!</strong> Сервер выводит подробные логи — они раскажут в чем ошибка</li>
+                    <li><strong>Проверь конфиг</strong> — 80% ошибок из-за неправильного .env</li>
+                    <li><strong>Перезагрузись</strong> — иногда помогает остановить сервер (Ctrl+C) и запустить заново</li>
+                    <li><strong>Проверь БД</strong> — если сомневаешься, смотри прямо в postgresql</li>
+                    <li><strong>Поищи в коде</strong> — текст ошибки часто есть в коде (помогает понять что случилось)</li>
+                </ol>
+            </div>
+            
+            <!-- SECTION 10: QUICK REFERENCE -->
+            <div class="section">
+                <h2>🚀 Быстрая справка</h2>
+                
+                <h3>Основные команды</h3>
+                <div class="code-block">
+<span class="command"># Запуск сервера</span>
+<span class="command">cd backend && venv\Scripts\activate && uvicorn app.main:app --reload</span>
+
+<span class="command"># Проверка здоровья</span>
+<span class="command">curl http://localhost:8000/health</span>
+
+<span class="command"># Открыть Swagger UI</span>
+<span class="command">http://localhost:8000/docs</span>
+
+<span class="command"># Регистрация через curl</span>
+<span class="command">curl -X POST http://localhost:8000/api/v1/auth/register \</span>
+<span class="command">  -H "Content-Type: application/json" \</span>
+<span class="command">  -d '{"email":"test@test.com","username":"testuser","password":"TestPass123","full_name":"Test User"}'</span>
+
+<span class="command"># Логин через curl</span>
+<span class="command">curl -X POST http://localhost:8000/api/v1/auth/login \</span>
+<span class="command">  -H "Content-Type: application/json" \</span>
+<span class="command">  -d '{"email":"test@test.com","password":"TestPass123"}'</span>
+                </div>
+                
+                <h3>Структура JSON ответов</h3>
+                
+                <div class="step">
+                    <strong>Ошибка (4xx или 5xx):</strong>
+                    <div class="code-block" style="background: #ecf0f1; color: #2c3e50;">
+{
+  "detail": "Invalid email or password"
+}
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <strong>Успех (2xx):</strong>
+                    <div class="code-block" style="background: #ecf0f1; color: #2c3e50;">
+{
+  "id": 1,
+  "email": "user@example.com",
+  "username": "username",
+  "full_name": "Full Name",
+  "level": 1,
+  "xp": 100,
+  "total_score": 0,
+  "is_active": true,
+  "created_at": "2026-04-06T10:30:00"
+}
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <footer>
+            <p>📚 Руководство для новичков | CyberShield Academy Backend</p>
+            <p>Создано для понимания структуры проекта и быстрого старта 🚀</p>
+            <p style="margin-top: 15px; font-size: 0.9em; color: #999;">Последний обновлен: 6 апреля 2026 г.</p>
+        </footer>
+    </div>
+</body>
+</html>
